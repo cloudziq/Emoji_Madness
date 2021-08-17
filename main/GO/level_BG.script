@@ -25,7 +25,7 @@ end
 
 
 function update(self, dt)
-	pprint(msg.url())
+	--pprint(msg.url())
 	local range, tint
 
 	if BG_active == true then

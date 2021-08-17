@@ -139,7 +139,7 @@ embedded_instances {
   "}\n"
   "components {\n"
   "  id: \"hall_of_fame\"\n"
-  "  component: \"/main/GUI/level_complete.gui\"\n"
+  "  component: \"/main/GUI/hall_of_fame.gui\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"
