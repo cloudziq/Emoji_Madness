@@ -1,0 +1,21 @@
+function init(self)
+	self.active = true
+	msg.post("#sprite", "play_animation", { id = hash( "blood"..rnd.range(1, blood_in_atlas) ) })
+	go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)))
+	sprite.set_hflip(".", math.random(1,2) == 2)
+	sprite.set_vflip(".", math.random(1,2) == 2)
+end
+
+
+
+
+function on_message(self, message_id, message)
+	if message_id == hash("animate_blood_scale") then
+		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, math.random(65, 110) / 100, go.EASING_OUTSINE, math.random(8, 12))
+	elseif message_id == hash("clean_blood") then
+		--go.delete_all(blood_table)
+		for _, id in ipairs(blood_table) do
+			go.animate(id, "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_INSINE, 2, 0, function () go.delete(id) end)
+		end
+	end
+end

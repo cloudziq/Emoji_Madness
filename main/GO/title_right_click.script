@@ -1,0 +1,29 @@
+function init(self)
+	self.active = true
+	self.lifespan = math.random(26, 34)
+	self.time_to_fade = self.lifespan * (math.random(12, 22) / 100)
+	self.delay = self.lifespan - self.time_to_fade
+
+	sound.play("/main#droplet", { speed = math.random(18, 24) / 10, delay = 0, gain = 1, pan = 0 })
+
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTBOUNCE, self.time_to_fade, self.delay,
+	function () go.delete() end)
+end
+
+
+
+
+function update(self, dt)
+	if allow_title_clicks == false and self.active == true then
+		self.active = false
+		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTBOUNCE, 2, 0,
+		function () go.delete() end)
+	end
+end
+
+
+
+
+-- function on_message(self, message_id, message)
+
+-- end

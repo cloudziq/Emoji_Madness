@@ -1,0 +1,39 @@
+[bootstrap]
+main_collection = /main/collections/main.collectionc
+render = /main/render/default.renderc
+
+[script]
+shared_state = 1
+
+[display]
+width = 1280
+height = 1320
+vsync = 0
+update_frequency = 60
+
+[android]
+input_method = HiddenInputField
+
+[project]
+title = SQUISHED
+developer = Dziq
+write_log = 0
+version = 0.6  beta
+publisher = JOPSY ENTERTAINMENT CORPORATION
+dependencies#0 = https://github.com/subsoap/defos/archive/v2.5.0.zip
+dependencies#1 = https://github.com/selimanac/defold-random/archive/master.zip
+dependencies#2 = https://github.com/subsoap/chip-sounds/archive/master.zip
+
+[windows]
+app_icon = /icon.ico
+
+[sprite]
+max_count = 512
+
+[physics]
+gravity_y = 0.0
+gravity_z = 0.0
+
+[graphics]
+texture_profiles = /builtins/graphics/default.texture_profiles
+

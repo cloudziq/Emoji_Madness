@@ -1,0 +1,106 @@
+emoji_in_atlas    = 94
+blood_in_atlas    = 9
+level_bg_in_atlas = 30
+
+
+menu_options_visible = false
+post_game  = false
+menu_proxy = true
+play_intro = false
+pause_id   = nil
+
+
+
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	math.randomseed(socket.gettime() * 1000)
+
+	defos.set_cursor_clipped(true)
+	defos.set_cursor_visible(false)
+
+	defos.disable_maximize_button()
+	defos.disable_window_resize()
+	display = defos.get_displays()
+
+	screen_w = display[1].bounds.width
+	screen_h = display[1].bounds.height - 36
+
+	screen_w = 1650 ; screen_h = 875  -- smaller window
+	--screen_w = 1650 ; screen_h = 600   -- for recording
+
+	window_w = 1280 * 4 ; window_h = 1320 * 4
+
+	-- resize window if too big for display
+	if screen_h <= window_h then
+		scale_ratio = window_h / (screen_h - 36)
+		window_w = window_w / scale_ratio
+		window_h = window_h / scale_ratio
+	end
+
+	defos.set_view_size((screen_w - window_w) / 2, ((screen_h - 36) - window_h) / 2, window_w, window_h)
+	window_w = 1280 ; window_h = 1320
+
+	msg.post("#title_menu_proxy", "load")
+	load_records()
+
+	--debug_profiling()
+end
+
+
+
+
+-- function update()
+-- 
+-- end
+
+
+
+
+function debug_profiling()
+	profiler.enable_ui(true)
+	--profiler.set_ui_mode()
+	profiler.set_ui_view_mode()
+	--profiler.view_recorded_frame()
+end
+
+
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("proxy_loaded") then
+		pprint(tostring(sender).." LOADED")
+
+		msg.post(sender, "init")
+		msg.post(sender, "enable")
+
+
+	elseif message_id == hash("proxy_unloaded") then
+		pprint(tostring(sender).." UNLOADED")
+
+
+	-- elseif message_id == hash("start_title") then
+	-- 	msg.post("#title_proxy", "async_load")
+
+
+
+	elseif message_id == hash("start_game") then
+		msg.post("#game_proxy", "async_load")
+
+
+
+
+	-- pause BACK_TO_MENU button handling:
+	elseif message_id == hash("show_title_menu") then
+		msg.post(pause_id, "unload")
+
+		if menu_proxy == false then
+			msg.post("#title_menu_proxy", "async_load")
+		else
+			--msg.post("title:/main#title_screen", "show")
+			msg.post("#title_menu_proxy", "unload")
+			msg.post("#title_menu_proxy", "async_load")
+		end
+		pause(pause_id)
+	end
+end

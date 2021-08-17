@@ -1,0 +1,306 @@
+local right_click_delay, right_click_timeout, click_pos_x, click_pos_y = 0, 0, 0, 0
+local letter_pos, letter_col = {}, {}
+
+allow_title_clicks = false
+allow_title_emojis = true
+
+local menu_emoji_amount = 160
+
+local emoji_delay
+local title_music_delay
+
+
+--local variables:
+local text_dziq_pos, text_dziq_rot, dziq_image_pos, dziq_image_rot, presents_pos
+
+-- forward function declarations:
+local title_prepare, intro, post_intro, fade_gui
+
+
+
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	main_menu_visible = true
+
+	if post_game == false then
+		if play_intro == true then 
+			defold_logo()
+		else
+			title_prepare()
+		end
+	else
+		msg.post("#", "disable")
+		msg.post("title:/main#hall_of_fame", "show")
+	end
+end
+
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("hide_gui") then
+		fade_gui(3)                     -- fade/move title gui away
+		msg.post("#ctrl", "hide_main_menu")
+		allow_title_emojis = false
+		sound.play("#game_start")
+	end
+end
+
+
+
+
+function update(self, dt)
+	if socket.gettime() > right_click_timeout then click_pos_x, click_pos_y = 0, 0 end
+end
+
+
+
+
+function on_input(self, action_id, action)
+	if action_id == hash("pause") and action.pressed then pause("main:/main#title_menu_proxy") end
+
+	if pause_id == nil then
+		if action_id == nil then
+			gui.set_position(gui.get_node("crosshair"), vmath.vector3(action.x, action.y, 1))
+
+		elseif action_id == hash("click2") and allow_title_clicks == true and socket.gettime() > right_click_delay then
+			if action.x > click_pos_x + 60 or action.x < click_pos_x - 60 or action.y > click_pos_y + 60 or action.y < click_pos_y - 60 then
+				right_click_delay = socket.gettime() + 0.08
+				click_pos_x = action.x ; click_pos_y = action.y
+				factory.create("#click_factory", vmath.vector3(action.x, action.y, 1), nil, nil, rnd.range(25, 35) / 10)
+				right_click_timeout = socket.gettime() + 4
+			end
+
+		elseif action_id == hash("click1") and gui.pick_node(gui.get_node("START"), action.x, action.y) and start_allow == true then
+			start_allow = false
+			msg.post("/main#ctrl", "menu_end")
+		end
+	end
+end
+
+
+
+
+function defold_logo()
+
+	local logo = gui.get_node("DEFOLD LOGO")
+	local text = gui.get_node("DEFOLD TEXT")
+
+	gui.set_color(logo, vmath.vector4(1,1,1,0))
+	gui.set_color(text, vmath.vector4(1,1,1,0))
+
+	sound.play("/main#logo")
+
+	gui.animate(logo, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 1, 0, function ()
+		--gui.animate(logo, "position.y", 1180, gui.EASING_LINEAR, 1, 1)
+		--gui.animate(logo, "scale", vmath.vector3(.5, .5, .5), gui.EASING_LINEAR, 1, 1)
+		gui.animate(logo, "color", vmath.vector4(1,1,1,0), gui.EASING_LINEAR, 2, 1.6)
+	end)
+
+	gui.animate(text, "color", vmath.vector4(.2, .2, .2, .8), gui.EASING_LINEAR, 1.2, 1)
+	title_prepare()
+end
+
+
+
+
+function title_prepare()
+	if play_intro == true then title_music_delay = 5.2 else title_music_delay = 0 end
+	sound.play("#title_music", {delay = title_music_delay, gain = 0.8, pan = 0})
+
+	load_config()
+
+	gui.set_enabled(gui.get_node("version_number"), false)
+	gui.set_color(gui.get_node("stars"), vmath.vector4(0,0,0,0))
+
+	text_dziq_pos = gui.get_position(gui.get_node("text_dziq"))
+	text_dziq_rot = gui.get_rotation(gui.get_node("text_dziq"))
+	dziq_image_pos = gui.get_position(gui.get_node("dziq"))
+	dziq_image_rot = gui.get_rotation(gui.get_node("dziq"))
+	presents_pos = gui.get_position(gui.get_node("text_presents"))
+
+	gui.set_position(gui.get_node("dziq"), vmath.vector3(1600, 115, 0))
+	gui.set_position(gui.get_node("text_dziq"), vmath.vector3(-1000, 400, 0))
+	gui.set_position(gui.get_node("text_presents"), vmath.vector3(2000, 900, 0))
+	gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
+
+	for a = 1,8 do
+		letter_pos[a] = gui.get_position(gui.get_node(a))
+		gui.set_enabled(gui.get_node(a), false)
+	end
+
+	if play_intro == false then
+		emoji_delay = 3
+		gui.animate(gui.get_node("BG"), "color", vmath.vector4(1, 1, 1, .8), gui.EASING_LINEAR, 2, 1.6)
+		gui.set_enabled(gui.get_node("dziq"), false)
+		gui.set_enabled(gui.get_node("text_dziq"), false)
+		gui.set_enabled(gui.get_node("text_presents"), false)
+		gui.set_enabled(gui.get_node("DEFOLD LOGO"), false)
+	else
+		gui.animate(gui.get_node("BG"), "color", vmath.vector4(1, 1, 1, .8), gui.EASING_LINEAR, 6, 3.4)
+		emoji_delay = 8
+	end
+
+	timer.delay(emoji_delay, false, function()
+		generate_emojis(menu_emoji_amount, "#emoji_factory")
+		gui.play_particlefx(gui.get_node("menu3"))
+	end)
+
+	if play_intro == true then
+		timer.delay(3.2, false, intro)
+	else
+		post_intro()
+	end
+end
+
+
+
+
+function intro()
+	gui.animate(gui.get_node("text_dziq"), "position", text_dziq_pos, gui.EASING_LINEAR, 1, 0.25, function ()
+		gui.animate(gui.get_node("text_dziq"), "position.x", 1800, gui.EASING_INQUINT, 2.2, 2.4)
+	end)
+
+	-- >>  small rotation on hrumk sound
+	gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_rot.z - 24, gui.EASING_INBOUNCE, .1, 1.6, function ()
+		gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_rot.z + 28, gui.EASING_INBOUNCE, .1, .18)
+	end)
+
+	gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z - 12, gui.EASING_INBOUNCE, .1, 1.6, function ()
+		gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z + 2, gui.EASING_INBOUNCE, .1, .18)
+	end)
+	-- <<
+	gui.animate(gui.get_node("text_presents"), "position", presents_pos, gui.EASING_LINEAR, 1, 0.25, function ()
+		gui.animate(gui.get_node("text_presents"), "position.x", -1000, gui.EASING_INQUINT, 2.2, 2.4)
+	end)
+
+	gui.animate(gui.get_node("dziq"), "position.x", dziq_image_pos.x, gui.EASING_OUTSINE, 1, 1, function ()
+		gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_pos.z, gui.EASING_LINEAR, 1.6, .8)
+		gui.animate(gui.get_node("dziq"), "position.x", 2000, gui.EASING_INQUINT, 2, .45, function ()
+			gui.set_enabled(gui.get_node("dziq"), false)
+		end)
+	end)
+
+	sound.play("#hrumk", {delay = 1.25, gain = 2, pan = 0})
+
+	timer.delay(5, false, post_intro)
+end
+
+
+
+local function title_animate(self, node, pos)
+	pos_x = rnd.range(pos.x - 8, pos.x + 8)
+	pos_y = rnd.range(pos.y - 14, pos.y + 14)
+	gui.animate(node, "position", vmath.vector3(pos_x, pos_y, 1), gui.EASING_INOUTSINE, rnd.range(22, 36) / 10, 0, function()
+		title_animate(self, node, pos)
+	end)
+end
+
+
+local function title_colors(self, node, col, dir)
+	if dir == 1 then
+		col= col + 0.02
+		if col > 1 then col = 1 ; dir = 0 end
+	else
+		col = col - 0.02
+		if col < .74 then col = .74 ; dir = 1 end
+	end
+	gui.animate(node, "color", vmath.vector4(col - .26, col - .18, col, 1), gui.EASING_LINEAR, .2, 0, function()
+		title_colors(self, node, col, dir)
+	end)
+	gui.animate(node, "outline", vmath.vector4((col - .52) / 3.2, (col - .36) / 2.4, col / 1.64, 1), gui.EASING_LINEAR, .2, 0)
+end
+
+
+
+
+function post_intro()
+	local color = 1 ; local dir = 1
+
+	gui.play_particlefx(gui.get_node("menu1"))
+	timer.delay(5, false, function ()
+		if start_allow == true then
+			gui.play_particlefx(gui.get_node("menu2"))
+		end
+	end)
+
+	gui.animate(gui.get_node("START"), "position.y", 200, gui.EASING_OUTELASTIC, 1.1, 3.5, function()
+		start_allow = true
+		allow_title_clicks = true
+		sound.play("#menu_start_button", {delay = 0, gain = .8, pan = 0})
+		gui.set_enabled(gui.get_node("version_number"), true)
+		local node = gui.get_node("menu_center")
+		local emitter_menu_center = gui.play_particlefx(node)
+		gui.set_color(node, vmath.vector4(0,0,0,0))
+		gui.animate(node, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 2, .22)
+	end)
+
+	gui.animate(gui.get_node("stars"), "color", vmath.vector4(.1, .14, .18, 0.1), gui.EASING_LINEAR, 8, 1.2)
+
+	local offset = 400
+
+	for a = 1,8 do
+		local node = gui.get_node(a)
+		local pos = letter_pos[a]
+		letter_pos[a] = color ; local col = letter_pos[a]
+
+		gui.set_enabled(node, true)
+		gui.set_color(node, vmath.vector4(color - .12, color - .08, color, 1)) ; color = color - 0.06
+
+		pos_x, pos_y = get_offscreen_pos(offset)
+
+		-- set new letter position outside of screen and animate it to original position
+		gui.set_position(node, vmath.vector3(pos_x, pos_y, 0))
+		gui.set_shadow(node, vmath.vector4(.1, .14, .18, 0))
+		local random = rnd.range(3, 6)
+		gui.animate(node, "shadow.w", 1, gui.EASING_LINEAR, random, 1)
+
+		gui.animate(node, "position", pos, gui.EASING_OUTELASTIC, random, 1, function ()
+			title_animate(self, node, pos)
+		end)
+
+		gui.animate(node, "color", vmath.vector4(col - .12, col - .04, col, 1), gui.EASING_LINEAR, .4, 0, function ()
+			title_colors(self, node, col, dir)
+		end)
+
+		gui.animate(node, "outline", vmath.vector4((col - .12) /2, (col - .04) /2, col/ 2, 1), gui.EASING_LINEAR, .4, 0)
+	end
+end
+
+
+
+
+function fade_gui()
+	local a, pos_x, pos_y, node
+
+	msg.post(".", "release_input_focus")
+
+	for a = 1, 8 do
+		node = gui.get_node(a)
+		pos_x, pos_y = get_offscreen_pos(400)
+		gui.animate(node, "position", vmath.vector3(pos_x, pos_y, 1), gui.EASING_INEXPO, 3)
+	end
+
+	node = gui.get_node("START")
+	gui.animate(node, "position.y", gui.get_position(node).y - 400, gui.EASING_INCIRC, 3)
+
+	node = gui.get_node("version_number")
+	gui.animate(node, "position.y", gui.get_position(node).y - 40, gui.EASING_INCIRC, 2)
+
+	node = gui.get_node("BG")
+	gui.animate(node, "color", vmath.vector4(0, 0, 0, 0), gui.EASING_LINEAR, 8, 1)
+
+	gui.stop_particlefx(gui.get_node("menu1"))
+	gui.stop_particlefx(gui.get_node("menu2"))
+	gui.stop_particlefx(gui.get_node("menu3"))
+	gui.stop_particlefx(gui.get_node("menu_center"))
+
+	gui.set_enabled(gui.get_node("crosshair"), false)
+	timer.delay(8, false, function ()
+		gui.set_enabled(gui.get_node("menu1"), false)
+		gui.set_enabled(gui.get_node("menu2"), false)
+		gui.set_enabled(gui.get_node("menu3"), false)
+		gui.set_enabled(gui.get_node("menu_center"), false)
+		msg.post("#", "disable")
+	end)
+end

@@ -1,0 +1,107 @@
+
+-- starting values:
+level  = 1
+score  = 0
+health = 5
+--bullet = 20
+emojis = 10
+speed  = 0   -- (speed emojis - this value as percentage)
+wait   = 0   --  forward declaration
+
+-- adds for level completion:
+emojis_add     = 2
+speed_add      = 3.2
+health_add     = 2
+health_perfect = 3
+--bullet_add = 1
+
+
+
+
+--local variables:
+local level_play
+
+--forward function declarations:
+local level_prepare
+
+
+
+
+function init(self)
+	msg.post("/main#game_gui", "disable")
+	total_kills   = 0
+	total_bullets = 0
+
+	timer.delay(4, false, function ()
+		msg.post("/main#game_gui", "show_level_intro")
+	end)
+
+	timer.delay(10, false, function ()
+		msg.post("main:/main#title_menu_proxy", "unload")
+		menu_proxy = false
+	end)
+end
+
+
+
+
+function update(self, dt)
+	if level_play == true then
+		if health == 0 then
+			level_play = false
+			msg.post("game:/main#game_gui", "hide")
+			msg.post("game:/main#game_over", "show", {killed = killed, escaped = escaped})
+
+		elseif emojis_left == 0 then
+			level_play = false
+			level = level + 1
+			health = health + health_add
+			emojis = emojis + emojis_add
+			speed = speed + speed_add
+			wait = wait - speed / 100
+
+			msg.post("game:/main#game_gui", "hide")
+			msg.post("game:/main#level_complete", "show", {killed = killed, escaped = escaped})
+		end
+	end
+end
+
+
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("level_start") then
+		msg.post(".", "acquire_input_focus")
+		main_menu_visible = false
+		level_prepare()
+
+
+	elseif message_id == hash("fade_music") then
+		go.animate("/main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4)
+	end
+end
+
+
+
+
+function on_input(self, action_id, action)
+	if action_id == hash("pause") and action.pressed then pause("main:/main#game_proxy") end
+	
+	if pause_id == nil then
+		if action_id == hash("click1") and action.pressed == true then
+			factory.create("/main#weapon_factory", vmath.vector3(action.x, action.y, 1))
+			cursor_x = action.x ; cursor_y = action.y
+		end
+	end
+end
+
+
+
+
+function level_prepare()
+	escaped = 0 ; killed = 0
+	emojis_left = emojis
+	blood_table = {}
+	generate_emojis(emojis, "#emoji_factory")
+	level_play = true
+end

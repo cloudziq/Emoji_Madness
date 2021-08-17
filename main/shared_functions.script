@@ -1,0 +1,145 @@
+function get_offscreen_pos(offset, oposite, pos)
+	local a, x, y
+
+	if oposite == true then
+		if pos.x <= window_w / 2 then a = 2 end
+		if pos.x >  window_w / 2 then a = 1 end
+		if pos.y <= window_h / 2 then a = 4 end
+		if pos.y >  window_h / 2 then a = 3 end
+	else
+		a = rnd.range(1,4)
+	end
+
+	if a == 1 then
+		x = -offset
+		y = math.random(-offset, window_h + offset)
+	elseif a == 2 then
+		x = window_w + offset
+		y = math.random(-offset, window_h + offset)
+	elseif a == 3 then
+		x = math.random(-offset, window_w + offset)
+		y = -offset
+	elseif a == 4 then
+		x = math.random(-offset, window_w + offset)
+		y = window_h + offset
+	end
+
+	return x, y
+end
+
+
+
+
+function generate_emojis(num, url)
+	local pos_x, pos_y, b, id
+
+	emoji_table = {}
+
+	for a = 1, num do
+		pos_x, pos_y = get_offscreen_pos(200)
+		id = factory.create(url, vmath.vector3(pos_x, pos_y, 1), nil)
+		table.insert(emoji_table, id)
+		emoji_script_id = id
+	end
+end
+
+
+
+
+function slider(container, pointer, left_node, right_node, action)
+	local pos_center, pos_pointer, pos, left, right
+
+	pos = vmath.vector3(action.x, action.y , 0)
+	pos_pointer = gui.get_position(gui.get_node(pointer))
+	pos_center = gui.get_position(gui.get_node(container))
+	left = gui.get_position(gui.get_node(left_node))
+	right = gui.get_position(gui.get_node(right_node))
+
+	if pos.x - pos_center.x < left.x then 
+		pos.x = left.x
+	elseif pos.x - pos_center.x > right.x then 
+		pos.x = right.x
+	else
+		pos.x = action.x - pos_center.x
+	end
+
+	gui.set_position(gui.get_node(pointer), vmath.vector3(pos.x, pos_pointer.y, 0))
+	return (pos.x / (right.x * 2)) + .5
+end
+
+
+
+
+function pause(proxy)
+	if menu_options_visible == false then
+		if defos.is_cursor_clipped() then
+			pause_id = proxy
+			sound.play("main:/main#pause_sfx", {speed = 0.5})
+			defos.set_cursor_clipped(false)
+			defos.set_cursor_visible(true)
+			msg.post(proxy, "set_time_step", {factor = 0 , mode = 1})
+			msg.post("main:/main#pause", "show")
+		else
+			sound.play("main:/main#pause_sfx")
+			defos.set_cursor_clipped(true)
+			defos.set_cursor_visible(false)
+			msg.post(proxy, "set_time_step", {factor = 1 , mode = 1})
+			msg.post("main:/main#pause", "hide")
+			pause_id = nil
+		end
+	else
+		msg.post("main:/main#options", "hide")
+	end
+end
+
+
+
+
+function load_config()
+	local file = sys.get_save_file("SQUISHED", "config.dziq")
+	local data = sys.load(file)
+
+	if data.sound_vol == nil then sound_vol = 1 else
+		sound_vol = data.sound_vol
+		sound.set_group_gain("sound", data.sound_vol)
+	end
+	if data.music_vol == nil then music_vol = .75 else
+		music_vol = data.music_vol
+		sound.set_group_gain("music", data.music_vol)
+	end
+end
+
+
+local function set_default_records()
+	local table = {}
+
+	--         points:  last_level:  total_kills:  
+	table[1] = {10000,  45,          800}
+	table[2] = {8000,   35,          600}
+	table[3] = {6000,   25,          400}
+	table[4] = {4000,   15,          200}
+	table[5] = {2000,   5,           50}
+
+	return table
+end
+
+	
+function load_records()
+	local file = sys.get_save_file("SQUISHED", "hall_of_fame.dziq")
+	local data = sys.load(file)
+
+	if data.records == nil then 
+		return set_default_records()
+	else
+		return data.records
+	end
+end
+
+
+
+
+-- function table_len(table)
+-- 	local count = 0
+-- 	for _ in pairs(table) do count = count + 1 end
+-- 	return count
+-- end
