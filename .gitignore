@@ -1,5 +1,5 @@
 /.internal
 /build
-/.lnk
 .DS_Store
 Thumbs.db
+CLIENT_DATA.lnk
