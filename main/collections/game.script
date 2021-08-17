@@ -21,7 +21,7 @@ health_perfect = 3
 --local variables:
 local level_play
 
---forward function declarations:
+--local functions:
 local level_prepare
 
 
