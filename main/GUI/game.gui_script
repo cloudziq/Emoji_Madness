@@ -89,6 +89,7 @@ function on_message(self, message_id, message, sender)
 
 
 	elseif message_id == hash("hide") then
+		total_kills = total_kills + killed
 		gui.set_enabled(gui.get_node("crosshair"), false)
 		gui.animate(gui.get_node("display"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.6, .2)
 	end

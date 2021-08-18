@@ -22,6 +22,7 @@ local title_prepare, intro, post_intro, fade_gui
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	main_menu_visible = true
+	menu_proxy = true
 
 	if post_game == false then
 		if play_intro == true then 
@@ -38,10 +39,13 @@ end
 
 
 function on_message(self, message_id, message, sender)
-	if message_id == hash("hide_gui") then
+	if message_id == hash("post_game_show") then
+		init()
+
+
+	elseif message_id == hash("hide_gui") then
 		fade_gui(3)                     -- fade/move title gui away
 		msg.post("#ctrl", "hide_main_menu")
-		allow_title_emojis = false
 		sound.play("#game_start")
 	end
 end

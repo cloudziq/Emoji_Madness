@@ -18,8 +18,8 @@ input_method = HiddenInputField
 title = SQUISHED
 developer = Dziq
 write_log = 0
-version = 0.6  beta
-publisher = JOPSY ENTERTAINMENT CORPORATION
+version = 0.9  (beta)
+publisher = JOPS INTERACTIVE CO LTD
 dependencies#0 = https://github.com/subsoap/defos/archive/v2.5.0.zip
 dependencies#1 = https://github.com/selimanac/defold-random/archive/master.zip
 dependencies#2 = https://github.com/subsoap/chip-sounds/archive/master.zip
@@ -36,4 +36,7 @@ gravity_z = 0.0
 
 [graphics]
 texture_profiles = /builtins/graphics/default.texture_profiles
+
+[input]
+repeat_interval = 0.1
 

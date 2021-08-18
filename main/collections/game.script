@@ -15,6 +15,9 @@ health_add     = 2
 health_perfect = 3
 --bullet_add = 1
 
+--summary var:
+total_kills = 0
+
 
 
 
@@ -29,8 +32,6 @@ local level_prepare
 
 function init(self)
 	msg.post("/main#game_gui", "disable")
-	total_kills   = 0
-	total_bullets = 0
 
 	timer.delay(4, false, function ()
 		msg.post("/main#game_gui", "show_level_intro")

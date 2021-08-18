@@ -6,7 +6,7 @@ go.property("score", 1)
 emojis = 10 ; level = 1  -- dummy values, will be overwriten anyway
 
 
--- local functions forward declaration:
+-- local functions:
 local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
 
 
@@ -26,7 +26,7 @@ function init(self)
 	if main_menu_visible == true then
 		msg.post("#collide_emoji", "disable")
 		sprite.set_constant("#sprite", "tint", vmath.vector4(.32, .36, .52, 1))
-		timer.delay(2, false, function () msg.post("#collide_emoji", "enable") end)
+		timer.delay(1.82, false, function () msg.post("#collide_emoji", "enable") end)
 		go.set_scale(math.random(36, 360) / 100)
 		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 		get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
@@ -46,11 +46,10 @@ function update(self, dt)
 	-- disable emojis at the end of main menu
 	if main_menu_visible == true then
 		msg.post("#collide_weapon", "disable")
-		if allow_title_emojis == false then
-			msg.post("#collide_emoji", "disable")
-			allow_title_emojis = -1
-		elseif allow_title_emojis == -1 and self.active == true then
+		if allow_title_emojis == false and self.active == true then
 			self.active = false
+			msg.post(msg.url(nil, go.get_id(), "collide_emoji"), "disable")
+
 			pos_x, pos_y = get_offscreen_pos(400)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, math.random(36, 360) / 100, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos_x, pos_y, 1), go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10, function ()
@@ -121,10 +120,12 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 					self.need_pos_check = false
 					emoji_waiting(self)
 				else
-					sound.play("/main#energy_loss", {speed = math.random(80, 120) / 100})
-					emojis_left = emojis_left - 1 ; escaped = escaped + 1
-					if health > 0 then health = health - 1 end
-					msg.post("/main#game_gui", "display_update", {stat = "emoji_left"})
+					if health > 0 then
+						sound.play("/main#energy_loss", {speed = math.random(80, 120) / 100})
+						emojis_left = emojis_left - 1 ; escaped = escaped + 1
+						health = health - 1
+						msg.post("/main#game_gui", "display_update", {stat = "emoji_left"})
+					end
 				end
 			end)
 		end)

@@ -5,7 +5,7 @@ level_bg_in_atlas = 30
 
 menu_options_visible = false
 post_game  = false
-menu_proxy = true
+--menu_proxy = true
 play_intro = false
 pause_id   = nil
 

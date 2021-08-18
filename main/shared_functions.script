@@ -96,7 +96,7 @@ end
 
 
 function load_config()
-	local file = sys.get_save_file("SQUISHED", "config.dziq")
+	local file = sys.get_save_file("SQUISHED", "config.dzq")
 	local data = sys.load(file)
 
 	if data.sound_vol == nil then sound_vol = 1 else
@@ -110,22 +110,34 @@ function load_config()
 end
 
 
+-- local function set_default_records()
+-- 	local table = {}
+-- 
+-- 	--         name:          points:  level:  kills:  
+-- 	table[1] = {"dziq",        4000,   45,     800}
+-- 	table[2] = {"natzab",      3000,   35,     600}
+-- 	table[3] = {"jopsy",       2000,   25,     400}
+-- 	table[4] = {"hidan",       1000,   15,     200}
+-- 	table[5] = {"douuumb",       10,    1,       4}
+-- 
+-- 	return table
+-- end
+
 local function set_default_records()
 	local table = {}
 
-	--         points:  last_level:  total_kills:  
-	table[1] = {10000,  45,          800}
-	table[2] = {8000,   35,          600}
-	table[3] = {6000,   25,          400}
-	table[4] = {4000,   15,          200}
-	table[5] = {2000,   5,           50}
+	--         name:          points:  level:  kills:  
+	table[1] = {"dziq",       40,   45,     800}
+	table[2] = {"jopsy",       30,   35,     600}
+	table[3] = {"hidan",       20,   25,     400}
+	table[4] = {"tytusbomba",  10,   15,     200}
+	table[5] = {"quinsucker",  5,   5,       50}
 
 	return table
 end
 
-	
 function load_records()
-	local file = sys.get_save_file("SQUISHED", "hall_of_fame.dziq")
+	local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")
 	local data = sys.load(file)
 
 	if data.records == nil then 

@@ -71,6 +71,9 @@ function on_message(self, message_id, message, sender)
 		gui.set_enabled(gui.get_node("crosshair"), false)
 		msg.post(emoji_script_id, "clean_emojis")
 		if #blood_table > 0 then msg.post(blood_script_id, "clean_blood") end
+
+		msg.post(".", "release_input_focus")
+		
 		timer.delay(4, false, function ()
 			gui.reset_nodes() ; msg.post("#", "disable")
 		end)

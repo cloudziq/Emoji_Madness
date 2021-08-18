@@ -257,7 +257,7 @@ nodes {
 }
 nodes {
   position {
-    x: -249.368
+    x: -240.507
     y: 0.0
     z: 0.0
     w: 1.0
@@ -320,7 +320,7 @@ nodes {
 }
 nodes {
   position {
-    x: 171.518
+    x: 188.607
     y: 0.0
     z: 0.0
     w: 1.0
@@ -383,7 +383,7 @@ nodes {
 }
 nodes {
   position {
-    x: 28.481
+    x: 34.178
     y: 0.0
     z: 0.0
     w: 1.0
@@ -414,9 +414,9 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "points:"
+  text: "score:"
   font: "system"
-  id: "label_points"
+  id: "label_score"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -446,7 +446,7 @@ nodes {
 }
 nodes {
   position {
-    x: 266.457
+    x: 274.685
     y: 0.0
     z: 0.0
     w: 1.0
@@ -564,8 +564,63 @@ nodes {
 }
 nodes {
   position {
-    x: -332.912
+    x: -324.683
     y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 128.0
+    y: 128.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "main_menu/slider"
+  id: "numBG1"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "1"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.8
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -324.684
+    y: 0.633
     z: 0.0
     w: 1.0
   }
@@ -627,7 +682,7 @@ nodes {
 }
 nodes {
   position {
-    x: -312.026
+    x: -296.836
     y: 0.0
     z: 0.0
     w: 1.0
@@ -651,9 +706,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.8
-    y: 0.8
-    z: 0.8
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   type: TYPE_TEXT
@@ -665,9 +720,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
-    z: 1.0
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   shadow {
@@ -690,7 +745,70 @@ nodes {
 }
 nodes {
   position {
-    x: -277.849
+    x: -268.988
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.42
+    y: 0.42
+    z: 0.84
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 0.8
+    z: 0.7019608
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "QUINTOCHUJ"
+  font: "Vellyc"
+  id: "name1"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "1"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 2.532
     y: 0.0
     z: 0.0
     w: 1.0
@@ -715,28 +833,28 @@ nodes {
   }
   color {
     x: 0.8
-    y: 0.8
-    z: 0.8
+    y: 0.9019608
+    z: 1.0
     w: 1.0
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "XXXX"
   font: "Vellyc"
-  id: "name1"
+  id: "score1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
+    x: 0.5019608
+    y: 0.6
     z: 1.0
     w: 1.0
   }
   shadow {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -753,7 +871,7 @@ nodes {
 }
 nodes {
   position {
-    x: 141.139
+    x: 158.228
     y: 0.0
     z: 0.0
     w: 1.0
@@ -797,9 +915,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -816,70 +934,7 @@ nodes {
 }
 nodes {
   position {
-    x: -6.962
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 0.42
-    y: 0.42
-    z: 0.84
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "XXXX"
-  font: "Vellyc"
-  id: "points1"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_W
-  outline {
-    x: 0.5019608
-    y: 0.6
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "1"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 265.19
+    x: 273.418
     y: 0.0
     z: 0.0
     w: 1.0
@@ -923,9 +978,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -997,8 +1052,63 @@ nodes {
 }
 nodes {
   position {
-    x: -332.912
+    x: -324.683
     y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 128.0
+    y: 128.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "main_menu/slider"
+  id: "numBG2"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "2"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.8
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -324.684
+    y: -0.633
     z: 0.0
     w: 1.0
   }
@@ -1061,7 +1171,7 @@ nodes {
 }
 nodes {
   position {
-    x: -312.026
+    x: -296.836
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1085,9 +1195,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.8
-    y: 0.8
-    z: 0.8
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   type: TYPE_TEXT
@@ -1099,9 +1209,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
-    z: 1.0
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   shadow {
@@ -1124,7 +1234,70 @@ nodes {
 }
 nodes {
   position {
-    x: -277.849
+    x: -268.988
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.42
+    y: 0.42
+    z: 0.84
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 0.8
+    z: 0.7019608
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "QUINTOCHUJ"
+  font: "Vellyc"
+  id: "name2"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "2"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 2.532
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1149,28 +1322,28 @@ nodes {
   }
   color {
     x: 0.8
-    y: 0.8
-    z: 0.8
+    y: 0.9019608
+    z: 1.0
     w: 1.0
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "XXXX"
   font: "Vellyc"
-  id: "name2"
+  id: "score2"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
+    x: 0.5019608
+    y: 0.6
     z: 1.0
     w: 1.0
   }
   shadow {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -1187,7 +1360,7 @@ nodes {
 }
 nodes {
   position {
-    x: 141.139
+    x: 158.228
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1231,9 +1404,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -1250,70 +1423,7 @@ nodes {
 }
 nodes {
   position {
-    x: -6.962
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 0.42
-    y: 0.42
-    z: 0.84
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "XXXX"
-  font: "Vellyc"
-  id: "points2"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_W
-  outline {
-    x: 0.5019608
-    y: 0.6
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "2"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 265.19
+    x: 273.418
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1357,9 +1467,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -1431,8 +1541,63 @@ nodes {
 }
 nodes {
   position {
-    x: -332.912
+    x: -324.683
     y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 128.0
+    y: 128.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "main_menu/slider"
+  id: "numBG3"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "3"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.8
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -324.684
+    y: -0.633
     z: 0.0
     w: 1.0
   }
@@ -1494,7 +1659,7 @@ nodes {
 }
 nodes {
   position {
-    x: -312.026
+    x: -296.836
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1518,9 +1683,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.8
-    y: 0.8
-    z: 0.8
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   type: TYPE_TEXT
@@ -1532,9 +1697,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
-    z: 1.0
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   shadow {
@@ -1557,7 +1722,70 @@ nodes {
 }
 nodes {
   position {
-    x: -277.849
+    x: -268.988
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.42
+    y: 0.42
+    z: 0.84
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 0.8
+    z: 0.7019608
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "QUINTOCHUJ"
+  font: "Vellyc"
+  id: "name3"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "3"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 2.532
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1582,28 +1810,28 @@ nodes {
   }
   color {
     x: 0.8
-    y: 0.8
-    z: 0.8
+    y: 0.9019608
+    z: 1.0
     w: 1.0
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "XXXX"
   font: "Vellyc"
-  id: "name3"
+  id: "score3"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
+    x: 0.5019608
+    y: 0.6
     z: 1.0
     w: 1.0
   }
   shadow {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -1620,7 +1848,7 @@ nodes {
 }
 nodes {
   position {
-    x: 141.139
+    x: 158.228
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1664,9 +1892,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -1683,70 +1911,7 @@ nodes {
 }
 nodes {
   position {
-    x: -6.962
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 0.42
-    y: 0.42
-    z: 0.84
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "XXXX"
-  font: "Vellyc"
-  id: "points3"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_W
-  outline {
-    x: 0.5019608
-    y: 0.6
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "3"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 265.19
+    x: 273.418
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1790,9 +1955,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -1864,8 +2029,63 @@ nodes {
 }
 nodes {
   position {
-    x: -332.912
+    x: -324.683
     y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 128.0
+    y: 128.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "main_menu/slider"
+  id: "numBG4"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "4"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.8
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -326.583
+    y: -0.633
     z: 0.0
     w: 1.0
   }
@@ -1927,7 +2147,7 @@ nodes {
 }
 nodes {
   position {
-    x: -312.026
+    x: -296.836
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1951,9 +2171,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.8
-    y: 0.8
-    z: 0.8
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   type: TYPE_TEXT
@@ -1965,9 +2185,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
-    z: 1.0
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   shadow {
@@ -1990,7 +2210,70 @@ nodes {
 }
 nodes {
   position {
-    x: -277.849
+    x: -268.988
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.42
+    y: 0.42
+    z: 0.84
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 0.8
+    z: 0.7019608
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "QUINTOCHUJ"
+  font: "Vellyc"
+  id: "name4"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "4"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 2.532
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2015,28 +2298,28 @@ nodes {
   }
   color {
     x: 0.8
-    y: 0.8
-    z: 0.8
+    y: 0.9019608
+    z: 1.0
     w: 1.0
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "XXXX"
   font: "Vellyc"
-  id: "name4"
+  id: "score4"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
+    x: 0.5019608
+    y: 0.6
     z: 1.0
     w: 1.0
   }
   shadow {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -2053,7 +2336,7 @@ nodes {
 }
 nodes {
   position {
-    x: 141.139
+    x: 158.228
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2097,9 +2380,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -2116,70 +2399,7 @@ nodes {
 }
 nodes {
   position {
-    x: -6.962
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 0.42
-    y: 0.42
-    z: 0.84
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "XXXX"
-  font: "Vellyc"
-  id: "points4"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_W
-  outline {
-    x: 0.5019608
-    y: 0.6
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "4"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 265.19
+    x: 273.418
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2223,9 +2443,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -2297,8 +2517,63 @@ nodes {
 }
 nodes {
   position {
-    x: -332.912
+    x: -324.683
     y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.4
+    y: 0.4
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 128.0
+    y: 128.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "main_menu/slider"
+  id: "numBG5"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "5"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.8
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: -324.684
+    y: -0.633
     z: 0.0
     w: 1.0
   }
@@ -2360,7 +2635,7 @@ nodes {
 }
 nodes {
   position {
-    x: -312.026
+    x: -296.836
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2384,9 +2659,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.8
-    y: 0.8
-    z: 0.8
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   type: TYPE_TEXT
@@ -2398,9 +2673,9 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
-    z: 1.0
+    x: 0.3019608
+    y: 0.3019608
+    z: 0.3019608
     w: 1.0
   }
   shadow {
@@ -2423,7 +2698,70 @@ nodes {
 }
 nodes {
   position {
-    x: -277.849
+    x: -268.988
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.42
+    y: 0.42
+    z: 0.84
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 0.8
+    z: 0.7019608
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "QUINTOCHUJ"
+  font: "Vellyc"
+  id: "name5"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_W
+  outline {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "5"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 2.532
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2448,28 +2786,28 @@ nodes {
   }
   color {
     x: 0.8
-    y: 0.8
-    z: 0.8
+    y: 0.9019608
+    z: 1.0
     w: 1.0
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "XXXX"
   font: "Vellyc"
-  id: "name5"
+  id: "score5"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.8
-    y: 1.0
+    x: 0.5019608
+    y: 0.6
     z: 1.0
     w: 1.0
   }
   shadow {
-    x: 0.0
-    y: 0.0
-    z: 0.0
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -2486,7 +2824,7 @@ nodes {
 }
 nodes {
   position {
-    x: 141.139
+    x: 158.228
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2530,9 +2868,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -2549,70 +2887,7 @@ nodes {
 }
 nodes {
   position {
-    x: -6.962
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 0.42
-    y: 0.42
-    z: 0.84
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "XXXX"
-  font: "Vellyc"
-  id: "points5"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_W
-  outline {
-    x: 0.5019608
-    y: 0.6
-    z: 1.0
-    w: 1.0
-  }
-  shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "5"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 265.19
+    x: 273.418
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2656,9 +2931,9 @@ nodes {
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.101960786
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -2793,8 +3068,8 @@ nodes {
 }
 nodes {
   position {
-    x: -96.0
-    y: -98.0
+    x: 640.0
+    y: 660.0
     z: 0.0
     w: 1.0
   }
@@ -2805,8 +3080,125 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 3.0
-    y: 3.0
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 800.0
+    y: 256.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.6
+    y: 0.7019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "main_menu/slider"
+  id: "new_record"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  layer: ""
+  inherit_alpha: true
+  slice9 {
+    x: 64.0
+    y: 64.0
+    z: 64.0
+    w: 64.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 1.0
+  template_node_child: false
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.16
+    y: 1.4
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.9490196
+    y: 0.9490196
+    z: 0.9490196
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "NEW RECORD!"
+  font: "Vellyc"
+  id: "new_record_text"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.4
+    y: 0.3019608
+    z: 0.7019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "new_record"
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.1
+}
+nodes {
+  position {
+    x: -96.0
+    y: -99.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.4
+    y: 1.4
     z: 1.0
     w: 1.0
   }

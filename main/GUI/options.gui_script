@@ -73,7 +73,7 @@ function on_message(self, message_id, message, sender)
 		msg.post("#", "disable")
 		msg.post("/main#pause", "restore options button")
 
-		local file = sys.get_save_file("SQUISHED", "config.dziq")
+		local file = sys.get_save_file("SQUISHED", "config.dzq")
 		sys.save(file, {sound_vol = sound_vol, music_vol = music_vol})
 	end
 end
