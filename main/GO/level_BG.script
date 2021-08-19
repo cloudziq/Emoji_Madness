@@ -10,22 +10,21 @@ function init(self)
 	self.scale  = false
 	self.change = false
 	self.sprite_id = msg.url(nil, go.get_id(), "sprite")
-
 	self.z = z
+
 	go.set_position(vmath.vector3(window_w / 2, window_h / 2 , z))
-	z = z + 0.02 ; last_id = go.get_id()
-	go.set_scale(3.64 * 2)
+	z = z + 0.01 ; last_id = go.get_id()
+	go.set_scale(3.64 * 2) -- 3.64 is for 512x512 BG's
 	msg.post(self.sprite_id, "play_animation", { id = hash("bg"..math.random(1, level_bg_in_atlas)) })
 
-	go.set(self.sprite_id, "tint", vmath.vector4(.46, .52, .62, 0))
-	go.animate(self.sprite_id, "tint.w", go.PLAYBACK_ONCE_FORWARD, math.random(36, 84) / 100, go.EASING_INOUTSINE, math.random(3, 8))
+	go.set(self.sprite_id, "tint", vmath.vector4(.12, .18, .24, 0))
+	go.animate(self.sprite_id, "tint.w", go.PLAYBACK_ONCE_FORWARD, math.random(16, 64) / 100, go.EASING_INOUTSINE, math.random(8, 22))
 end
 
 
 
 
 function update(self, dt)
-	--pprint(msg.url())
 	local range, tint
 
 	if BG_active == true then

@@ -117,7 +117,7 @@ end
 -- 	table[1] = {"dziq",        4000,   45,     800}
 -- 	table[2] = {"natzab",      3000,   35,     600}
 -- 	table[3] = {"jopsy",       2000,   25,     400}
--- 	table[4] = {"hidan",       1000,   15,     200}
+-- 	table[4] = {"hidan",       1500,   15,     200}
 -- 	table[5] = {"douuumb",       10,    1,       4}
 -- 
 -- 	return table
@@ -127,11 +127,11 @@ local function set_default_records()
 	local table = {}
 
 	--         name:          points:  level:  kills:  
-	table[1] = {"dziq",       40,   45,     800}
-	table[2] = {"jopsy",       30,   35,     600}
-	table[3] = {"hidan",       20,   25,     400}
-	table[4] = {"tytusbomba",  10,   15,     200}
-	table[5] = {"quinsucker",  5,   5,       50}
+	table[1] = {"dziq",        12,   45,     800}
+	table[2] = {"natzab",      10,   35,     600}
+	table[3] = {"jopsy",        5,   25,     400}
+	table[4] = {"hidan",        3,   15,     200}
+	table[5] = {"douuuuumb",    1,   5,       50}
 
 	return table
 end

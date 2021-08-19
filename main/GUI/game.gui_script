@@ -22,7 +22,7 @@ function on_message(self, message_id, message, sender)
 
 			gui.set_color(gui.get_node("display"), vmath.vector4(0,0,0,0))
 			gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
-			gui.animate(gui.get_node("BG"), "color", vmath.vector4(.16, .22, .28, .4), gui.EASING_LINEAR, 1.5)
+			gui.animate(gui.get_node("BG"), "color", vmath.vector4(.22, .26, .32, .52), gui.EASING_LINEAR, 1.2)
 
 			gui.set_position(gui.get_node("level_intro"), vmath.vector3(-400, window_h / 2, 1))
 			gui.animate(gui.get_node("level_intro"), "position.x", pos_level.x, gui.EASING_OUTCIRC, 1)
@@ -52,7 +52,7 @@ function on_message(self, message_id, message, sender)
 			gui.animate(gui.get_node("GO_text"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, .8, .2)
 		end)
 
-		gui.animate(gui.get_node("BG"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 2.5)
+		gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 40)
 		gui.animate(gui.get_node("start_info"), "position.y", pos_start.y - 200, gui.EASING_INCIRC, .25)
 
 		-- show dynamic BG

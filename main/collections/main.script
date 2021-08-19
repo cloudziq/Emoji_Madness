@@ -42,7 +42,6 @@ function init(self)
 	window_w = 1280 ; window_h = 1320
 
 	msg.post("#title_menu_proxy", "load")
-	load_records()
 
 	--debug_profiling()
 end

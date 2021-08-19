@@ -1,18 +1,49 @@
 --local variables:
-local table, place
-local text = "ENTER NAME"
+local table, place, info_node, back_button
+local info_node_blink = true
+local show_type_info = true
+text = ""
 local fields = {"name", "score", "level", "kills"}
 
 --local functions:
-local set_gui
+local set_gui, anim_gui
 
 
 
 
 function init(self)
 	gui.set_enabled(gui.get_node("new_record"), false)
+	gui.set_enabled(gui.get_node("box1"), false)
+	gui.set_enabled(gui.get_node("box2"), false)
 	msg.post("#", "disable")
-	table = load_records()
+end
+
+
+
+
+function update()
+	if info_node ~= nil then
+		if #text == 0 then
+			gui.set_enabled(info_node, true)
+			gui.set_enabled(back_button, false)
+
+			if info_node_blink == true then
+				info_node_blink = false
+				gui.animate(info_node, "color", vmath.vector3(.8, .8, .8), go.EASING_OUTSINE, .4, 0, function()
+					gui.animate(info_node, "color", vmath.vector3(.4, .4, .4), go.EASING_OUTSINE, 1)
+				end)
+				gui.animate(info_node, "outline", vmath.vector3(.4, .4, .4), go.EASING_OUTSINE, .4, 0, function()
+					gui.animate(info_node, "outline", vmath.vector3(1, 1, 1), go.EASING_OUTSINE, .4, 0, function ()
+						info_node_blink = true
+					end)
+				end)
+			end
+		else
+			gui.set_enabled(info_node, false)
+			gui.set_enabled(back_button, true)
+			info_node_blink = true
+		end
+	end
 end
 
 
@@ -27,27 +58,29 @@ function on_message(self, message_id, message, sender)
 		gui.set_enabled(node, false)
 		gui.set_render_order(0)
 
+		table = load_records()
+		
+		if post_game == true then
+			back_button = gui.get_node("box1")
+		else
+			back_button = gui.get_node("box2")
+		end
+
 		place = set_gui()
 		if place ~= nil then
-			gui.set_text(gui.get_node("name"..place), text)
-			gui.set_text(gui.get_node("score"..place), score)
-			gui.set_text(gui.get_node("level"..place), level)
-			gui.set_text(gui.get_node("kills"..place), total_kills)
-
 			gui.set_enabled(node, true)
 			record_node_pos = gui.get_position(node)
 			gui.set_position(node, vmath.vector3(record_node_pos.x, window_h + 200, 1))
 			gui.animate(node, "position.y", record_node_pos, gui.EASING_OUTQUART, 1.2, 0, function () 
-				sound.play("/main#perfect_win", {speed = 0.4})
+				sound.play("game:/main#perfect_win", {speed = 0.4})
 				gui.animate(node, "scale", 1.25, gui.EASING_OUTQUART, .4, 0, function ()
 					gui.animate(node, "scale", 1, gui.EASING_OUTQUART, .4, .8, function ()
 						gui.animate(node, "position.y", -200, gui.EASING_OUTQUART, 1.2)
-						gui.animate(gui.get_node(place), "color.w", 1, gui.EASING_OUTQUART, .8)
+						anim_gui()
 					end)
 				end)
 			end)
 		end
-
 		msg.post("#", "enable")
 
 
@@ -59,10 +92,13 @@ function on_message(self, message_id, message, sender)
 		end)
 
 		if post_game == true then
+			table[place] = {text, score, level, total_kills}
+			
+			local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")
+			sys.save(file, {records = table})
 			post_game = false
 			msg.post("/main#title_screen", "post_game_show")
 		end
-
 	end
 end
 
@@ -76,31 +112,51 @@ function on_input(self, action_id, action)
 		if action_id == nil then
 			gui.set_position(gui.get_node("crosshair"), vmath.vector3(action.x, action.y, 1))
 
-		elseif action_id == hash("type") and place ~= nil and #text <= 10 then
+
+		elseif action_id == hash("type") and place ~= nil and #text < 10 then
 			text = text..action.text
 			gui.set_text(gui.get_node("name"..place), text)
 
-
 		elseif action_id == hash("back") and action.repeated then
-			local l = string.len(text)
-			text = string.sub(text, 0, l - 1)
+			text = string.sub(text, 0, #text - 1)
 			gui.set_text(gui.get_node("name"..place), text)
+
+		elseif action_id == hash("enter") and action.pressed then
+			if post_game == true then
+				if info_node ~= nil then
+					if #text == 0 then
+						sound.play("game:/main#emoji_going_away", {speed = 1.4})
+						gui.animate(info_node, "scale", .52, gui.EASING_INELASTIC, .2, 0, function ()
+							gui.animate(info_node, "scale", .4, gui.EASING_INELASTIC, .2, 0.1)
+						end)
+					else
+						msg.post("#", "hide")
+					end
+				end
+			end
+
+
+
+		elseif gui.pick_node(back_button, action.x, action.y) and action_id == hash("click1") and action.pressed and gui.is_enabled(back_button) then
+			-- if post_game == true then
+				msg.post("#", "hide")
+			-- else
+			-- 	msg.post("#", "hide")
+			-- end
 		end
 	end
 end
 
 
--- local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")
--- sys.save(file, {sound_vol = sound_vol, music_vol = music_vol})
 
 
-function set_gui()
-	local a, b, record
+function set_gui(exclude)
+	local a, b, record, start_val
 
-	for a = 1, 5 do
+	if exclude == nil then start_val = 1 else start_val = exclude end
+	for a = start_val, 5 do
 		for b = 1, 4 do
 			if b == 2 and score > table[a][b] and record == nil then
-				--pprint(score..":"..table[a][b])
 				record = a
 			end
 			gui.set_text(gui.get_node(fields[b]..a), table[a][b])
@@ -108,4 +164,55 @@ function set_gui()
 	end
 
 	return record
+end
+
+
+
+
+function anim_gui()
+	local a, b, pos, node
+	local new_table = {}
+
+	for a = 1, 5 do
+		if a <= place then
+			new_table[a] = table[a]
+		else
+			new_table[a] = table[a-1]
+		end
+
+		if a >= place then
+			for b = 1, 4 do
+				node = gui.get_node(fields[b]..a)
+				pos = gui.get_position(node)
+				gui.animate(node, "position.y", pos.y - 80, go.EASING_LINEAR, 2)
+				if a == 5 then
+					gui.animate(node, "color.w", 0, go.EASING_LINEAR, 2)
+				end
+			end
+		end
+	end
+
+	timer.delay(2.2, false, function ()
+		table = new_table
+		set_gui(place)
+		gui.reset_nodes()
+		gui.set_enabled(gui.get_node("box1"), false)
+		gui.set_enabled(gui.get_node("box2"), false)
+
+		gui.animate(gui.get_node(place), "color.w", 1, gui.EASING_OUTQUART, .8)
+		gui.set_enabled(gui.get_node("new_record"), false)
+		gui.set_text(gui.get_node("name" ..place), text)
+		gui.set_text(gui.get_node("score"..place), score)
+		gui.set_text(gui.get_node("level"..place), level)
+		gui.set_text(gui.get_node("kills"..place), total_kills)
+
+		pos = gui.get_position(gui.get_node("name"..place))
+		info_node = gui.new_text_node(pos, "enter name")
+		gui.set_scale(info_node, vmath.vector3(.4, .4, 1))
+		gui.set_parent(info_node, gui.get_node(place))
+		gui.set_pivot(info_node, gui.PIVOT_W)
+		gui.set_color(info_node, vmath.vector4(.44, .44, .44, .64))
+		gui.set_outline(info_node, vmath.vector4(1, 1, 1, .8))
+		gui.set_enabled(info_node, true)
+	end)
 end

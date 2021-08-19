@@ -855,7 +855,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "v0.64 (beta)"
+  text: "v0.90 (beta)"
   font: "system"
   id: "version_number"
   xanchor: XANCHOR_NONE
