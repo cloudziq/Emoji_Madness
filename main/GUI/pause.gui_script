@@ -45,7 +45,7 @@ function on_input(self, action_id, action)
 	end
 
 
-	if action.pressed then
+	if action.pressed and action_id == hash("click1") then
 		if gui.pick_node(gui.get_node("back_button"), action.x, action.y) and gui.is_enabled(gui.get_node("BACK")) then
 			msg.post("main:/main#ctrl", "show_title_menu")
 

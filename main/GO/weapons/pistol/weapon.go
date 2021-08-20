@@ -1,6 +1,6 @@
 components {
   id: "weapon"
-  component: "/main/GO/weapon.script"
+  component: "/main/GO/weapons/pistol/weapon.script"
   position {
     x: 0.0
     y: 0.0
@@ -14,7 +14,7 @@ components {
   }
 }
 embedded_components {
-  id: "collisionobject"
+  id: "pistol"
   type: "collisionobject"
   data: "collision_shape: \"\"\n"
   "type: COLLISION_OBJECT_TYPE_KINEMATIC\n"

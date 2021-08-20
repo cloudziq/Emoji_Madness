@@ -2,26 +2,33 @@ function get_offscreen_pos(offset, oposite, pos)
 	local a, x, y
 
 	if oposite == true then
-		if pos.x <= window_w / 2 then a = 2 end
-		if pos.x >  window_w / 2 then a = 1 end
-		if pos.y <= window_h / 2 then a = 4 end
-		if pos.y >  window_h / 2 then a = 3 end
+		if pos.x <= window_w / 2 then
+			x = window_w + offset
+		else
+			x = -offset
+		end
+
+		if pos.y <= window_h / 2 then
+			y = window_h + offset - 44  --compensate for display_bar
+		else
+			y = -offset
+		end
 	else
 		a = rnd.range(1,4)
-	end
 
-	if a == 1 then
-		x = -offset
-		y = math.random(-offset, window_h + offset)
-	elseif a == 2 then
-		x = window_w + offset
-		y = math.random(-offset, window_h + offset)
-	elseif a == 3 then
-		x = math.random(-offset, window_w + offset)
-		y = -offset
-	elseif a == 4 then
-		x = math.random(-offset, window_w + offset)
-		y = window_h + offset
+		if a == 1 then
+			x = -offset
+			y = math.random(-offset, window_h + offset)
+		elseif a == 2 then
+			x = window_w + offset
+			y = math.random(-offset, window_h + offset)
+		elseif a == 3 then
+			x = math.random(-offset, window_w + offset)
+			y = -offset
+		elseif a == 4 then
+			x = math.random(-offset, window_w + offset)
+			y = window_h + offset
+		end
 	end
 
 	return x, y
@@ -39,8 +46,8 @@ function generate_emojis(num, url)
 		pos_x, pos_y = get_offscreen_pos(200)
 		id = factory.create(url, vmath.vector3(pos_x, pos_y, 1), nil)
 		table.insert(emoji_table, id)
-		emoji_script_id = id
 	end
+	emoji_go_id = id  -- reqiured for clean_emojis table
 end
 
 
@@ -103,7 +110,7 @@ function load_config()
 		sound_vol = data.sound_vol
 		sound.set_group_gain("sound", data.sound_vol)
 	end
-	if data.music_vol == nil then music_vol = .75 else
+	if data.music_vol == nil then music_vol = .5 else
 		music_vol = data.music_vol
 		sound.set_group_gain("music", data.music_vol)
 	end

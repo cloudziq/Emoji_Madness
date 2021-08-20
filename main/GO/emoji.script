@@ -26,7 +26,7 @@ function init(self)
 	if main_menu_visible == true then
 		msg.post("#collide_emoji", "disable")
 		sprite.set_constant("#sprite", "tint", vmath.vector4(.32, .36, .52, 1))
-		timer.delay(1.82, false, function () msg.post("#collide_emoji", "enable") end)
+		timer.delay(1.82, false, function() msg.post("#collide_emoji", "enable") end)
 		go.set_scale(math.random(36, 360) / 100)
 		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 		get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
@@ -45,7 +45,7 @@ function update(self, dt)
 
 	-- disable emojis at the end of main menu
 	if main_menu_visible == true then
-		msg.post("#collide_weapon", "disable")
+		--msg.post("#collide_weapon", "disable")
 		if allow_title_emojis == false and self.active == true then
 			self.active = false
 			msg.post(msg.url(nil, go.get_id(), "collide_emoji"), "disable")
@@ -87,7 +87,7 @@ function get_new_menu_emoji_pos(self, easing1, easing2)
 
 	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, pos_y, easing1, time)
 	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x - radius, easing2, time * 0.5, 0, function()
-		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x, easing2, time * 0.5, 0, function ()
+		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x, easing2, time * 0.5, 0, function()
 			if allow_title_emojis == true then get_new_menu_emoji_pos(self, 0, easing1, easing2) end
 		end)
 	end)
@@ -115,7 +115,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 
 		go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, pos_y, easing1, time, delay)
 		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x - radius, easing2, time * 0.5, delay, function()
-			go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x, easing2, time * 0.5, 0, function ()
+			go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x, easing2, time * 0.5, 0, function()
 				if self.going_away == false then
 					self.need_pos_check = false
 					emoji_waiting(self)
@@ -148,7 +148,7 @@ function emoji_waiting(self)
 			self.waiting = false
 			self.going_away = true
 
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, 1.25, 0, function ()
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, 1.25, 0, function()
 				msg.post(self.emoji_id, "disable")
 				sound.play("/main#emoji_going_away", {speed = math.random(80, 120) / 100})
 				get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, .1)
@@ -156,7 +156,7 @@ function emoji_waiting(self)
 		else
 			local pos = go.get_position()
 			pos.x = pos.x + math.random(-22, 22) ; 	pos.y = pos.y + math.random(-22, 22)
-			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_INOUTSINE, math.random(2, 4), 0, function ()
+			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_INOUTSINE, math.random(2, 4), 0, function()
 				if self.going_away == false then
 					emoji_waiting(self)
 				end
@@ -177,7 +177,8 @@ end
 
 function on_message(self, message_id, message, sender)
 	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc
-	local blood_scale = {20, 15, 65, 55}
+	local blood_scale = {20, 15, 65, 45}
+
 
 	-- for main menu
 	if main_menu_visible == true then
@@ -195,10 +196,11 @@ function on_message(self, message_id, message, sender)
 			go.set_position(go.get_position() + message.normal * message.distance)
 			pos = go.get_position() + (message.normal * force) * (message.distance * distance)
 			sprite_flip(pos.x)
-			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, time, 0, function ()
+			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, time, 0, function()
 				get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 			end)
 		end
+
 
 	-- for levels
 	else
@@ -209,7 +211,7 @@ function on_message(self, message_id, message, sender)
 			if self.waiting == false and self.going_away == false then score_calc = score_calc * 3 end
 			if self.going_away == true then score_calc = score_calc * 2 end
 			score = score + score_calc
-					
+
 			msg.post("/main#game_gui", "display_update")
 			sound.play("/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
 
@@ -240,6 +242,7 @@ function on_message(self, message_id, message, sender)
 				if a <= 2 then msg.post(id, "animate_blood_scale") end
 			end
 
+
 		elseif message_id == hash("contact_point_response") and self.active == true then
 			force = rnd.range(80, 120)
 			distance = (rnd.range(8, 12) / 10)
@@ -250,7 +253,7 @@ function on_message(self, message_id, message, sender)
 			sound.play("/main#emoji_collide", {speed = math.random (12, 18) / 10})
 			go.set_position(go.get_position() + message.normal * message.distance)
 			pos = go.get_position() + (message.normal * force) * (message.distance * distance)
-			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, time, 0, function ()
+			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, time, 0, function()
 				if self.need_pos_check == true then
 					self.wait_timeout = 0
 					go.cancel_animations(".", "position")
@@ -260,9 +263,12 @@ function on_message(self, message_id, message, sender)
 				end
 			end)
 
+
 		elseif message_id == hash("clean_emojis") then
 			for _, id in ipairs(emoji_table) do
-				go.animate(id, "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_INSINE, 2, 0, function () go.delete(id) end)
+				go.animate(id, "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_INSINE, 2, 0, function()
+					go.delete(id)
+				end)
 			end
 		end
 	end

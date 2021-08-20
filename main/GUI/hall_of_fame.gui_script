@@ -22,27 +22,31 @@ end
 
 
 function update()
-	if info_node ~= nil then
-		if #text == 0 then
-			gui.set_enabled(info_node, true)
-			gui.set_enabled(back_button, false)
+	if post_game == true then
+		if info_node ~= nil then
+			if #text == 0 then
+				gui.set_enabled(info_node, true)
+				gui.set_enabled(back_button, false)
 
-			if info_node_blink == true then
-				info_node_blink = false
-				gui.animate(info_node, "color", vmath.vector3(.8, .8, .8), go.EASING_OUTSINE, .4, 0, function()
-					gui.animate(info_node, "color", vmath.vector3(.4, .4, .4), go.EASING_OUTSINE, 1)
-				end)
-				gui.animate(info_node, "outline", vmath.vector3(.4, .4, .4), go.EASING_OUTSINE, .4, 0, function()
-					gui.animate(info_node, "outline", vmath.vector3(1, 1, 1), go.EASING_OUTSINE, .4, 0, function ()
-						info_node_blink = true
+				if info_node_blink == true then
+					info_node_blink = false
+					gui.animate(info_node, "color", vmath.vector3(.8, .8, .8), go.EASING_OUTSINE, .4, 0, function()
+						gui.animate(info_node, "color", vmath.vector3(.4, .4, .4), go.EASING_OUTSINE, 1)
 					end)
-				end)
+					gui.animate(info_node, "outline", vmath.vector3(.4, .4, .4), go.EASING_OUTSINE, .4, 0, function()
+						gui.animate(info_node, "outline", vmath.vector3(1, 1, 1), go.EASING_OUTSINE, .4, 0, function()
+							info_node_blink = true
+						end)
+					end)
+				end
+			else
+				gui.set_enabled(info_node, false)
+				gui.set_enabled(back_button, true)
+				info_node_blink = true
 			end
-		else
-			gui.set_enabled(info_node, false)
-			gui.set_enabled(back_button, true)
-			info_node_blink = true
 		end
+	else
+		gui.set_enabled(back_button, true)
 	end
 end
 
@@ -50,10 +54,9 @@ end
 
 
 function on_message(self, message_id, message, sender)
-	local a, node, record_node_pos
+	local a, node, record_node_pos, fade_time
 
 	if message_id == hash("show") then
-		msg.post("#", "acquire_input_focus")
 		node = gui.get_node("new_record")
 		gui.set_enabled(node, false)
 		gui.set_render_order(0)
@@ -71,34 +74,54 @@ function on_message(self, message_id, message, sender)
 			gui.set_enabled(node, true)
 			record_node_pos = gui.get_position(node)
 			gui.set_position(node, vmath.vector3(record_node_pos.x, window_h + 200, 1))
-			gui.animate(node, "position.y", record_node_pos, gui.EASING_OUTQUART, 1.2, 0, function () 
+			gui.animate(node, "position.y", record_node_pos, gui.EASING_OUTQUART, 1.2, 0, function()
 				sound.play("game:/main#perfect_win", {speed = 0.4})
-				gui.animate(node, "scale", 1.25, gui.EASING_OUTQUART, .4, 0, function ()
-					gui.animate(node, "scale", 1, gui.EASING_OUTQUART, .4, .8, function ()
+				gui.animate(node, "scale", 1.25, gui.EASING_OUTQUART, .4, 0, function()
+					gui.animate(node, "scale", 1, gui.EASING_OUTQUART, .4, .8, function()
 						gui.animate(node, "position.y", -200, gui.EASING_OUTQUART, 1.2)
 						anim_gui()
 					end)
 				end)
 			end)
+		else
+			gui.set_enabled(back_button, true)
 		end
+
 		msg.post("#", "enable")
+		msg.post("#", "acquire_input_focus")
 
 
 	elseif message_id == hash("hide") then
-		msg.post("#", "release_input_focus")
-		gui.animate(gui.get_node("FAME"), "color.w", 0, gui.EASING_LINEAR, 1.4, .2, function ()
-			msg.post("#", "disable")
-			gui.reset_nodes()
-		end)
+		-- gui.animate(gui.get_node("FAME"), "color.w", 0, gui.EASING_LINEAR, .1, .2, function ()
+		-- 	msg.post("#", "disable")
+		-- 	msg.post(".", "release_input_focus")
+		-- 	gui.reset_nodes()
+		-- 	gui.set_enabled(gui.get_node("box1"), false)
+		-- 	gui.set_enabled(gui.get_node("box2"), false)
+		-- end)
 
 		if post_game == true then
-			table[place] = {text, score, level, total_kills}
-			
-			local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")
-			sys.save(file, {records = table})
+			fade_time = 1.2
+			if place ~= nil then
+				table[place] = {text, score, level, total_kills}
+
+				local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")
+				sys.save(file, {records = table})
+			end
 			post_game = false
 			msg.post("/main#title_screen", "post_game_show")
+		else
+			fade_time = 0.16
+			msg.post("/main", "acquire_input_focus")
 		end
+
+		gui.animate(gui.get_node("FAME"), "color.w", 0, gui.EASING_LINEAR, fade_time, .2, function ()
+			msg.post("#", "disable")
+			msg.post(".", "release_input_focus")
+			gui.reset_nodes()
+			gui.set_enabled(gui.get_node("box1"), false)
+			gui.set_enabled(gui.get_node("box2"), false)
+		end)
 	end
 end
 
@@ -152,11 +175,12 @@ end
 
 function set_gui(exclude)
 	local a, b, record, start_val
+	if score == nil then score = 0 end
 
 	if exclude == nil then start_val = 1 else start_val = exclude end
 	for a = start_val, 5 do
 		for b = 1, 4 do
-			if b == 2 and score > table[a][b] and record == nil then
+			if b == 2 and score > table[a][b] and record == nil and post_game == true then
 				record = a
 			end
 			gui.set_text(gui.get_node(fields[b]..a), table[a][b])

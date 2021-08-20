@@ -1,6 +1,6 @@
 emoji_in_atlas    = 94
 blood_in_atlas    = 9
-level_bg_in_atlas = 30
+level_bg_in_atlas = 32
 
 
 menu_options_visible = false
@@ -13,7 +13,7 @@ pause_id   = nil
 
 
 function init(self)
-	msg.post(".", "acquire_input_focus")
+	msg.post("#", "acquire_input_focus")
 	math.randomseed(socket.gettime() * 1000)
 
 	defos.set_cursor_clipped(true)
@@ -76,11 +76,6 @@ function on_message(self, message_id, message, sender)
 
 	elseif message_id == hash("proxy_unloaded") then
 		pprint(tostring(sender).." UNLOADED")
-
-
-	-- elseif message_id == hash("start_title") then
-	-- 	msg.post("#title_proxy", "async_load")
-
 
 
 	elseif message_id == hash("start_game") then

@@ -1,0 +1,23 @@
+function init(self)
+	timer.delay(0.04, false, function () go.delete() end)
+end
+
+
+
+
+function update(self, dt)
+	if weapon_collide == true then
+		msg.post("#pistol", "enable")
+	else
+		msg.post("#pistol", "disable")
+	end
+end
+
+
+
+
+-- function on_message(self, message_id, message, sender)
+-- 	if message_id == hash("stop_colision") then
+-- 		msg.post("#collision", "disable")
+-- 	end
+-- end

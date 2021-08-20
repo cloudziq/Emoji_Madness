@@ -11,7 +11,7 @@ local title_music_delay
 
 
 --local variables:
-local text_dziq_pos, text_dziq_rot, dziq_image_pos, dziq_image_rot, presents_pos
+local text_dziq_pos, text_dziq_rot, dziq_image_pos, dziq_image_rot, presents_pos, start_allow, new_game_pos, hall_of_fame_pos
 
 --local functions:
 local title_prepare, intro, post_intro, fade_gui
@@ -32,7 +32,7 @@ function init(self)
 		end
 	else
 		msg.post("#", "disable")
-		msg.post("title:/main#hall_of_fame", "show")
+		msg.post("title:/hall#hall_of_fame", "show")
 	end
 end
 
@@ -78,9 +78,20 @@ function on_input(self, action_id, action)
 				right_click_timeout = socket.gettime() + 4
 			end
 
-		elseif action_id == hash("click1") and gui.pick_node(gui.get_node("START"), action.x, action.y) and start_allow == true then
-			start_allow = false
-			msg.post("/main#ctrl", "menu_end")
+
+		elseif action_id == hash("click1") then
+			if start_allow == true then
+
+				if gui.pick_node(gui.get_node("NEW_GAME"), action.x, action.y) and action.pressed then
+					msg.post("/main#ctrl", "menu_end")
+					start_allow = false
+				end
+
+				if gui.pick_node(gui.get_node("HALL_OF_FAME"), action.x, action.y) and action.pressed then
+					msg.post("/hall#hall_of_fame", "show")
+					msg.post(".", "release_input_focus")
+				end
+			end
 		end
 	end
 end
@@ -125,11 +136,15 @@ function title_prepare()
 	dziq_image_pos = gui.get_position(gui.get_node("dziq"))
 	dziq_image_rot = gui.get_rotation(gui.get_node("dziq"))
 	presents_pos = gui.get_position(gui.get_node("text_presents"))
+	new_game_pos = gui.get_position(gui.get_node("NEW_GAME"))
+	hall_of_fame_pos = gui.get_position(gui.get_node("HALL_OF_FAME"))
 
 	gui.set_position(gui.get_node("dziq"), vmath.vector3(1600, 115, 0))
 	gui.set_position(gui.get_node("text_dziq"), vmath.vector3(-1000, 400, 0))
 	gui.set_position(gui.get_node("text_presents"), vmath.vector3(2000, 900, 0))
 	gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
+	gui.set_position(gui.get_node("NEW_GAME"), vmath.vector3(new_game_pos.x, new_game_pos.y - 400, 1))
+	gui.set_position(gui.get_node("HALL_OF_FAME"), vmath.vector3(hall_of_fame_pos.x, hall_of_fame_pos.y - 400, 1))
 
 	for a = 1,8 do
 		letter_pos[a] = gui.get_position(gui.get_node(a))
@@ -231,7 +246,7 @@ function post_intro()
 		end
 	end)
 
-	gui.animate(gui.get_node("START"), "position.y", 200, gui.EASING_OUTELASTIC, 1.1, 3.5, function()
+	gui.animate(gui.get_node("NEW_GAME"), "position.y", new_game_pos.y, gui.EASING_OUTELASTIC, 1.1, 3.5, function()
 		start_allow = true
 		allow_title_clicks = true
 		sound.play("#menu_start_button", {delay = 0, gain = .44, pan = 0})
@@ -241,6 +256,7 @@ function post_intro()
 		gui.set_color(node, vmath.vector4(0,0,0,0))
 		gui.animate(node, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 2, .22)
 	end)
+	gui.animate(gui.get_node("HALL_OF_FAME"), "position.y", hall_of_fame_pos.y, gui.EASING_OUTELASTIC, 1.2, 4)
 
 	gui.animate(gui.get_node("stars"), "color", vmath.vector4(.1, .14, .18, 0.1), gui.EASING_LINEAR, 8, 1.2)
 
@@ -288,8 +304,11 @@ function fade_gui()
 		gui.animate(node, "position", vmath.vector3(pos_x, pos_y, 1), gui.EASING_INEXPO, 3)
 	end
 
-	node = gui.get_node("START")
+	node = gui.get_node("NEW_GAME")
 	gui.animate(node, "position.y", gui.get_position(node).y - 400, gui.EASING_INCIRC, 3)
+
+	node = gui.get_node("HALL_OF_FAME")
+	gui.animate(node, "position.y", gui.get_position(node).y - 400, gui.EASING_INCIRC, 3, .5)
 
 	node = gui.get_node("version_number")
 	gui.animate(node, "position.y", gui.get_position(node).y - 40, gui.EASING_INCIRC, 2)
