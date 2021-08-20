@@ -5,14 +5,14 @@ score  = 0
 health = 5
 --bullet = 20
 emojis = 10
-speed  = 0   -- (speed emojis - this value as percentage)
+speed  = 0   -- (speed.self - this value as percentage)
 wait   = 0   --  forward declaration
 
 -- adds for level completion:
 emojis_add     = 2
-speed_add      = 3.2
-health_add     = 3
-health_perfect = 2
+speed_add      = 2.8
+health_add     = 2
+health_perfect = 1
 --bullet_add = 1
 
 --summary var:
@@ -58,8 +58,8 @@ function update(self, dt)
 			level = level + 1
 			health = health + health_add
 			emojis = emojis + emojis_add
-			speed = speed + speed_add
-			wait = wait - speed / 100
+			speed = speed + speed_add - (level / 8)
+			wait = wait - (speed / 100) + (level / 8)
 
 			msg.post("game:/main#game_gui", "hide")
 			msg.post("game:/main#level_complete", "show", {killed = killed, escaped = escaped})

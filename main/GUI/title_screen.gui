@@ -1571,17 +1571,17 @@ adjust_reference: ADJUST_REFERENCE_PARENT
 max_nodes: 512
 particlefxs {
   name: "main_menu1"
-  particlefx: "/main/emitters/main_menu1.particlefx"
+  particlefx: "/main/particles/main_menu1.particlefx"
 }
 particlefxs {
   name: "main_menu2"
-  particlefx: "/main/emitters/main_menu2.particlefx"
+  particlefx: "/main/particles/main_menu2.particlefx"
 }
 particlefxs {
   name: "main_menu3"
-  particlefx: "/main/emitters/main_menu3.particlefx"
+  particlefx: "/main/particles/main_menu3.particlefx"
 }
 particlefxs {
   name: "main_menu_center"
-  particlefx: "/main/emitters/main_menu_center.particlefx"
+  particlefx: "/main/particles/main_menu_center.particlefx"
 }

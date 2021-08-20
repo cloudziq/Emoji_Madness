@@ -44,3 +44,6 @@ max_debug_vertices = 30000
 [input]
 repeat_interval = 0.1
 
+[particle_fx]
+max_count = 128
+

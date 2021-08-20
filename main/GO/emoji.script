@@ -14,13 +14,13 @@ local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
 
 function init(self)
 	self.active         = true
-	self.delay          = rnd.range(2, (emojis / 3) - (level / 5))
+	self.delay          = rnd.range(2, (emojis / 2) - (level / 4))
 	self.wait_timeout   = 0
 	self.waiting        = false
 	self.going_away     = false
 	self.need_pos_check = false
 
-	msg.post("#sprite", "play_animation", { id = hash("e"..rnd.range(1, emoji_in_atlas)) })
+	msg.post("#sprite", "play_animation", {id = hash("e"..rnd.range(1, emoji_in_atlas))})
 
 	-- movement for main menu
 	if main_menu_visible == true then
@@ -32,6 +32,7 @@ function init(self)
 		get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 	else
 		self.emoji_id = msg.url(nil, go.get_id(), "collide_emoji")
+		self.particle_id = msg.url(nil, go.get_id(), "particle")
 		sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
 		get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, self.delay)
 	end
@@ -103,12 +104,13 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 
 		radius = rnd.range(40, 120)
 		--time = self.speed + rnd.range(-(speed/3), speed/3)
-		time = self.speed - (self.speed * speed / 100)
 
 		if self.going_away == false then
+			time = self.speed - (self.speed * (speed / 100))
 			pos_x = rnd.range(80 + 50, window_w - 80 - 50)
 			pos_y = rnd.range(40 + 50, window_h - 120 - 50)
 		else
+			time = (self.speed - (self.speed * (speed / 100))) * 2
 			pos_x, pos_y = get_offscreen_pos(100, true, go.get_position())
 		end
 		sprite_flip(pos_x)
@@ -138,12 +140,14 @@ end
 function emoji_waiting(self)
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + math.random(-(level / 10), level / 4) + socket.gettime()
+			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + socket.gettime()
 			--self.wait_timeout = socket.gettime() + wait
 		end
 
 		self.waiting = true
-		
+		particlefx.play(self.particle_id)
+		particlefx.set_constant(self.particle_id, "emitter", "tint", vmath.vector4(.62, .68, .8, .64))
+
 		if socket.gettime() >= self.wait_timeout and self.going_away == false then
 			self.waiting = false
 			self.going_away = true
@@ -152,6 +156,8 @@ function emoji_waiting(self)
 				msg.post(self.emoji_id, "disable")
 				sound.play("/main#emoji_going_away", {speed = math.random(80, 120) / 100})
 				get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, .1)
+
+				timer.delay(.4, false, function() particlefx.stop(self.particle_id) end)
 			end)
 		else
 			local pos = go.get_position()
@@ -177,7 +183,7 @@ end
 
 function on_message(self, message_id, message, sender)
 	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc
-	local blood_scale = {20, 15, 65, 45}
+	local blood_scale = {20, 15, 60, 45}
 
 
 	-- for main menu
@@ -209,11 +215,12 @@ function on_message(self, message_id, message, sender)
 			emojis_left = emojis_left - 1 ; killed = killed + 1
 			score_calc = self.score
 			if self.waiting == false and self.going_away == false then score_calc = score_calc * 3 end
-			if self.going_away == true then score_calc = score_calc * 2 end
+			if self.waiting == true then score_calc = score_calc * 2 end
 			score = score + score_calc
 
 			msg.post("/main#game_gui", "display_update")
 			sound.play("/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
+			particlefx.stop(self.particle_id)
 
 			self.active = false
 			msg.post(self.emoji_id, "disable")
@@ -225,7 +232,7 @@ function on_message(self, message_id, message, sender)
 			go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)))
 
 			for a = 1, 4 do
-				-- blood 1 and 2 under sprite
+				-- blood 1 and 2 is under sprite
 				-- blood 4 is under cursor
 				if a <= 2 then z = .4 else z = .9 end
 				if a == 4 then

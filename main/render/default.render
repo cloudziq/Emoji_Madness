@@ -1,1 +1,5 @@
 script: "/main/render/default.render_script"
+materials {
+  name: "emoji_particles"
+  material: "/main/render/materials/particlefx.material"
+}

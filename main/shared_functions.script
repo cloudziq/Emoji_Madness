@@ -1,5 +1,6 @@
-function get_offscreen_pos(offset, oposite, pos)
+function get_offscreen_pos(offset, oposite, pos, spread)
 	local a, x, y
+	if spread == nil then spread = 0 end
 
 	if oposite == true then
 		if pos.x <= window_w / 2 then
@@ -15,19 +16,20 @@ function get_offscreen_pos(offset, oposite, pos)
 		end
 	else
 		a = rnd.range(1,4)
+		--b = math.random(1) ; if b == 0 then spread = def_spread else spread = -def_spread
 
 		if a == 1 then
-			x = -offset
+			x = -offset + math.random(-spread, spread)
 			y = math.random(-offset, window_h + offset)
 		elseif a == 2 then
-			x = window_w + offset
+			x = window_w + offset + math.random(-spread, spread)
 			y = math.random(-offset, window_h + offset)
 		elseif a == 3 then
 			x = math.random(-offset, window_w + offset)
-			y = -offset
+			y = -offset + math.random(-spread, spread)
 		elseif a == 4 then
 			x = math.random(-offset, window_w + offset)
-			y = window_h + offset
+			y = window_h + offset + math.random(-spread, spread)
 		end
 	end
 
@@ -43,7 +45,7 @@ function generate_emojis(num, url)
 	emoji_table = {}
 
 	for a = 1, num do
-		pos_x, pos_y = get_offscreen_pos(200)
+		pos_x, pos_y = get_offscreen_pos(200, false, nil, 100)
 		id = factory.create(url, vmath.vector3(pos_x, pos_y, 1), nil)
 		table.insert(emoji_table, id)
 	end
