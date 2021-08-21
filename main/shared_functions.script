@@ -16,7 +16,6 @@ function get_offscreen_pos(offset, oposite, pos, spread)
 		end
 	else
 		a = rnd.range(1,4)
-		--b = math.random(1) ; if b == 0 then spread = def_spread else spread = -def_spread
 
 		if a == 1 then
 			x = -offset + math.random(-spread, spread)
@@ -49,7 +48,7 @@ function generate_emojis(num, url)
 		id = factory.create(url, vmath.vector3(pos_x, pos_y, 1), nil)
 		table.insert(emoji_table, id)
 	end
-	emoji_go_id = id  -- reqiured for clean_emojis table
+	emoji_go_id = id  -- required for clean_emojis table
 end
 
 
@@ -136,11 +135,11 @@ local function set_default_records()
 	local table = {}
 
 	--         name:          points:  level:  kills:  
-	table[1] = {"dziq",        12,   45,     800}
-	table[2] = {"natzab",      10,   35,     600}
-	table[3] = {"jopsy",        5,   25,     400}
-	table[4] = {"hidan",        3,   15,     200}
-	table[5] = {"douuuuumb",    1,   5,       50}
+	table[1] = {"dziq",        250,   0,      0}
+	table[2] = {"natzab",      100,   0,      0}
+	table[3] = {"jopsy",        50,   0,      0}
+	table[4] = {"hidan",        20,   0,      0}
+	table[5] = {"douuuuumb",    10,   0,      0}
 
 	return table
 end

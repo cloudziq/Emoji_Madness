@@ -123,10 +123,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 					emoji_waiting(self)
 				else
 					if health > 0 then
-						sound.play("/main#energy_loss", {speed = math.random(80, 120) / 100})
+						sound.play("game_layer1:/main#energy_loss", {speed = math.random(80, 120) / 100})
 						emojis_left = emojis_left - 1 ; escaped = escaped + 1
 						health = health - 1
-						msg.post("/main#game_gui", "display_update", {stat = "emoji_left"})
+						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "emoji_left"})
 					end
 				end
 			end)
@@ -154,10 +154,10 @@ function emoji_waiting(self)
 
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, 1.25, 0, function()
 				msg.post(self.emoji_id, "disable")
-				sound.play("/main#emoji_going_away", {speed = math.random(80, 120) / 100})
+				sound.play("game_layer1:/main#emoji_going_away", {speed = math.random(80, 120) / 100})
 				get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, .1)
 
-				timer.delay(.4, false, function() particlefx.stop(self.particle_id) end)
+				--timer.delay(.4, false, function() particlefx.stop(self.particle_id) end)
 			end)
 		else
 			local pos = go.get_position()
@@ -218,8 +218,8 @@ function on_message(self, message_id, message, sender)
 			if self.waiting == true then score_calc = score_calc * 2 end
 			score = score + score_calc
 
-			msg.post("/main#game_gui", "display_update")
-			sound.play("/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
+			msg.post("game_layer2:/main#game_gui", "display_update")
+			sound.play("game_layer1:/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
 			particlefx.stop(self.particle_id)
 
 			self.active = false
@@ -243,10 +243,11 @@ function on_message(self, message_id, message, sender)
 					pos_y = pos.y + math.random(-8, 8)
 				end
 
-				id = factory.create("/main#blood_factory", vmath.vector3(pos_x, pos_y, z), nil, nil,
-				rnd.range(blood_scale[a] - blood_scale[a] / 3 , blood_scale[a] + blood_scale[a] / 3) / 100)
-				table.insert(blood_table, id) ; blood_script_id = id
-				if a <= 2 then msg.post(id, "animate_blood_scale") end
+				msg.post("game_layer2:/main#ctrl", "spawn_blood", {a = a, x = pos_x, y = pos_y, z = z, scale = blood_scale[a]})
+				-- id = factory.create("game_layer2:/main#blood_factory", vmath.vector3(pos_x, pos_y, z), nil, nil,
+				-- rnd.range(blood_scale[a] - blood_scale[a] / 3 , blood_scale[a] + blood_scale[a] / 3) / 100)
+				-- table.insert(blood_table, id) ; blood_script_id = id
+				-- if a <= 2 then msg.post(blood_go_id, "animate_blood_scale") end
 			end
 
 
@@ -257,7 +258,7 @@ function on_message(self, message_id, message, sender)
 			time = rnd.range(12, 20) / 10
 			time = time + (time * speed / 100)
 
-			sound.play("/main#emoji_collide", {speed = math.random (12, 18) / 10})
+			sound.play("game_layer1:/main#emoji_collide", {speed = math.random (12, 18) / 10})
 			go.set_position(go.get_position() + message.normal * message.distance)
 			pos = go.get_position() + (message.normal * force) * (message.distance * distance)
 			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, time, 0, function()

@@ -38,9 +38,11 @@ end
 
 
 
+
 function on_message(self, message_id, message, sender)
 	if message_id == hash("post_game_show") then
-		msg.post("main:/main#game_proxy", "unload")
+		msg.post("main:/main#game_proxy1", "unload")
+		msg.post("main:/main#game_proxy2", "unload")
 		msg.post("#", "enable")
 		msg.post("#", "acquire_input_focus")
 		title_prepare()

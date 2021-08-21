@@ -12,12 +12,3 @@ function update(self, dt)
 		msg.post("#pistol", "disable")
 	end
 end
-
-
-
-
--- function on_message(self, message_id, message, sender)
--- 	if message_id == hash("stop_colision") then
--- 		msg.post("#collision", "disable")
--- 	end
--- end

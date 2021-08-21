@@ -34,22 +34,22 @@ function on_message(self, message_id, message)
 		gui.set_text(gui.get_node("escaped_count"), message.escaped)
 
 		gui.animate(gui.get_node("killed"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function ()
-			sound.play("/main#win_count")
+			sound.play("game_layer1:/main#win_count")
 			gui.animate(gui.get_node("killed_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1)
 		end)
 
 		gui.animate(gui.get_node("escaped"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 1.2, function ()
-			sound.play("/main#win_count", {speed = .5})
+			sound.play("game_layer1:/main#win_count", {speed = .5})
 			gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function ()
 				if message.escaped == 0 then
 					health = health + health_perfect
-					sound.play("/main#perfect_win", {speed = .8})
+					sound.play("game_layer1:/main#perfect_win", {speed = .8})
 					gui.set_text(gui.get_node("bonus_text"), "BONUS!   +"..health_perfect)
 					gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(1,1,1), gui.EASING_INOUTELASTIC, .6, 0, function() 
 						gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_INOUTELASTIC, .6)
 					end)
 					timer.delay(.8, false, function ()
-						sound.play("/main#health_bonus", {speed = 1.4})
+						sound.play("game_layer1:/main#health_bonus", {speed = 1.4})
 						gui.animate(gui.get_node("bonus_text"), "scale", vmath.vector3(.32, .32, 1), gui.EASING_OUTELASTIC, .6)
 						gui.set_enabled(gui.get_node("box1"), true)
 					end)
@@ -78,11 +78,11 @@ function on_message(self, message_id, message)
 		gui.animate(gui.get_node("WIN"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1.2)
 		gui.animate(gui.get_node("BG"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.1)
 
-		timer.delay(.4, false, function () msg.post("/main#game_gui", "show_level_intro") end)
+		timer.delay(.4, false, function() msg.post("/main#game_gui", "show_level_intro") end)
 		gui.set_enabled(gui.get_node("crosshair"), false)
-		msg.post(emoji_go_id, "clean_emojis")
-		if #blood_table > 0 then msg.post(blood_script_id, "clean_blood") end
-		timer.delay(4, false, function ()
+		msg.post("game_layer1:/main#ctrl", "clean_emojis")
+		if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end
+		timer.delay(4, false, function()
 			gui.reset_nodes() ; msg.post("#", "disable")
 		end)
 	end

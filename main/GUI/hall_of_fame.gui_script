@@ -75,7 +75,7 @@ function on_message(self, message_id, message, sender)
 			record_node_pos = gui.get_position(node)
 			gui.set_position(node, vmath.vector3(record_node_pos.x, window_h + 200, 1))
 			gui.animate(node, "position.y", record_node_pos, gui.EASING_OUTQUART, 1.2, 0, function()
-				sound.play("game:/main#perfect_win", {speed = 0.4})
+				sound.play("game_layer1:/main#perfect_win", {speed = 0.4})
 				gui.animate(node, "scale", 1.25, gui.EASING_OUTQUART, .4, 0, function()
 					gui.animate(node, "scale", 1, gui.EASING_OUTQUART, .4, .8, function()
 						gui.animate(node, "position.y", -200, gui.EASING_OUTQUART, 1.2)
@@ -148,7 +148,7 @@ function on_input(self, action_id, action)
 			if post_game == true then
 				if info_node ~= nil then
 					if #text == 0 then
-						sound.play("game:/main#emoji_going_away", {speed = 1.4})
+						sound.play("game_layer1:/main#emoji_going_away", {speed = 1.4})
 						gui.animate(info_node, "scale", .52, gui.EASING_INELASTIC, .2, 0, function ()
 							gui.animate(info_node, "scale", .4, gui.EASING_INELASTIC, .2, 0.1)
 						end)

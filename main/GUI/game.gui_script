@@ -30,7 +30,7 @@ function on_message(self, message_id, message, sender)
 			gui.set_position(gui.get_node("start_info"), vmath.vector3(window_w /2 , -100, 1))
 			gui.animate(gui.get_node("start_info"), "position.y", pos_start.y, gui.EASING_OUTCIRC, .6, 1, function ()
 				allow_start_level = true
-				sound.play("/main#level_loop", {gain = 0.6})
+				sound.play("game_layer1:/main#level_loop", {gain = 0.6})
 			end)
 
 		-- next iterations (for each new level)
