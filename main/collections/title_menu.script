@@ -5,9 +5,17 @@ function on_message(self, message_id, message, sender)
 		allow_title_clicks = false      -- disable right click objects
 
 		msg.post("/main#title_screen", "hide_gui")
-		go.animate("/main#title_music", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 2.6)
+		go.animate("#title_music", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 2.6)
 
 		-- send message to main loader to start game_proxy
 		msg.post("main:/main#ctrl", "start_game")
+
+
+
+
+	elseif message_id == hash("start_menu_music") then
+		sound.play("#title_music", {delay = message.delay})
+		sound.set_gain("#title_music", 0)
+		go.animate("#title_music", "gain", go.PLAYBACK_ONCE_FORWARD, .72, go.EASING_LINEAR, 2, message.delay)
 	end
 end

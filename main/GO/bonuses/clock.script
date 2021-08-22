@@ -1,41 +1,108 @@
+--local functions:
+local speed_change
+
+--local variables:
+local proxy_speed_changing, clock_bonus_timeout
+
+
+
+
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	local x1,y1, x2,y2, x3,y3
+	local radius = 222
+	local time = math.random(2, 4)
+	local easing1, easing2 = go.EASING_INSINE, go.EASING_OUTINSINE
+
+	self.active = true
+
+	x1, y1 = get_offscreen_pos(200)
+	x2 = rnd.range(80 + 50, window_w - 80 - 50)
+	y2 = rnd.range(80 + 50, window_h - 120 - 50)
+	x3, y3 = get_offscreen_pos(200, true, {x = x2, y = y2})
+
+	go.set_position(vmath.vector3(x1,y1,1))
+	--sound.play("/bonus#clock")
+
+	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, y2, easing1, time)
+	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x2 - radius, easing2, time * 0.5, 0, function()
+		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x2, easing2, time * 0.5, 0, function()
+			go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, y3, easing1, time, 1)
+			go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x3 - radius, easing2, time * 0.5, 1, function()
+				go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x3, easing2, time * 0.5, 0, function()
+					go.delete()
+					bonus_clock_visible = false
+				end)
+			end)
+		end)
+	end)
 end
 
-function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
-end
+
+
 
 function update(self, dt)
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	if bonus_clock_active == true and proxy_speed_changing == false then
+		if socket.gettime() > clock_bonus_timeout then
+			bonus_clock_active = false
+			proxy_speed_changing = true
+			speed_change(1)
+		end
+	end
 end
+
+
+
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
+	if message_id == hash("collision_response") then
+		if message.group == hash("weapon") and bonus_clock_active == false and self.active == true then
+			go.cancel_animations(".", "position")
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 2.5, go.EASING_OUTSINE, 2)
+			go.animate(msg.url(nil, go.get_id(), "sprite"), "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTSINE, 2)
+
+			particlefx.play("#bonus_collect")
+			sound.play("/main#health_bonus")
+
+			self.active = false
+			--player_bonus_item = "clock"
+			proxy_speed_changing = true
+			bonus_clock_active = true
+			proxy_speed = 1 ; speed_change(-1)
+		end
+
+
+	elseif message_id == hash("delete") then
+		proxy_speed = 1
+		go.delete()
+		msg.post("main:/main#game_proxy1", "set_time_step", {factor = 1 , mode = 1})
+	end
 end
 
-function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
-end
 
-function on_reload(self)
-	-- Add reload-handling code here
-	-- Learn more: https://defold.com/manuals/hot-reload/
-	-- Remove this function if not needed
+
+
+function speed_change(dir)
+	local min, max, speed, delay = .25, 1, .05, .1
+	if dir < 0 then
+		if proxy_speed > min then
+			proxy_speed = proxy_speed - speed
+		else
+			clock_bonus_timeout = socket.gettime() + 10
+			proxy_speed_changing = false
+		end
+	else
+		if proxy_speed < max then
+			proxy_speed = proxy_speed + speed
+		else
+			proxy_speed_changing = false
+			go.delete()
+		end
+	end
+
+	msg.post("main:/main#game_proxy1", "set_time_step", {factor = proxy_speed , mode = 0})
+	pprint(proxy_speed)
+
+	if proxy_speed_changing == true then
+		timer.delay(delay, false, function() speed_change(dir) end)
+	end
 end

@@ -1,32 +1,38 @@
 function get_offscreen_pos(offset, oposite, pos, spread)
-	local a, x, y
+	local a, x, y, method
 	if spread == nil then spread = 0 end
 
 	if oposite == true then
-		if pos.x <= window_w / 2 then
-			x = window_w + offset
-		else
-			x = -offset
-		end
+		method = math.random(1, 2)
 
-		if pos.y <= window_h / 2 then
-			y = window_h + offset - 44  --compensate for display_bar
+		if method == 1 then
+			if pos.x <= window_w / 2 then
+				x = window_w + offset
+			else
+				x = -offset
+			end
+			y = math.random(-offset, window_h + offset)
 		else
-			y = -offset
+			if pos.y <= window_h / 2 then
+				y = window_h + offset - 44  --compensate for display_bar
+			else
+				y = -offset
+			end
+			x = math.random(-offset, window_w + offset)
 		end
 	else
 		a = rnd.range(1,4)
 
-		if a == 1 then
+		if a == 1 then     -- left
 			x = -offset + math.random(-spread, spread)
 			y = math.random(-offset, window_h + offset)
-		elseif a == 2 then
+		elseif a == 2 then -- right
 			x = window_w + offset + math.random(-spread, spread)
 			y = math.random(-offset, window_h + offset)
-		elseif a == 3 then
+		elseif a == 3 then -- down
 			x = math.random(-offset, window_w + offset)
 			y = -offset + math.random(-spread, spread)
-		elseif a == 4 then
+		elseif a == 4 then -- up
 			x = math.random(-offset, window_w + offset)
 			y = window_h + offset + math.random(-spread, spread)
 		end
@@ -91,7 +97,11 @@ function pause(proxy)
 			sound.play("main:/main#pause_sfx")
 			defos.set_cursor_clipped(true)
 			defos.set_cursor_visible(false)
-			msg.post(proxy, "set_time_step", {factor = 1 , mode = 1})
+			if proxy_speed == 1 then
+				msg.post(proxy, "set_time_step", {factor = 1 , mode = 1})
+			else
+				msg.post(proxy, "set_time_step", {factor = proxy_speed , mode = 1})
+			end
 			msg.post("main:/main#pause", "hide")
 			pause_id = nil
 		end
@@ -118,31 +128,21 @@ function load_config()
 end
 
 
--- local function set_default_records()
--- 	local table = {}
--- 
--- 	--         name:          points:  level:  kills:  
--- 	table[1] = {"dziq",        4000,   45,     800}
--- 	table[2] = {"natzab",      3000,   35,     600}
--- 	table[3] = {"jopsy",       2000,   25,     400}
--- 	table[4] = {"hidan",       1500,   15,     200}
--- 	table[5] = {"douuumb",       10,    1,       4}
--- 
--- 	return table
--- end
+
 
 local function set_default_records()
 	local table = {}
 
-	--         name:          points:  level:  kills:  
-	table[1] = {"dziq",        250,   0,      0}
-	table[2] = {"natzab",      100,   0,      0}
-	table[3] = {"jopsy",        50,   0,      0}
-	table[4] = {"hidan",        20,   0,      0}
-	table[5] = {"douuuuumb",    10,   0,      0}
+	--         name:               points:  level:  kills:  
+	table[1] = {"----------",      0,       0,      0}
+	table[2] = {"----------",      0,       0,      0}
+	table[3] = {"----------",      0,       0,      0}
+	table[4] = {"----------",      0,       0,      0}
+	table[5] = {"----------",      0,       0,      0}
 
 	return table
 end
+
 
 function load_records()
 	local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")

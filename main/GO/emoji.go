@@ -15,7 +15,7 @@ components {
 }
 components {
   id: "particle"
-  component: "/main/particles/pistol.particlefx"
+  component: "/main/particles/emoji.particlefx"
   position {
     x: 0.0
     y: 0.0

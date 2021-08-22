@@ -1,4 +1,5 @@
 function on_message(self, message_id, message)
+
 	if message_id == hash("generate_emojis") then
 		generate_emojis(emojis, "#emoji_factory")
 
@@ -13,10 +14,21 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("bonus_clock") then
-		factory.create("bonus#clock_factory", vmath.vector3(640, 680, 1))
+		clock_go_id = factory.create("bonus#spawner")
+
+
+	elseif message_id == hash("delete_active_clock") then
+		pprint(clock_go_id)
+		msg.post(clock_go_id, "delete")
 
 
 	elseif message_id == hash("fade_music") then
 		go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4)
+
+
+	elseif message_id == hash("play_hall_music") then
+		sound.play("#hall_music")
+		sound.set_gain("#hall_music", 0)
+		go.animate("#hall_music", "gain", go.PLAYBACK_ONCE_FORWARD, .72, go.EASING_LINEAR, 2)
 	end
 end

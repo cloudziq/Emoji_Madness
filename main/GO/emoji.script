@@ -1,5 +1,5 @@
 go.property("speed", 8)
-go.property("wait",  6)
+go.property("wait",  4)
 go.property("score", 1)
 
 
@@ -108,7 +108,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 		if self.going_away == false then
 			time = self.speed - (self.speed * (speed / 100))
 			pos_x = rnd.range(80 + 50, window_w - 80 - 50)
-			pos_y = rnd.range(40 + 50, window_h - 120 - 50)
+			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 		else
 			time = (self.speed - (self.speed * (speed / 100))) * 2
 			pos_x, pos_y = get_offscreen_pos(100, true, go.get_position())
@@ -126,6 +126,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 						sound.play("game_layer1:/main#energy_loss", {speed = math.random(80, 120) / 100})
 						emojis_left = emojis_left - 1 ; escaped = escaped + 1
 						health = health - 1
+						particlefx.stop(self.particle_id)
 						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "emoji_left"})
 					end
 				end
@@ -146,18 +147,17 @@ function emoji_waiting(self)
 
 		self.waiting = true
 		particlefx.play(self.particle_id)
-		particlefx.set_constant(self.particle_id, "emitter", "tint", vmath.vector4(.62, .68, .8, .64))
+		particlefx.set_constant(self.particle_id, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
 
 		if socket.gettime() >= self.wait_timeout and self.going_away == false then
 			self.waiting = false
 			self.going_away = true
+			particlefx.set_constant(self.particle_id, "emitter", "tint", vmath.vector4(1, .6, .2, .64))
 
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, 1.25, 0, function()
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, 1, 0, function()
 				msg.post(self.emoji_id, "disable")
 				sound.play("game_layer1:/main#emoji_going_away", {speed = math.random(80, 120) / 100})
 				get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, .1)
-
-				--timer.delay(.4, false, function() particlefx.stop(self.particle_id) end)
 			end)
 		else
 			local pos = go.get_position()
@@ -244,10 +244,6 @@ function on_message(self, message_id, message, sender)
 				end
 
 				msg.post("game_layer2:/main#ctrl", "spawn_blood", {a = a, x = pos_x, y = pos_y, z = z, scale = blood_scale[a]})
-				-- id = factory.create("game_layer2:/main#blood_factory", vmath.vector3(pos_x, pos_y, z), nil, nil,
-				-- rnd.range(blood_scale[a] - blood_scale[a] / 3 , blood_scale[a] + blood_scale[a] / 3) / 100)
-				-- table.insert(blood_table, id) ; blood_script_id = id
-				-- if a <= 2 then msg.post(blood_go_id, "animate_blood_scale") end
 			end
 
 

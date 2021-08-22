@@ -8,7 +8,9 @@ end
 function update(self, dt)
 	if weapon_collide == true then
 		msg.post("#pistol", "enable")
+		msg.post("#collide_clock", "enable")
 	else
 		msg.post("#pistol", "disable")
+		msg.post("#collide_clock", "disable")
 	end
 end

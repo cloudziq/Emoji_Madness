@@ -59,6 +59,8 @@ function on_message(self, message_id, message)
 				end)
 			end)
 		end)
+
+		--weapon_collide = false
 		msg.post("#", "enable")
 		--gui.set_enabled(gui.get_node("WIN"), true)
 

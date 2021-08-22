@@ -320,7 +320,7 @@ nodes {
 }
 nodes {
   position {
-    x: 208.227
+    x: 200.631
     y: 0.0
     z: 0.0
     w: 1.0
@@ -383,7 +383,7 @@ nodes {
 }
 nodes {
   position {
-    x: 67.089
+    x: 63.924
     y: 0.0
     z: 0.0
     w: 1.0
@@ -446,7 +446,7 @@ nodes {
 }
 nodes {
   position {
-    x: 274.685
+    x: 267.09
     y: 0.0
     z: 0.0
     w: 1.0
@@ -533,7 +533,7 @@ nodes {
     w: 1.0
   }
   color {
-    x: 1.0
+    x: 0.8
     y: 1.0
     z: 1.0
     w: 1.0
@@ -776,7 +776,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "RZGRZ_DUMB"
   font: "Vellyc"
   id: "name1"
   xanchor: XANCHOR_NONE
@@ -808,7 +808,7 @@ nodes {
 }
 nodes {
   position {
-    x: 35.443
+    x: 32.278
     y: 0.0
     z: 0.0
     w: 1.0
@@ -839,7 +839,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "XXXX"
+  text: "2222"
   font: "Vellyc"
   id: "score1"
   xanchor: XANCHOR_NONE
@@ -871,7 +871,7 @@ nodes {
 }
 nodes {
   position {
-    x: 177.848
+    x: 170.252
     y: 0.0
     z: 0.0
     w: 1.0
@@ -934,7 +934,7 @@ nodes {
 }
 nodes {
   position {
-    x: 273.418
+    x: 265.823
     y: 0.0
     z: 0.0
     w: 1.0
@@ -965,7 +965,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "XXX"
+  text: "6942"
   font: "Vellyc"
   id: "kills1"
   xanchor: XANCHOR_NONE
@@ -1021,7 +1021,7 @@ nodes {
     w: 1.0
   }
   color {
-    x: 1.0
+    x: 0.8
     y: 1.0
     z: 1.0
     w: 1.0
@@ -1297,7 +1297,7 @@ nodes {
 }
 nodes {
   position {
-    x: 35.443
+    x: 32.278
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1328,7 +1328,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "XXXX"
+  text: "98422"
   font: "Vellyc"
   id: "score2"
   xanchor: XANCHOR_NONE
@@ -1360,7 +1360,7 @@ nodes {
 }
 nodes {
   position {
-    x: 177.848
+    x: 170.252
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1391,7 +1391,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "XX"
+  text: "442"
   font: "Vellyc"
   id: "level2"
   xanchor: XANCHOR_NONE
@@ -1423,7 +1423,7 @@ nodes {
 }
 nodes {
   position {
-    x: 273.418
+    x: 265.823
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1454,7 +1454,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "XXX"
+  text: "4242"
   font: "Vellyc"
   id: "kills2"
   xanchor: XANCHOR_NONE
@@ -1510,7 +1510,7 @@ nodes {
     w: 1.0
   }
   color {
-    x: 1.0
+    x: 0.8
     y: 1.0
     z: 1.0
     w: 1.0
@@ -1753,7 +1753,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "AZKON_FAJA"
   font: "Vellyc"
   id: "name3"
   xanchor: XANCHOR_NONE
@@ -1785,7 +1785,7 @@ nodes {
 }
 nodes {
   position {
-    x: 35.443
+    x: 32.278
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1848,7 +1848,7 @@ nodes {
 }
 nodes {
   position {
-    x: 177.848
+    x: 170.252
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1911,7 +1911,7 @@ nodes {
 }
 nodes {
   position {
-    x: 273.418
+    x: 265.823
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1998,7 +1998,7 @@ nodes {
     w: 1.0
   }
   color {
-    x: 1.0
+    x: 0.8
     y: 1.0
     z: 1.0
     w: 1.0
@@ -2241,7 +2241,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "Q009_KUTAS"
   font: "Vellyc"
   id: "name4"
   xanchor: XANCHOR_NONE
@@ -2273,7 +2273,7 @@ nodes {
 }
 nodes {
   position {
-    x: 35.443
+    x: 32.278
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2336,7 +2336,7 @@ nodes {
 }
 nodes {
   position {
-    x: 177.848
+    x: 170.252
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2399,7 +2399,7 @@ nodes {
 }
 nodes {
   position {
-    x: 273.418
+    x: 265.823
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2486,7 +2486,7 @@ nodes {
     w: 1.0
   }
   color {
-    x: 1.0
+    x: 0.8
     y: 1.0
     z: 1.0
     w: 1.0
@@ -2729,7 +2729,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "QUINTOCHUJ"
+  text: "SNIPERCWEL"
   font: "Vellyc"
   id: "name5"
   xanchor: XANCHOR_NONE
@@ -2761,7 +2761,7 @@ nodes {
 }
 nodes {
   position {
-    x: 35.443
+    x: 32.278
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2824,7 +2824,7 @@ nodes {
 }
 nodes {
   position {
-    x: 177.848
+    x: 170.252
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2887,7 +2887,7 @@ nodes {
 }
 nodes {
   position {
-    x: 273.418
+    x: 265.823
     y: 0.0
     z: 0.0
     w: 1.0

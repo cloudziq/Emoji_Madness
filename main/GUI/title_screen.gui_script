@@ -1,10 +1,10 @@
-local right_click_delay, right_click_timeout, click_pos_x, click_pos_y = 0, 0, 0, 0
+local right_click_delay, right_click_timeout, click_pos_x, click_pos_y = 0, 0, 0,0
 local letter_pos, letter_col = {}, {}
 
 allow_title_clicks = false
 allow_title_emojis = true
 
-local menu_emoji_amount = 120
+local menu_emoji_amount = 100
 
 local emoji_delay
 local title_music_delay
@@ -74,9 +74,9 @@ function on_input(self, action_id, action)
 
 		elseif action_id == hash("click2") and allow_title_clicks == true and socket.gettime() > right_click_delay then
 			if action.x > click_pos_x + 60 or action.x < click_pos_x - 60 or action.y > click_pos_y + 60 or action.y < click_pos_y - 60 then
-				right_click_delay = socket.gettime() + 0.08
 				click_pos_x = action.x ; click_pos_y = action.y
 				factory.create("#click_factory", vmath.vector3(action.x, action.y, 1), nil, nil, rnd.range(25, 35) / 10)
+				right_click_delay = socket.gettime() + 0.04
 				right_click_timeout = socket.gettime() + 4
 			end
 
@@ -126,7 +126,8 @@ end
 
 function title_prepare()
 	if play_intro == true then title_music_delay = 5.2 else title_music_delay = 0 end
-	sound.play("#title_music", {delay = title_music_delay, gain = 0.8, pan = 0})
+
+	msg.post("/main#ctrl", "start_menu_music", {delay = title_music_delay})
 
 	load_config()
 

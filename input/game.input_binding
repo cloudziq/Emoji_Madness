@@ -26,6 +26,10 @@ mouse_trigger {
   input: MOUSE_BUTTON_2
   action: "click2"
 }
+mouse_trigger {
+  input: MOUSE_BUTTON_3
+  action: "wheel_click"
+}
 text_trigger {
   input: TEXT
   action: "type"
