@@ -1,6 +1,6 @@
 [bootstrap]
 main_collection = /main/collections/main.collectionc
-render = /main/render/default.renderc
+render = /main/render/custom.renderc
 
 [script]
 shared_state = 1
@@ -44,4 +44,5 @@ repeat_interval = 0.1
 
 [particle_fx]
 max_count = 128
+max_particle_count = 2048
 
