@@ -80,7 +80,7 @@ function update(self, dt)
 		bonus_clock_visible = false
 		if bonus_clock_active == true then
 			--msg.post(clock_go_id, "delete")
-			msg.post("game_layer1:/main#ctrl", "delete_active_clock")
+			msg.post(clock_url, "delete_clock")
 			bonus_clock_active = false
 		end
 	end

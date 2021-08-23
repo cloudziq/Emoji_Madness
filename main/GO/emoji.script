@@ -127,6 +127,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 						emojis_left = emojis_left - 1 ; escaped = escaped + 1
 						health = health - 1
 						particlefx.stop(self.particle_id)
+						timer.delay(2, false, function()
+							table.remove(emoji_table, go.get_id())
+							go.delete()
+						end)
 						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "emoji_left"})
 					end
 				end
@@ -142,12 +146,10 @@ function emoji_waiting(self)
 	if self.active == true then
 		if self.wait_timeout == 0 then
 			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + socket.gettime()
-			--self.wait_timeout = socket.gettime() + wait
+			self.waiting = true
+			particlefx.play(self.particle_id)
+			particlefx.set_constant(self.particle_id, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
 		end
-
-		self.waiting = true
-		particlefx.play(self.particle_id)
-		particlefx.set_constant(self.particle_id, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
 
 		if socket.gettime() >= self.wait_timeout and self.going_away == false then
 			self.waiting = false

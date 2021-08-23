@@ -45,7 +45,7 @@ function init(self)
 
 	msg.post("#title_menu_proxy", "load")
 
-	--debug_profiling()
+	timer.delay(1, false, debug_profiling)
 end
 
 
@@ -60,8 +60,7 @@ end
 
 function debug_profiling()
 	profiler.enable_ui(true)
-	--profiler.set_ui_mode()
-	profiler.set_ui_view_mode()
+	profiler.set_ui_view_mode(profiler.VIEW_MODE_MINIMIZED)
 	--profiler.view_recorded_frame()
 end
 

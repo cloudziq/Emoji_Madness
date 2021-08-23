@@ -41,10 +41,11 @@ function init(self)
 
     -- custom shit:
     self.quad_pred = render.predicate({"quad"})
-    self.light_pred = render.predicate({"light"})
+    self.light_sprite_pred = render.predicate({"light_sprite"})
+    self.light_particle_pred = render.predicate({"light_particle"})
 
     self.clear_color = vmath.vector4(0, 0, 0, 0)
-    self.ambient_color = vmath.vector4(.04, .06, .1, 1)
+    self.ambient_color = vmath.vector4(.01, .02, .04, 1)
     self.clear_color.x = sys.get_config("render.clear_color_red", 0)
     self.clear_color.y = sys.get_config("render.clear_color_green", 0)
     self.clear_color.z = sys.get_config("render.clear_color_blue", 0)
@@ -62,8 +63,7 @@ function init(self)
     self.projection_fn = fixed_fit_projection
 
 
-    -- custom shit:
-    --local color_params = { format = render.FORMAT_RGBA, width = render.get_width(), height = render.get_height() }
+    -- custom:
     local color_params = { 
         format = render.FORMAT_RGBA,
         width = render.get_window_width(),
@@ -73,8 +73,6 @@ function init(self)
         u_wrap = render.WRAP_CLAMP_TO_EDGE,
         v_wrap = render.WRAP_CLAMP_TO_EDGE
     }
-    --local target_params = {[render.BUFFER_COLOR_BIT] = color_params }
-
     self.target_1 = render.render_target("normal", {[render.BUFFER_COLOR_BIT] = color_params })
     self.target_2 = render.render_target("lights", {[render.BUFFER_COLOR_BIT] = color_params })
 end
@@ -105,7 +103,6 @@ function update(self)
 
     render.draw(self.tile_pred)
     render.draw(self.particle_pred)
-    render.draw_debug3d()
 
 
     if dark_mode == true then
@@ -119,7 +116,8 @@ function update(self)
         render.set_view(self.view)
         render.set_projection(get_projection(self))
 
-        render.draw(self.light_pred)
+        --render.draw(self.light_sprite_pred)
+        render.draw(self.light_particle_pred)
 
         render.disable_render_target(self.target_2)
 
@@ -129,7 +127,7 @@ function update(self)
         render.set_viewport(0, 0, window_w, window_h)
         render.set_view(self.view)
         render.set_projection(self.view)
-        
+
 
         render.enable_texture(0, self.target_1, render.BUFFER_COLOR_BIT)
         render.enable_texture(1, self.target_2, render.BUFFER_COLOR_BIT)
@@ -150,6 +148,8 @@ function update(self)
     render.draw(self.gui_pred)
     render.draw(self.text_pred)
     render.disable_state(render.STATE_STENCIL_TEST)
+
+    render.draw_debug3d()
 
 end
 

@@ -3,10 +3,6 @@ key_trigger {
   action: "space"
 }
 key_trigger {
-  input: KEY_Q
-  action: "click1"
-}
-key_trigger {
   input: KEY_ESC
   action: "pause"
 }

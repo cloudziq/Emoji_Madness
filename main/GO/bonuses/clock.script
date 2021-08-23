@@ -71,9 +71,8 @@ function on_message(self, message_id, message, sender)
 		end
 
 
-	elseif message_id == hash("delete") then
-		proxy_speed = 1
-		go.delete()
+	elseif message_id == hash("delete_clock") then
+		proxy_speed = 1 ; go.delete()
 		msg.post("main:/main#game_proxy1", "set_time_step", {factor = 1 , mode = 1})
 	end
 end

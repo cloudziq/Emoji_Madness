@@ -1,3 +1,7 @@
+local clock_id
+
+
+
 function on_message(self, message_id, message)
 
 	if message_id == hash("generate_emojis") then
@@ -14,12 +18,13 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("bonus_clock") then
-		clock_go_id = factory.create("bonus#spawner")
+		clock_id = factory.create("bonus#spawner")
+		clock_url = msg.url(nil, clock_id, nil)
 
 
-	elseif message_id == hash("delete_active_clock") then
-		pprint(clock_go_id)
-		msg.post(clock_go_id, "delete")
+	-- elseif message_id == hash("delete_active_clock") then
+	-- 	pprint(clock_go_id)
+	-- 	
 
 
 	elseif message_id == hash("fade_music") then

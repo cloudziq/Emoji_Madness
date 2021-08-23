@@ -1,13 +1,17 @@
 script: "/main/render/custom.render_script"
 materials {
-  name: "emoji_particles"
-  material: "/main/render/materials/particlefx.material"
+  name: "light_particle"
+  material: "/main/render/materials/emoji_main_sparks.material"
 }
 materials {
-  name: "light"
-  material: "/main/render/materials/light.material"
+  name: "light_sprite"
+  material: "/main/render/materials/light_sprite.material"
 }
 materials {
   name: "quad"
   material: "/main/render/materials/quad.material"
+}
+materials {
+  name: "sparks"
+  material: "/main/render/materials/emoji_main_sparks.material"
 }
