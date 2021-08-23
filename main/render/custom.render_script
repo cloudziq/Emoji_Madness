@@ -30,13 +30,21 @@ local function get_projection(self)
     return self.projection_fn(self.near, self.far, self.zoom)
 end
 
+
+
+
 function init(self)
     self.tile_pred = render.predicate({"tile"})
     self.gui_pred = render.predicate({"gui"})
     self.text_pred = render.predicate({"text"})
     self.particle_pred = render.predicate({"particle"})
 
+    -- custom shit:
+    self.quad_pred = render.predicate({"quad"})
+    self.light_pred = render.predicate({"light"})
+
     self.clear_color = vmath.vector4(0, 0, 0, 0)
+    self.ambient_color = vmath.vector4(.04, .06, .1, 1)
     self.clear_color.x = sys.get_config("render.clear_color_red", 0)
     self.clear_color.y = sys.get_config("render.clear_color_green", 0)
     self.clear_color.z = sys.get_config("render.clear_color_blue", 0)
@@ -52,9 +60,33 @@ function init(self)
     self.near = -1
     self.far = 1
     self.projection_fn = fixed_fit_projection
+
+
+    -- custom shit:
+    --local color_params = { format = render.FORMAT_RGBA, width = render.get_width(), height = render.get_height() }
+    local color_params = { 
+        format = render.FORMAT_RGBA,
+        width = render.get_window_width(),
+        height = render.get_window_height(),
+        min_filter = render.FILTER_LINEAR,
+        mag_filter = render.FILTER_LINEAR,
+        u_wrap = render.WRAP_CLAMP_TO_EDGE,
+        v_wrap = render.WRAP_CLAMP_TO_EDGE
+    }
+    --local target_params = {[render.BUFFER_COLOR_BIT] = color_params }
+
+    self.target_1 = render.render_target("normal", {[render.BUFFER_COLOR_BIT] = color_params })
+    self.target_2 = render.render_target("lights", {[render.BUFFER_COLOR_BIT] = color_params })
 end
 
+
+
+dark_mode = true
 function update(self)
+    if dark_mode == true then
+        render.enable_render_target(self.target_1)
+    end
+    
     render.set_depth_mask(true)
     render.set_stencil_mask(0xff)
     render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1, [render.BUFFER_STENCIL_BIT] = 0})
@@ -75,16 +107,54 @@ function update(self)
     render.draw(self.particle_pred)
     render.draw_debug3d()
 
-    -- render GUI
-    --
+
+    if dark_mode == true then
+        render.disable_render_target(self.target_1)
+
+        -- lights:
+        render.enable_render_target(self.target_2)
+        render.clear({[render.BUFFER_COLOR_BIT] = self.ambient_color})
+
+        render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
+        render.set_view(self.view)
+        render.set_projection(get_projection(self))
+
+        render.draw(self.light_pred)
+
+        render.disable_render_target(self.target_2)
+
+
+        -- direct framebuffer:
+        render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color})
+        render.set_viewport(0, 0, window_w, window_h)
+        render.set_view(self.view)
+        render.set_projection(self.view)
+        
+
+        render.enable_texture(0, self.target_1, render.BUFFER_COLOR_BIT)
+        render.enable_texture(1, self.target_2, render.BUFFER_COLOR_BIT)
+        render.draw(self.quad_pred)
+        render.disable_texture(0, self.target_1)
+        render.disable_texture(1, self.target_2)
+
+        render.set_projection(vmath.matrix4_orthographic(0, window_w, 0, window_h, -1, 1))
+    else
+        render.set_projection(vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1))
+    end
+
+    -- GUI:
     render.set_view(vmath.matrix4())
-    render.set_projection(vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1))
+    --render.set_projection(vmath.matrix4_orthographic(0, window_w, 0, window_h, -1, 1))
 
     render.enable_state(render.STATE_STENCIL_TEST)
     render.draw(self.gui_pred)
     render.draw(self.text_pred)
     render.disable_state(render.STATE_STENCIL_TEST)
+
 end
+
+
+
 
 function on_message(self, message_id, message)
     if message_id == hash("clear_color") then
@@ -107,5 +177,8 @@ function on_message(self, message_id, message)
         self.near = message.near or -1
         self.far = message.far or 1
         self.projection_fn = fixed_fit_projection
+    elseif message_id == hash("refresh_window_size") then
+        render.set_render_target_size(self.target_1, window_w, window_h)
+        render.set_render_target_size(self.target_2, window_w, window_h)
     end
 end

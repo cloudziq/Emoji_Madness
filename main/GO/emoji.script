@@ -110,7 +110,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			pos_x = rnd.range(80 + 50, window_w - 80 - 50)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 2
+			time = (self.speed - (self.speed * (speed / 100))) * 1.46
 			pos_x, pos_y = get_offscreen_pos(100, true, go.get_position())
 		end
 		sprite_flip(pos_x)
