@@ -13,7 +13,7 @@ fonts {
 }
 textures {
   name: "main_menu"
-  texture: "/main/GO/main_GUI_elements.atlas"
+  texture: "/assets/graphic/main_GUI_elements.atlas"
 }
 textures {
   name: "weapon"
@@ -595,7 +595,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_menu/slider"
+  texture: "main_menu/circle"
   id: "numBG1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -619,7 +619,7 @@ nodes {
 }
 nodes {
   position {
-    x: -324.684
+    x: -325.317
     y: 0.633
     z: 0.0
     w: 1.0
@@ -1083,7 +1083,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_menu/slider"
+  texture: "main_menu/circle"
   id: "numBG2"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -1572,7 +1572,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_menu/slider"
+  texture: "main_menu/circle"
   id: "numBG3"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2060,7 +2060,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_menu/slider"
+  texture: "main_menu/circle"
   id: "numBG4"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2548,7 +2548,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_menu/slider"
+  texture: "main_menu/circle"
   id: "numBG5"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -3187,6 +3187,49 @@ nodes {
 nodes {
   position {
     x: 640.0
+    y: 680.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 8.0
+    y: 8.0
+    z: 8.0
+    w: 1.0
+  }
+  size {
+    x: 1.0
+    y: 1.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_PARTICLEFX
+  id: "particles"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  adjust_mode: ADJUST_MODE_FIT
+  layer: ""
+  inherit_alpha: true
+  alpha: 1.0
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+  particlefx: "emoji"
+}
+nodes {
+  position {
+    x: 640.0
     y: 660.0
     z: 0.0
     w: 1.0
@@ -3358,3 +3401,7 @@ nodes {
 material: "/builtins/materials/gui.material"
 adjust_reference: ADJUST_REFERENCE_PARENT
 max_nodes: 512
+particlefxs {
+  name: "emoji"
+  particlefx: "/main/particles/emoji.particlefx"
+}

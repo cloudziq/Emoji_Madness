@@ -9,7 +9,7 @@ fonts {
 }
 textures {
   name: "main_GUI_elements"
-  texture: "/main/GO/main_GUI_elements.atlas"
+  texture: "/assets/graphic/main_GUI_elements.atlas"
 }
 background_color {
   x: 0.0
@@ -317,8 +317,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 320.0
+    y: 140.0
     z: 0.0
     w: 1.0
   }

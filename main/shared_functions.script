@@ -60,25 +60,25 @@ end
 
 
 
-function slider(container, pointer, left_node, right_node, action)
-	local pos_center, pos_pointer, pos, left, right
+function slider(container, pointer, left, right, action)
+	local pos_center, pos_pointer, pos--, left, right
 
 	pos = vmath.vector3(action.x, action.y , 0)
 	pos_pointer = gui.get_position(gui.get_node(pointer))
 	pos_center = gui.get_position(gui.get_node(container))
-	left = gui.get_position(gui.get_node(left_node))
-	right = gui.get_position(gui.get_node(right_node))
+	--left = gui.get_position(gui.get_node(left_node))
+	--right = gui.get_position(gui.get_node(right_node))
 
-	if pos.x - pos_center.x < left.x then 
-		pos.x = left.x
-	elseif pos.x - pos_center.x > right.x then 
-		pos.x = right.x
+	if pos.x - pos_center.x < left then 
+		pos.x = left
+	elseif pos.x - pos_center.x > right then 
+		pos.x = right
 	else
 		pos.x = action.x - pos_center.x
 	end
 
 	gui.set_position(gui.get_node(pointer), vmath.vector3(pos.x, pos_pointer.y, 0))
-	return (pos.x / (right.x * 2)) + .5
+	return (pos.x / (right * 2)) + .5
 end
 
 
@@ -143,12 +143,13 @@ local function set_default_records()
 	return table
 end
 
+hall_format = 1
 
 function load_records()
 	local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")
 	local data = sys.load(file)
 
-	if data.records == nil then 
+	if data.records == nil or data.format ~= hall_format then
 		return set_default_records()
 	else
 		return data.records

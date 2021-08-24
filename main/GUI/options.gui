@@ -13,7 +13,7 @@ fonts {
 }
 textures {
   name: "main_GUI_elements"
-  texture: "/main/GO/main_GUI_elements.atlas"
+  texture: "/assets/graphic/main_GUI_elements.atlas"
 }
 background_color {
   x: 0.0
@@ -213,8 +213,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 200.0
-    y: 100.0
+    x: 280.0
+    y: 140.0
     z: 0.0
     w: 1.0
   }
@@ -228,7 +228,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "BACK"
   font: "Vellyc"
-  id: "resume"
+  id: "back"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -312,8 +312,8 @@ nodes {
 }
 nodes {
   position {
-    x: -200.0
-    y: 0.0
+    x: 0.0
+    y: -10.0
     z: 0.0
     w: 1.0
   }
@@ -330,8 +330,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 20.0
-    y: 20.0
+    x: 425.0
+    y: 54.0
     z: 0.0
     w: 1.0
   }
@@ -343,117 +343,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_GUI_elements/slider_end"
-  id: "left_sound"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "sound_slider_box"
-  layer: ""
-  inherit_alpha: false
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: false
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 200.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 180.0
-    y: 180.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 20.0
-    y: 20.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: "main_GUI_elements/slider_end"
-  id: "right_sound"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "sound_slider_box"
-  layer: ""
-  inherit_alpha: false
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: false
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 380.0
-    y: 20.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: "main_GUI_elements/slider_center"
+  texture: "main_GUI_elements/slider"
   id: "bar_sound"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -478,7 +368,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -10.0
     z: 0.0
     w: 1.0
   }
@@ -495,8 +385,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 34.0
-    y: 34.0
+    x: 48.0
+    y: 48.0
     z: 0.0
     w: 1.0
   }
@@ -649,8 +539,8 @@ nodes {
 }
 nodes {
   position {
-    x: -200.0
-    y: 0.0
+    x: 0.0
+    y: -24.0
     z: 0.0
     w: 1.0
   }
@@ -667,8 +557,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 20.0
-    y: 20.0
+    x: 425.0
+    y: 54.0
     z: 0.0
     w: 1.0
   }
@@ -680,117 +570,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "main_GUI_elements/slider_end"
-  id: "left_music"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "music_slider_box"
-  layer: ""
-  inherit_alpha: false
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: false
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 200.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 180.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 20.0
-    y: 20.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.7019608
-    y: 0.8
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: "main_GUI_elements/slider_end"
-  id: "right_music"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "music_slider_box"
-  layer: ""
-  inherit_alpha: false
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: false
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 380.0
-    y: 20.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.7019608
-    y: 0.8
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: "main_GUI_elements/slider_center"
+  texture: "main_GUI_elements/slider"
   id: "bar_music"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -815,7 +595,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 0.0
+    y: -24.0
     z: 0.0
     w: 1.0
   }
@@ -832,8 +612,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 34.0
-    y: 34.0
+    x: 48.0
+    y: 48.0
     z: 0.0
     w: 1.0
   }
@@ -870,7 +650,7 @@ nodes {
 nodes {
   position {
     x: -104.0
-    y: 14.0
+    y: -1.0
     z: 0.0
     w: 1.0
   }

@@ -116,7 +116,6 @@ function update(self)
         render.set_view(self.view)
         render.set_projection(get_projection(self))
 
-        --render.draw(self.light_sprite_pred)
         render.draw(self.light_particle_pred)
 
         render.disable_render_target(self.target_2)

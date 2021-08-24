@@ -31,8 +31,8 @@ function init(self)
 		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 		get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 	else
-		self.emoji_id = msg.url(nil, go.get_id(), "collide_emoji")
-		self.particle_id = msg.url(nil, go.get_id(), "particle")
+		self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
+		self.particle_url = msg.url(nil, go.get_id(), "particle")
 		sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
 		get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, self.delay)
 	end
@@ -64,10 +64,10 @@ function update(self, dt)
 
 		if pos.x > 40 and pos.x < window_w - 40 and pos.y > 40 and pos.y < window_h - 70 and self.active == true and self.going_away == false then
 			self.need_pos_check = false
-			msg.post(self.emoji_id, "enable")
+			msg.post(self.collide_url, "enable")
 		else
 			self.need_pos_check = true
-			msg.post(self.emoji_id, "disable")
+			msg.post(self.collide_url, "disable")
 		end
 	end
 end
@@ -126,11 +126,11 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 						sound.play("game_layer1:/main#energy_loss", {speed = math.random(80, 120) / 100})
 						emojis_left = emojis_left - 1 ; escaped = escaped + 1
 						health = health - 1
-						particlefx.stop(self.particle_id)
-						timer.delay(2, false, function()
-							table.remove(emoji_table, go.get_id())
-							go.delete()
-						end)
+						particlefx.stop(self.particle_url)
+						-- timer.delay(2, false, function()
+						-- 	table.remove(emoji_table, go.get_id())
+						-- 	go.delete(".")
+						-- end)
 						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "emoji_left"})
 					end
 				end
@@ -147,17 +147,19 @@ function emoji_waiting(self)
 		if self.wait_timeout == 0 then
 			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + socket.gettime()
 			self.waiting = true
-			particlefx.play(self.particle_id)
-			particlefx.set_constant(self.particle_id, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
+			particlefx.play(self.particle_url)
+			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
+			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.42, .46, .68, .82))
 		end
 
 		if socket.gettime() >= self.wait_timeout and self.going_away == false then
 			self.waiting = false
 			self.going_away = true
-			particlefx.set_constant(self.particle_id, "emitter", "tint", vmath.vector4(1, .6, .2, .64))
+			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .64))
+			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .92))
 
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, 1, 0, function()
-				msg.post(self.emoji_id, "disable")
+				msg.post(self.collide_url, "disable")
 				sound.play("game_layer1:/main#emoji_going_away", {speed = math.random(80, 120) / 100})
 				get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, .1)
 			end)
@@ -222,10 +224,10 @@ function on_message(self, message_id, message, sender)
 
 			msg.post("game_layer2:/main#game_gui", "display_update")
 			sound.play("game_layer1:/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
-			particlefx.stop(self.particle_id)
+			particlefx.stop(self.particle_url)
 
 			self.active = false
-			msg.post(self.emoji_id, "disable")
+			msg.post(self.collide_url, "disable")
 
 			go.cancel_animations(".", "position")
 			go.cancel_animations(".", "scale")
@@ -278,4 +280,9 @@ function on_message(self, message_id, message, sender)
 			end
 		end
 	end
+end
+
+
+function on_reload()
+	pprint(emoji_table)
 end

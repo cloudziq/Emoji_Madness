@@ -30,7 +30,7 @@ end
 
 
 function on_input(self, action_id, action)
-	if gui.pick_node(gui.get_node("box1"), action.x, action.y) then
+	if gui.pick_node(gui.get_node("resume"), action.x, action.y) then
 		if resume_node_anim == nil then
 			resume_node_anim = 1
 			resume_anim()

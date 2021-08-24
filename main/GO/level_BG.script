@@ -1,5 +1,5 @@
 local z, last_id = 0
-local default_range = 10000
+local default_range = 12000
 
 
 
@@ -62,7 +62,7 @@ function update(self, dt)
 		end
 
 		if last_id == go.get_id() then range = default_range + 4 else range = default_range end
-		if rnd.range(1, range) >= 10000 and self.change == false then self.change = true end
+		if rnd.range(1, range) >= default_range - 4 and self.change == false then self.change = true end
 
 
 	else

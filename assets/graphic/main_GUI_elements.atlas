@@ -35,14 +35,6 @@ images {
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/graphic/slider_end.png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
-  image: "/assets/graphic/slider_center.png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
   image: "/builtins/assets/images/logo/logo_256.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
@@ -51,9 +43,17 @@ images {
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
+  image: "/assets/graphic/circle.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/graphic/gear_icon.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
   image: "/assets/graphic/slider.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0
-extrude_borders: 8
+extrude_borders: 2
 inner_padding: 0

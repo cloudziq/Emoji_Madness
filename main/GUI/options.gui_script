@@ -31,10 +31,10 @@ function on_input(self, action_id, action)
 
 	if slider_active == true then
 		if slider_active_sound == true then 
-			sound_vol = slider("sound_slider_box", "pointer_sound", "left_sound", "right_sound", action)
+			sound_vol = slider("sound_slider_box", "pointer_sound", -185, 185, action)
 			sound.set_group_gain("sound", sound_vol)
 		elseif slider_active_music == true then 
-			music_vol = slider("music_slider_box", "pointer_music", "left_music", "right_music", action)
+			music_vol = slider("music_slider_box", "pointer_music", -185, 185, action)
 			sound.set_group_gain("music", music_vol)
 		end
 	end
@@ -47,7 +47,7 @@ function on_input(self, action_id, action)
 	end
 
 
-	if gui.pick_node(gui.get_node("box1"), action.x, action.y) and action.pressed and action_id == hash("click1") then
+	if gui.pick_node(gui.get_node("back"), action.x, action.y) and action.pressed and action_id == hash("click1") then
 		msg.post("#", "hide")
 	end
 end
@@ -83,10 +83,10 @@ end
 
 function set_start_slider_values()
 	pos = gui.get_position(gui.get_node("pointer_sound"))
-	pos.x = sound_vol * 400 - (0.5 * 400)
+	pos.x = sound_vol * 370 - (0.5 * 370)
 	gui.set_position(gui.get_node("pointer_sound"), vmath.vector3(pos.x, pos.y, 0))
 	
 	pos = gui.get_position(gui.get_node("pointer_music"))
-	pos.x = music_vol * 400 - (0.5 * 400)
+	pos.x = music_vol * 370 - (0.5 * 370)
 	gui.set_position(gui.get_node("pointer_music"), vmath.vector3(pos.x, pos.y, 0))
 end

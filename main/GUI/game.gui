@@ -13,7 +13,7 @@ fonts {
 }
 textures {
   name: "main_menu"
-  texture: "/main/GO/main_GUI_elements.atlas"
+  texture: "/assets/graphic/main_GUI_elements.atlas"
 }
 textures {
   name: "weapon"

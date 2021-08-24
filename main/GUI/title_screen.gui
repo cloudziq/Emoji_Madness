@@ -13,7 +13,7 @@ fonts {
 }
 textures {
   name: "backgrounds"
-  texture: "/main/GO/main_GUI_elements.atlas"
+  texture: "/assets/graphic/main_GUI_elements.atlas"
 }
 textures {
   name: "weapon"
@@ -855,7 +855,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "v0.90 (beta)"
+  text: "v0.92 (beta)"
   font: "system"
   id: "version_number"
   xanchor: XANCHOR_NONE
