@@ -11,7 +11,7 @@ end
 
 function on_message(self, message_id, message)
 	if message_id == hash("animate_blood_scale") then
-		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, math.random(65, 110) / 100, go.EASING_OUTSINE, math.random(8, 12))
+		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, (math.random(65, 110) / 100) * message.multiplier, go.EASING_OUTSINE, math.random(8, 12))
 
 
 	elseif message_id == hash("clean_blood") then

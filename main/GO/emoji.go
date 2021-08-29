@@ -32,7 +32,7 @@ embedded_components {
   id: "sprite"
   type: "sprite"
   data: "tile_set: \"/assets/graphic/emojis.atlas\"\n"
-  "default_animation: \"e1\"\n"
+  "default_animation: \"e40\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""

@@ -11,6 +11,8 @@ end
 
 
 function on_message(self, message_id, message)
+	local node, pos
+	local nodes_to_tweak = {"killed", "killed_count", "escaped", "escaped_count", "bonus_text"}
 	local menu_color = gui.get_color(gui.get_node("WIN"))
 
 	if message_id == hash("show") then
@@ -23,29 +25,45 @@ function on_message(self, message_id, message)
 		gui.set_scale(gui.get_node("killed_count"), vmath.vector3(0,0,1))
 		gui.set_scale(gui.get_node("escaped_count"), vmath.vector3(0,0,1))
 		gui.set_scale(gui.get_node("bonus_text"), vmath.vector3(0,0,1))
+		gui.set_scale(gui.get_node("bonus_level_info"), vmath.vector3(0,0,1))
 		gui.set_scale(gui.get_node("box1"), vmath.vector3(0,0,1))
 		gui.set_color(gui.get_node("complete_bonus_health"), vmath.vector4(0,0,0,0))
 
 		gui.animate(gui.get_node("WIN"), "color", menu_color, gui.EASING_LINEAR, .8)
 		gui.animate(gui.get_node("BG"), "color", vmath.vector4(0,0,0,1), gui.EASING_LINEAR, 2)
 
+		for a = 1, 4 do
+			gui.set_color(gui.get_node("clover"..a), vmath.vector4(1,1,1,0))
+		end
+
+		if bonus_level_active then
+			--tweak some nodes position if clover found:
+			for _, a in ipairs(nodes_to_tweak) do
+				node = gui.get_node(a) ; pos = gui.get_position(node)
+				gui.set_position(node, vmath.vector3(pos.x, pos.y + 18, 0))
+			end
+			gui.set_text(gui.get_node("next"), "LUCK TEST!")
+		else
+			gui.set_text(gui.get_node("next"), "NEXT LEVEL")
+		end
+
 		-- set updated text on nodes:
 		gui.set_text(gui.get_node("killed_count"), message.killed)
 		gui.set_text(gui.get_node("escaped_count"), message.escaped)
 
-		gui.animate(gui.get_node("killed"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function ()
+		gui.animate(gui.get_node("killed"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function()
 			sound.play("game_layer1:/main#win_count")
 			gui.animate(gui.get_node("killed_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1)
 		end)
 
-		gui.animate(gui.get_node("escaped"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 1.2, function ()
+		gui.animate(gui.get_node("escaped"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 1.2, function()
 			sound.play("game_layer1:/main#win_count", {speed = .5})
-			gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function ()
+			gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function()
 				if message.escaped == 0 then
 					health = health + health_perfect
 					sound.play("game_layer1:/main#perfect_win", {speed = .8})
 					gui.set_text(gui.get_node("bonus_text"), "BONUS!   +"..health_perfect)
-					gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(1,1,1), gui.EASING_INOUTELASTIC, .6, 0, function() 
+					gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(1,1,1), gui.EASING_INOUTELASTIC, .6, 0, function()
 						gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_INOUTELASTIC, .6)
 					end)
 					timer.delay(.8, false, function ()
@@ -54,33 +72,56 @@ function on_message(self, message_id, message)
 						gui.set_enabled(gui.get_node("box1"), true)
 					end)
 				end
+
+				if bonus_level_active then
+					timer.delay(1, false, function()
+						sound.play("game_layer1:/main#health_bonus", {speed = 2})
+						sound.play("game_layer1:/main#health_bonus", {speed = 2, delay = 0.26})
+						gui.animate(gui.get_node("bonus_level_info"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, .6)
+					end)
+
+					for a = 1, 4 do
+						gui.animate(gui.get_node("clover"..a), "color", vmath.vector4(1,1,1,1), gui.EASING_INSINE, 1, .6)
+					end
+				end
+				
 				gui.animate(gui.get_node("box1"), "scale", vmath.vector3(1, 1, 1), gui.EASING_INSINE, 1.2, 0, function()
 					allow_continue = true
 				end)
 			end)
 		end)
 
-		--weapon_collide = false
+		weapon_collide = false
 		msg.post("#", "enable")
 		--gui.set_enabled(gui.get_node("WIN"), true)
 
 
 	elseif message_id == hash("hide") then
-		gui.set_text(gui.get_node("complete_bonus_health"), "+"..health_add)
-		gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,1), gui.EASING_INSINE, .1, 0, function()
-			gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1.4)
-		end)
-		pos = gui.get_position(gui.get_node("complete_bonus_health"))
-		pos.x = pos.x + math.random(220, 360) ; pos.y = pos.y + math.random(220, 360)
-		gui.animate(gui.get_node("complete_bonus_health"), "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 1.25)
-		gui.animate(gui.get_node("complete_bonus_health"), "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
+		if not bonus_level_active then
+			gui.set_text(gui.get_node("complete_bonus_health"), "+"..health_add)
+			gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,1), gui.EASING_INSINE, .1, 0, function()
+				gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1.4)
+			end)
+			pos = gui.get_position(gui.get_node("complete_bonus_health"))
+			pos.x = pos.x + math.random(220, 360) ; pos.y = pos.y + math.random(220, 360)
+			gui.animate(gui.get_node("complete_bonus_health"), "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 1.25)
+			gui.animate(gui.get_node("complete_bonus_health"), "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
+		end
 
 		gui.animate(gui.get_node("box1"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1)
 		gui.animate(gui.get_node("box1"), "scale", vmath.vector3(0,0,0), gui.EASING_INSINE, 1)
 		gui.animate(gui.get_node("WIN"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1.2)
 		gui.animate(gui.get_node("BG"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.1)
 
-		timer.delay(.4, false, function() msg.post("/main#game_gui", "show_level_intro") end)
+		for a = 1, 4 do
+			gui.animate(gui.get_node("clover"..a), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1)
+		end
+
+		if not bonus_level_active then
+			timer.delay(.4, false, function() msg.post("/main#game_gui", "show_level_intro") end)
+		--message "show_level_info" moved to clean_emoji function so bonus_level emojis appear after cleaning old ones
+		end
+		
 		gui.set_enabled(gui.get_node("crosshair"), false)
 		msg.post("game_layer1:/main#ctrl", "clean_emojis")
 		if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end

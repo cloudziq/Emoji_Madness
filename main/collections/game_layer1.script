@@ -1,34 +1,75 @@
-local clock_id
+local clock_id, level_id
 
 
 
 function on_message(self, message_id, message)
+	local id, timeout, delay = 0, 0, 4
 
 	if message_id == hash("generate_emojis") then
-		generate_emojis(emojis, "#emoji_factory")
+		generate_emojis(message.emojis, "#emoji_factory", message.scale, message.table_clear)
 
 
 	elseif message_id == hash("clean_emojis") then
 		msg.post(emoji_go_id, "clean_emojis")
 
 
+	elseif message_id == hash("bonus level emoji at end") then
+		for _, id in ipairs(emoji_table) do
+			msg.post(id, "bonus level emoji at end", {timeout = socket.gettime() + timeout, delay = delay})
+			if delay > 0.026 then
+				delay = delay - (delay * 0.04)
+			else
+				delay = 0.026
+			end
+			timeout = timeout + 0.026
+		end
+
+
 	elseif message_id == hash("spawn_weapon") then
 		factory.create("pistol#spawner", vmath.vector3(message.x, message.y, 1))
-		sound.play("pistol#pistol"..math.random(1, 3), {gain = .2})
+		if weapon_collide then
+			sound.play("pistol#pistol"..math.random(1, 3), {gain = .2})
+		else
+			sound.play("pistol#pistol_empty", {gain = .2})
+		end
 
 
+
+
+	-- bonuses:
 	elseif message_id == hash("bonus_clock") then
-		clock_id = factory.create("bonus#spawner")
+		clock_id = factory.create("bonus#clock")
 		clock_url = msg.url(nil, clock_id, nil)
 
+	elseif message_id == hash("bonus_level") then
+		level_id = factory.create("bonus#level")
+		level_url = msg.url(nil, level_id, nil)
 
-	-- elseif message_id == hash("delete_active_clock") then
-	-- 	pprint(clock_go_id)
-	-- 	
 
 
-	elseif message_id == hash("fade_music") then
-		go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4)
+
+	elseif message_id == hash("fade_in_music") then
+		sound.play("main#level_loop")
+		sound.set_gain("main#level_loop", 0)
+		go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 0.6, go.EASING_LINEAR, message.time)
+
+
+	elseif message_id == hash("fade_out_music") then
+		go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4, 0, function()
+			sound.stop("main#level_loop")
+		end)
+
+
+	elseif message_id == hash("fade_in_add_music") then
+		sound.play("main#level_loop_add")
+		sound.set_gain("main#level_loop_add", 0)
+		go.animate("main#level_loop_add", "gain", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, 2)
+
+
+	elseif message_id == hash("fade_out_add_music") then
+		go.animate("main#level_loop_add", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 2, 0, function()
+			sound.stop("main#level_loop_add")
+		end)
 
 
 	elseif message_id == hash("play_hall_music") then

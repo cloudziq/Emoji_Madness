@@ -8,13 +8,45 @@ local pos_level, pos_start, box1_timeout
 
 
 
-function on_message(self, message_id, message, sender)
-	local a
+function init()
 	pos_level = gui.get_position(gui.get_node("level_intro"))
 	pos_start = gui.get_position(gui.get_node("start_info"))
+end
 
 
-	if message_id == hash("show_level_intro") then
+
+
+function on_message(self, message_id, message, sender)
+	local node, a, i, delay, id
+
+
+	if message_id == hash("show_bonus_level_intro") then
+		delay = 0 ; weapon_collide = false
+		gui.set_enabled(gui.get_node("crosshair"), true)
+		gui.set_position(gui.get_node("start_info"), vmath.vector3(window_w / 2 , -100, 1))
+		gui.set_enabled(gui.get_node("display_bonus_level"), true)
+		gui.set_color(gui.get_node("display_bonus_level"), vmath.vector4(0,0,0,0))
+		gui.set_position(gui.get_node("bonus_level"), vmath.vector3(640, 690, 0))
+
+		for i = 1, 7 do
+			node = gui.get_node("text"..i) ; a = gui.get_color(node)
+			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
+			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
+			delay = delay + .88
+		end
+
+		gui.set_enabled(gui.get_node("bonus_level"), true)
+		--timer.delay(2, false, function()
+			skip_main_intro = false
+			msg.post("#", "show_level_intro")
+		--end)
+
+
+
+
+	elseif message_id == hash("show_level_intro") then
+		local shots
+
 		if skip_main_intro == false then
 			allow_start_level = false
 			msg.post("#", "disable")
@@ -24,27 +56,58 @@ function on_message(self, message_id, message, sender)
 			gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
 			gui.animate(gui.get_node("BG"), "color", vmath.vector4(.22, .26, .32, .52), gui.EASING_LINEAR, 1.2)
 
-			gui.set_position(gui.get_node("level_intro"), vmath.vector3(-400, window_h / 2, 1))
-			gui.animate(gui.get_node("level_intro"), "position.x", pos_level.x, gui.EASING_OUTCIRC, 1)
+			if not bonus_level_active then
+				gui.set_enabled(gui.get_node("display_bonus_level"), false)
+				gui.set_enabled(gui.get_node("bonus_level"), false)
+				gui.set_position(gui.get_node("level_intro"), vmath.vector3(-400, window_h / 2, 1))
+				gui.animate(gui.get_node("level_intro"), "position.x", pos_level.x, gui.EASING_OUTCIRC, 1)
+			else
+				bonus_level_active = 1
+				timer.delay(.1, false, function()
+					msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = 90, scale = 1})
+					msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = 10, scale = 2, table_clear = false})
+				end)
 
-			gui.set_position(gui.get_node("start_info"), vmath.vector3(window_w /2 , -100, 1))
-			gui.animate(gui.get_node("start_info"), "position.y", pos_start.y, gui.EASING_OUTCIRC, .6, 1, function ()
+				msg.post("game_layer1:/main#ctrl", "fade_in_add_music")
+				msg.post("game_layer1:/main#ctrl", "fade_out_music")
+			end
+
+			gui.set_position(gui.get_node("start_info"), vmath.vector3(window_w / 2 , -100, 1))
+			gui.animate(gui.get_node("start_info"), "position.y", pos_start.y, gui.EASING_OUTCIRC, .6, 1, function()
 				allow_start_level = true
-				sound.play("game_layer1:/main#level_loop", {gain = 0.6})
+				if not bonus_level_active then
+					msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 1})
+				end
 			end)
 
 		-- next iterations (for each new level)
 		else
-			msg.post(".", "hide_level_start")
-			msg.post(".", "show_level_display")
-			gui.set_scale(gui.get_node("GO"), vmath.vector3(1.4, 1.4, 1.4))
+			--if not bonus_level_active then
+				msg.post(".", "show_level_display")
+				msg.post(".", "hide_level_start")
+			--else
+				-- msg.post(".", "show_bonus_level_display")
+				-- gui.animate(gui.get_node("bonus_level"), "position.y", -1000, gui.EASING_INSINE, 4)
+				-- timer.delay(3, false, function() msg.post(".", "hide_level_start") end)
+				-- dark_mode = true
+			--end
 		end
 
+		-- if bonus_level_active then
+		-- 	msg.post(".", "show_bonus_level_display")
+		-- 	-- gui.animate(gui.get_node("bonus_level"), "position.y", -1000, gui.EASING_INSINE, 4)
+		-- 	--timer.delay(3, false, function() msg.post(".", "hide_level_start") end)
+		-- end
+
+		gui.set_scale(gui.get_node("GO"), vmath.vector3(1.4, 1.4, 1.4))
 		gui.set_color(gui.get_node("GO_text"), vmath.vector4(0,0,0,0))
 		msg.post("#", "enable")
 
 
+
+
 	elseif message_id == hash("hide_level_start") then
+		gui.set_enabled(gui.get_node("crosshair"), true)
 		gui.animate(gui.get_node("level_intro"), "scale", 0.01, gui.EASING_INCIRC, .9)
 		gui.animate(gui.get_node("ready"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, .8, 0, function ()
 			gui.animate(gui.get_node("GO"), "scale", 20, gui.EASING_INCIRC, .9)
@@ -52,24 +115,36 @@ function on_message(self, message_id, message, sender)
 			gui.animate(gui.get_node("GO_text"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, .8, .2)
 		end)
 
-		gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 40)
+		-- gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 40)
 		gui.animate(gui.get_node("start_info"), "position.y", pos_start.y - 200, gui.EASING_INCIRC, .25)
 
 		-- show dynamic BG
-		if skip_main_intro == false then
-			skip_main_intro = true
-			BG_active = true
-
+		if skip_main_intro == false and not bonus_level_active then
+			skip_main_intro = true ; BG_active = true ; BG_table = {}
 			for a = 1, 8 do
-				factory.create("/main#BG_factory")
+				id = factory.create("/main#BG_factory")
+				table.insert(BG_table, id)
+				BG_url = msg.url(nil, id, nil)
 			end
 		end
 
-		timer.delay(2, false, function () msg.post("/main#ctrl", "level_start") end)
+		if bonus_level_active then
+			gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 4)
+			gui.animate(gui.get_node("bonus_level"), "position.y", 2222, gui.EASING_INSINE, 1.1, 0, function()
+				gui.set_enabled(gui.get_node("bonus_level"), false)
+			end)
+			--msg.post("/main#ctrl", "level_start")
+		else
+			gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 44)
+			--timer.delay(1.8, false, function () msg.post("/main#ctrl", "level_start") end)
+		end
+
+		timer.delay(1.8, false, function () msg.post("/main#ctrl", "level_start") end)
+
+
 
 
 	elseif message_id == hash("show_level_display") then
-		gui.set_enabled(gui.get_node("crosshair"), true)
 		gui.set_text(gui.get_node("level"), "LEVEL "..level)
 		gui.set_text(gui.get_node("health"), tostring(health))
 		gui.set_text(gui.get_node("emojis"), tostring(emojis))
@@ -77,21 +152,36 @@ function on_message(self, message_id, message, sender)
 		gui.animate(gui.get_node("display"), "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 2.8, 1.65)
 
 
+	elseif message_id == hash("show_bonus_level_display") then
+		gui.animate(gui.get_node("display_bonus_level"), "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 1.8, 1.2)
+
+
 	elseif message_id == hash("display_update") then
 		gui.set_text(gui.get_node("score"), "SCORE: "..score)
 		gui.set_text(gui.get_node("health"), tostring(health))
 		gui.set_text(gui.get_node("emojis"), tostring(emojis_left))
 		if message.stat == "emoji_left" then
-			gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function ()
+			gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function()
 				gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .14)
 			end)
 		end
 
 
-	elseif message_id == hash("hide") then
+	elseif message_id == hash("bonus_display_update") then
+		gui.set_text(gui.get_node("score1"), "BONUS SCORE: "..bonus_score)
+		if bonus_shots < 0 then shots = 0 else shots = bonus_shots end
+		gui.set_text(gui.get_node("bullets"), tostring(shots))
+		gui.set_text(gui.get_node("emojis1"), tostring(bonus_level_kills.small + bonus_level_kills.big))
+
+
+
+
+	elseif message_id == hash("hide_after_level") then
 		total_kills = total_kills + killed
+		skip_main_intro = true
 		gui.set_enabled(gui.get_node("crosshair"), false)
 		gui.animate(gui.get_node("display"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.6, .2)
+		gui.animate(gui.get_node("display_bonus_level"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.6, .2)
 	end
 end
 
@@ -101,7 +191,7 @@ end
 function on_input(self, action_id, action)
 	local pos
 	if action.y > 1320 - 46 then action.y = 1320 - 46 end
-	
+
 	if pause_id == nil then
 		if action_id == nil then
 			gui.set_position(gui.get_node("crosshair"), vmath.vector3(action.x, action.y, 1))
@@ -110,8 +200,12 @@ function on_input(self, action_id, action)
 
 		if action_id == hash("space") and allow_start_level == true then
 			allow_start_level = false
-			msg.post(".", "hide_level_start")
-			msg.post(".", "show_level_display")
+			msg.post("#", "hide_level_start")
+			if not bonus_level_active then
+				msg.post("#", "show_level_display")
+			else
+				msg.post("#", "show_bonus_level_display")
+			end
 		end
 	end
 end

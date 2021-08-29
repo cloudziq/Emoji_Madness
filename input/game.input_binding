@@ -3,7 +3,7 @@ key_trigger {
   action: "space"
 }
 key_trigger {
-  input: KEY_ESC
+  input: KEY_BACKQUOTE
   action: "pause"
 }
 key_trigger {

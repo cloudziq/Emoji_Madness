@@ -60,7 +60,7 @@ function on_message(self, message_id, message, sender)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 2.5, go.EASING_OUTSINE, 2)
 			go.animate(msg.url(nil, go.get_id(), "sprite"), "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTSINE, 2)
 
-			particlefx.play("#bonus_collect")
+			particlefx.play("#particles")
 			sound.play("/main#health_bonus")
 
 			self.active = false

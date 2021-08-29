@@ -1,0 +1,52 @@
+path_settings {
+  path: "/assets/graphic/level_bg.atlas"
+  profile: "level_BG"
+}
+path_settings {
+  path: "/assets/graphic/emojis.atlas"
+  profile: "emojis"
+}
+path_settings {
+  path: "/**"
+  profile: "Default"
+}
+profiles {
+  name: "Default"
+  platforms {
+    os: OS_ID_GENERIC
+    formats {
+      format: TEXTURE_FORMAT_RGBA
+      compression_level: BEST
+      compression_type: COMPRESSION_TYPE_DEFAULT
+    }
+    mipmaps: false
+    max_texture_size: 0
+    premultiply_alpha: true
+  }
+}
+profiles {
+  name: "level_BG"
+  platforms {
+    os: OS_ID_GENERIC
+    formats {
+      format: TEXTURE_FORMAT_RGBA
+      compression_level: BEST
+      compression_type: COMPRESSION_TYPE_DEFAULT
+    }
+    mipmaps: false
+    premultiply_alpha: true
+  }
+}
+profiles {
+  name: "emojis"
+  platforms {
+    os: OS_ID_GENERIC
+    formats {
+      format: TEXTURE_FORMAT_RGBA
+      compression_level: BEST
+      compression_type: COMPRESSION_TYPE_DEFAULT
+    }
+    mipmaps: false
+    premultiply_alpha: true
+  }
+}

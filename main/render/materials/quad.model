@@ -1,6 +1,6 @@
 mesh: "/builtins/assets/meshes/quad_2x2.dae"
 material: "/main/render/materials/quad.material"
-textures: ""
+textures: "/assets/graphic/blood/blood1.png"
 skeleton: ""
 animations: ""
 default_animation: ""

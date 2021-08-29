@@ -1,10 +1,14 @@
-go.property("speed", 8)
-go.property("wait",  4)
-go.property("score", 1)
+go.property("speed",  8)
+go.property("wait",   4)
+go.property("score",  1)
+go.property("dest",   vmath.vector3())
 
 
 emojis = 10 ; level = 1  -- dummy values, will be overwriten anyway
 
+
+-- local variables:
+--local sprite_url
 
 -- local functions:
 local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
@@ -14,27 +18,36 @@ local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
 
 function init(self)
 	self.active         = true
-	self.delay          = rnd.range(2, (emojis / 2) - (level / 4))
+	self.delay          = rnd.range(2, (emojis / 3) - (level / 3))
 	self.wait_timeout   = 0
 	self.waiting        = false
 	self.going_away     = false
 	self.need_pos_check = false
+	self.sound_delay    = 0
+	self.collide_type   = 0
 
 	msg.post("#sprite", "play_animation", {id = hash("e"..rnd.range(1, emoji_in_atlas))})
 
 	-- movement for main menu
-	if main_menu_visible == true then
-		msg.post("#collide_emoji", "disable")
-		sprite.set_constant("#sprite", "tint", vmath.vector4(.32, .36, .52, 1))
-		timer.delay(1.82, false, function() msg.post("#collide_emoji", "enable") end)
-		go.set_scale(math.random(36, 360) / 100)
-		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
-		get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
+	if bonus_level_active ~= 1 then
+		if main_menu_visible then
+			msg.post("#collide_emoji", "disable")
+			sprite.set_constant("#sprite", "tint", vmath.vector4(.32, .36, .52, 1))
+			timer.delay(1.82, false, function() msg.post("#collide_emoji", "enable") end)
+			go.set_scale(math.random(36, 360) / 100)
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
+			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
+		else
+			self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
+			self.particle_url = msg.url(nil, go.get_id(), "particle")
+			sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
+			get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, self.delay)
+		end
 	else
+		sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,0))
 		self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
+		self.sprite_url = msg.url(nil, go.get_id(), "sprite")
 		self.particle_url = msg.url(nil, go.get_id(), "particle")
-		sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
-		get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, self.delay)
 	end
 end
 
@@ -43,31 +56,32 @@ end
 
 function update(self, dt)
 	local pos, pos_x, pos_y
+	if bonus_level_active ~= 1 then
+		-- disable emojis at the end of main menu
+		if main_menu_visible == true then
+			--msg.post("#collide_weapon", "disable")
+			if allow_title_emojis == false and self.active == true then
+				self.active = false
+				msg.post(msg.url(nil, go.get_id(), "collide_emoji"), "disable")
 
-	-- disable emojis at the end of main menu
-	if main_menu_visible == true then
-		--msg.post("#collide_weapon", "disable")
-		if allow_title_emojis == false and self.active == true then
-			self.active = false
-			msg.post(msg.url(nil, go.get_id(), "collide_emoji"), "disable")
+				pos_x, pos_y = get_offscreen_pos(400)
+				go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, math.random(36, 360) / 100, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
+				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos_x, pos_y, 1), go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10, function ()
+					go.delete()
+				end)
+			end
 
-			pos_x, pos_y = get_offscreen_pos(400)
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, math.random(36, 360) / 100, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
-			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos_x, pos_y, 1), go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10, function ()
-				go.delete()
-			end)
-		end
-
-	-- checks if emoji is on-screen, to determine if it's going to wait state, if not - get new on-screen position
-	else
-		pos = go.get_position()
-
-		if pos.x > 40 and pos.x < window_w - 40 and pos.y > 40 and pos.y < window_h - 70 and self.active == true and self.going_away == false then
-			self.need_pos_check = false
-			msg.post(self.collide_url, "enable")
+		-- checks if emoji is on-screen, to determine if it's going to wait state, if not - get new on-screen position
 		else
-			self.need_pos_check = true
-			msg.post(self.collide_url, "disable")
+			pos = go.get_position()
+
+			if pos.x > 40 and pos.x < window_w - 40 and pos.y > 40 and pos.y < window_h - 70 and self.active == true and self.going_away == false then
+				self.need_pos_check = false
+				msg.post(self.collide_url, "enable")
+			else
+				self.need_pos_check = true
+				msg.post(self.collide_url, "disable")
+			end
 		end
 	end
 end
@@ -84,6 +98,7 @@ function get_new_menu_emoji_pos(self, easing1, easing2)
 
 	pos_x = rnd.range(50 + 20, window_w - 20 - 50)
 	pos_y = rnd.range(50 + 20, window_h - 20 - 50)
+	self.dest = vmath.vector3(pos_x, pos_y, 1)
 	sprite_flip(pos_x)
 
 	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, pos_y, easing1, time)
@@ -102,15 +117,18 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 		local pos_x, pos_y
 		local radius, x, y
 
+		if bonus_level_active == 1 then self.active = false end
+
 		radius = rnd.range(40, 120)
 		--time = self.speed + rnd.range(-(speed/3), speed/3)
 
-		if self.going_away == false then
-			time = self.speed - (self.speed * (speed / 100))
+		if not self.going_away then
+			time = self.speed - (self.speed * (speed / 100)) + math.random(-2, 4)
 			pos_x = rnd.range(80 + 50, window_w - 80 - 50)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
+			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 1.46
+			time = (self.speed - (self.speed * (speed / 100))) * 1.22
 			pos_x, pos_y = get_offscreen_pos(100, true, go.get_position())
 		end
 		sprite_flip(pos_x)
@@ -118,21 +136,17 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 		go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, pos_y, easing1, time, delay)
 		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x - radius, easing2, time * 0.5, delay, function()
 			go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x, easing2, time * 0.5, 0, function()
-				if self.going_away == false then
+				if not self.going_away then
 					self.need_pos_check = false
 					emoji_waiting(self)
 				else
-					if health > 0 then
+					if health > 0 and bonus_level_active ~= 1 and self.active then
 						sound.play("game_layer1:/main#energy_loss", {speed = math.random(80, 120) / 100})
 						emojis_left = emojis_left - 1 ; escaped = escaped + 1
 						health = health - 1
-						particlefx.stop(self.particle_url)
-						-- timer.delay(2, false, function()
-						-- 	table.remove(emoji_table, go.get_id())
-						-- 	go.delete(".")
-						-- end)
 						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "emoji_left"})
 					end
+					particlefx.stop(self.particle_url)
 				end
 			end)
 		end)
@@ -149,17 +163,18 @@ function emoji_waiting(self)
 			self.waiting = true
 			particlefx.play(self.particle_url)
 			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
-			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.42, .46, .68, .82))
+			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.52, .56, .78, .84))
 		end
 
 		if socket.gettime() >= self.wait_timeout and self.going_away == false then
+			if bonus_level_active == 1 then particlefx.play(self.particle_url) end
 			self.waiting = false
 			self.going_away = true
-			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .64))
-			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .92))
+			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .68))
+			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .96))
 
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, 1, 0, function()
-				msg.post(self.collide_url, "disable")
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, .77, 0, function()
+			--msg.post(self.collide_url, "disable")
 				sound.play("game_layer1:/main#emoji_going_away", {speed = math.random(80, 120) / 100})
 				get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, .1)
 			end)
@@ -186,103 +201,224 @@ end
 
 
 function on_message(self, message_id, message, sender)
-	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc
+	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc, play_sound--, change_dest
 	local blood_scale = {20, 15, 60, 45}
 
 
 	-- for main menu
 	if main_menu_visible == true then
-		if message.group == hash("menu_right_click") then
-			force = rnd.range(120, 160)
-			distance = rnd.range(20, 28) / 10
-			time = rnd.range(10, 24) / 10
-		else 
-			force = rnd.range(60, 125)
-			distance = rnd.range(9, 16) / 10
-			time = rnd.range(14, 40) / 10
-		end
+
 
 		if message_id == hash("contact_point_response") and self.active == true then
-			go.set_position(go.get_position() + message.normal * message.distance)
-			pos = go.get_position() + (message.normal * force) * (message.distance * distance)
-			sprite_flip(pos.x)
-			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, time, 0, function()
+			pos = go.get_position()
+
+			if self.collide_type == 0 then
+				if math.random(1, 400) <= 360 then
+					self.collide_type = 1
+				else
+					self.collide_type = 2
+				end
+			end
+
+			if self.collide_type == 1 then
+				force = rnd.range(24, 60) / 10
+				distance = rnd.range(10, 64)
+				time = rnd.range(14, 40) / 10
+				self.dest = pos + (message.normal * force) * (message.distance * distance)
+				self.collide = -1
+			elseif self.collide_type == 2 then
+				force = 1
+				distance = 1.2
+				time = rnd.range(18, 36) / 10
+				self.collide = -1
+			end
+
+
+			if message.group == hash("menu_right_click") then
+				force = 60
+				distance = rnd.range(40, 68) / 10
+				time = rnd.range(10, 24) / 10
+				--self.collide = 0
+				self.dest = pos + (message.normal * force) * (message.distance * distance)
+
+
+			elseif message.group == hash("emoji") then
+				--change_dest = false
+				other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
+
+				if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
+					self.dest.x = pos.x
+				end
+				if self.dest.y < other_dest.y + 60 and self.dest.y > other_dest.y - 60 then
+					self.dest.y = pos.y
+				end
+			end
+
+
+			-- if change_dest then
+			-- 	--go.cancel_animations(".", "position")
+			-- 	self.dest = pos + (message.normal * force) * (message.distance * distance)
+			-- end
+
+			go.set_position(pos + message.normal * message.distance) ; sprite_flip(pos.x)
+			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
+				self.collide_type = 0
 				get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 			end)
 		end
 
 
+
+
 	-- for levels
 	else
-		if message.group == hash("weapon") and self.active == true then
+		if bonus_level_active ~= 1 then
+			if message.group == hash("weapon") and self.active == true then
 
-			emojis_left = emojis_left - 1 ; killed = killed + 1
-			score_calc = self.score
-			if self.waiting == false and self.going_away == false then score_calc = score_calc * 3 end
-			if self.waiting == true then score_calc = score_calc * 2 end
-			score = score + score_calc
+				emojis_left = emojis_left - 1 ; killed = killed + 1
+				score_calc = self.score
+				if self.waiting == false and self.going_away == false then score_calc = score_calc * 3 end
+				if self.waiting == true then score_calc = score_calc * 2 end
+				score = score + score_calc
 
-			msg.post("game_layer2:/main#game_gui", "display_update")
-			sound.play("game_layer1:/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
-			particlefx.stop(self.particle_url)
+				msg.post("game_layer2:/main#game_gui", "display_update")
+				sound.play("game_layer1:/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
+				particlefx.stop(self.particle_url)
 
-			self.active = false
-			msg.post(self.collide_url, "disable")
+				self.active = false
+				msg.post(self.collide_url, "disable")
 
-			go.cancel_animations(".", "position")
-			go.cancel_animations(".", "scale")
-			pos = go.get_position()
-			go.set_position(vmath.vector3(pos.x, pos.y, .8))
-			go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)))
+				go.cancel_animations(".", "position")
+				go.cancel_animations(".", "scale")
+				pos = go.get_position()
+				go.set_position(vmath.vector3(pos.x, pos.y, .8))
+				go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)))
+				make_blood(pos, blood_scale)
 
-			for a = 1, 4 do
-				-- blood 1 and 2 is under sprite
-				-- blood 4 is under cursor
-				if a <= 2 then z = .4 else z = .9 end
-				if a == 4 then
-					pos_x = cursor_x
-					pos_y = cursor_y
-				else
-					pos_x = pos.x + math.random(-8, 8)
-					pos_y = pos.y + math.random(-8, 8)
+
+
+
+			elseif message_id == hash("contact_point_response") and self.active == true then
+				time = rnd.range(18, 36) / 10
+				time = time + (time * speed / 100)
+
+				pos = go.get_position() + message.normal * (message.distance * 1.22)
+				go.set_position(pos)
+
+				other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
+				play_sound = true
+
+				if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
+					self.dest.x = pos.x
+					self.need_pos_check = true
+					play_sound = false
+				end
+				if self.dest.y < other_dest.y + 60 and self.dest.y > other_dest.y - 60 then
+					self.dest.y = pos.y
+					self.need_pos_check = true
+					play_sound = false
+				end
+				if play_sound and socket.gettime() > self.sound_delay then
+					sound.play("game_layer1:/main#emoji_collide", {speed = math.random (12, 18) / 10})
+					self.sound_delay = socket.gettime() + 0.1
 				end
 
-				msg.post("game_layer2:/main#ctrl", "spawn_blood", {a = a, x = pos_x, y = pos_y, z = z, scale = blood_scale[a]})
+				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
+					if self.need_pos_check == true then
+						self.wait_timeout = 0
+						--go.cancel_animations(".", "position")
+						get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
+					else
+						emoji_waiting(self)
+					end
+				end)
 			end
 
 
-		elseif message_id == hash("contact_point_response") and self.active == true then
-			force = rnd.range(80, 120)
-			distance = (rnd.range(8, 12) / 10)
-			distance = distance - (distance * speed / 100)
-			time = rnd.range(12, 20) / 10
-			time = time + (time * speed / 100)
 
-			sound.play("game_layer1:/main#emoji_collide", {speed = math.random (12, 18) / 10})
-			go.set_position(go.get_position() + message.normal * message.distance)
-			pos = go.get_position() + (message.normal * force) * (message.distance * distance)
-			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, time, 0, function()
-				if self.need_pos_check == true then
-					self.wait_timeout = 0
-					go.cancel_animations(".", "position")
-					get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
+
+			-- bonus level handling:
+		else
+			if message.group == hash("weapon") and self.active == true then
+				self.active = false
+				go.set(self.sprite_url, "tint.w", 1)
+				pos = go.get_position()
+				go.set_position(vmath.vector3(pos.x, pos.y, .8))
+
+				if go.get_scale().x == 1 then
+					bonus_score = bonus_score + 10
+					bonus_level_kills.small = bonus_level_kills.small + 1
+					make_blood(pos, blood_scale)
 				else
+					bonus_score = bonus_score + 50
+					bonus_level_kills.big = bonus_level_kills.big + 1
+					make_blood(pos, blood_scale, 1.6)
+				end
+
+				msg.post("game_layer2:/main#ctrl", "reset anim")
+				msg.post("game_layer2:/main#game_gui", "bonus_display_update")
+				sound.play("game_layer1:/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
+
+
+			elseif message_id == hash("collision_response") and self.active == true then
+				x, y = get_onscreen_pos(10)
+				go.set_position(vmath.vector3(x, y, 1))
+			end
+		end
+
+
+
+
+		if message_id == hash("clean_emojis") then
+			for a = 1, table.maxn(emoji_table) do
+				self.active = false
+				go.animate(emoji_table[a], "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_INSINE, 2, 0, function()
+					go.delete(emoji_table[a])
+					--pprint(a.." : "..emoji_table[a])
+					if a == table.maxn(emoji_table) and bonus_level_active then
+						msg.post("game_layer2:/main#game_gui", "show_bonus_level_intro")
+					end
+				end)
+			end
+
+
+		elseif message_id == hash("bonus level emoji at end") then
+			self.speed = 2
+			self.wait_timeout = message.timeout
+			timer.delay(message.delay, false, function()
+				sound.play("/main#plumk", {gain = 0.22, speed = math.random(100, 200) / 100})
+			end)
+			go.animate(self.sprite_url, "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INSINE, .2, message.delay, function()
+				if self.active then
+					-- particlefx.play(self.particle_url)
 					emoji_waiting(self)
 				end
 			end)
 
 
-		elseif message_id == hash("clean_emojis") then
-			for _, id in ipairs(emoji_table) do
-				go.animate(id, "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_INSINE, 2, 0, function()
-					go.delete(id)
-				end)
-			end
+			msg.post("#collide_emoji", "disable")
 		end
 	end
 end
 
 
-function on_reload()
-	pprint(emoji_table)
+
+
+function make_blood(pos, blood_scale, multiplier)
+	if multiplier == nil then multiplier = 1 end
+	
+	for a = 1, 4 do
+		-- blood 1 and 2 is under sprite
+		-- blood 4 is under cursor
+		if a <= 2 then z = .4 else z = .9 end
+		if a == 4 then
+			pos_x = cursor_x
+			pos_y = cursor_y
+		else
+			pos_x = pos.x + math.random(-8, 8)
+			pos_y = pos.y + math.random(-8, 8)
+		end
+
+		msg.post("game_layer2:/main#ctrl", "spawn_blood", {a = a, x = pos_x, y = pos_y, z = z, scale = blood_scale[a] * multiplier, multiplier = multiplier})
+	end
 end

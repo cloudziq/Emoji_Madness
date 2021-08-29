@@ -1,0 +1,186 @@
+--local functions:
+local prepare_gui, start_counting, finalise_gui, hide_gui
+
+
+--local variables:
+local allow_continue, menu_col, points_col
+
+
+
+
+function init(self)
+	msg.post("#", "disable")
+end
+
+
+
+function on_message(self, message_id, message)
+	if message_id == hash("show") then
+		allow_continue = false
+		prepare_gui()
+		start_counting("small", 10, false)
+	end
+end
+
+
+
+
+function on_input(self, action_id, action)
+	local pos
+
+	if pause_id == nil then
+		if action_id == nil then
+			gui.set_position(gui.get_node("crosshair"), vmath.vector3(action.x, action.y, 1))
+		end
+
+
+		if gui.pick_node(gui.get_node("box1"), action.x, action.y) and action_id == hash("click1") and action.pressed and allow_continue == true then
+			allow_continue = false
+			hide_gui()
+		end
+	end
+end
+
+
+
+
+function prepare_gui()
+	menu_col = gui.get_color(gui.get_node("WIN"))
+	points_col = gui.get_color(gui.get_node("small_="))
+
+	--gui.set_color(gui.get_node("WIN"), vmath.vector4(1,1,1,0))
+	gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
+	gui.set_color(gui.get_node("complete_bonus_health"), vmath.vector4(0,0,0,0))
+	gui.set_scale(gui.get_node("total_points"), vmath.vector3(0,0,0))
+	gui.set_scale(gui.get_node("total_points_amount"), vmath.vector3(0,0,0))
+	gui.set_scale(gui.get_node("box1"), vmath.vector3(0,0,1))
+
+	gui.set_scale(gui.get_node("small"), vmath.vector3(0,0,1))
+	gui.set_scale(gui.get_node("small_count"), vmath.vector3(0,0,1))
+	gui.set_scale(gui.get_node("small_x"), vmath.vector3(0,0,1))
+	gui.set_color(gui.get_node("small_="), vmath.vector4(points_col.x, points_col.y, points_col.z , 0))
+	gui.set_scale(gui.get_node("big"), vmath.vector3(0,0,1))
+	gui.set_scale(gui.get_node("big_count"), vmath.vector3(0,0,0,1))
+	gui.set_scale(gui.get_node("big_x"), vmath.vector3(0,0,1))
+	gui.set_color(gui.get_node("big_="), vmath.vector4(points_col.x, points_col.y, points_col.z , 0))
+
+	for a = 1, 4 do
+		gui.set_color(gui.get_node("clover"..a), vmath.vector4(1,1,1,0))
+	end
+
+	gui.animate(gui.get_node("WIN"), "color", menu_col, gui.EASING_LINEAR, .8)
+	gui.animate(gui.get_node("BG"), "color", vmath.vector4(0,0,0,1), gui.EASING_LINEAR, 2)
+
+	for a = 1, 4 do
+		gui.animate(gui.get_node("clover"..a), "color.w", 1, gui.EASING_LINEAR, 1)
+	end
+
+	timer.delay(1, false, function() gui.play_particlefx(gui.get_node("particlefx")) end)
+	msg.post("#", "enable")
+end
+
+
+
+
+function start_counting(node, multiplier, stop)
+	local a, count = 0, bonus_level_kills[node]
+
+	gui.animate(gui.get_node(node), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function()
+		sound.play("game_layer1:/main#win_count")
+		gui.animate(gui.get_node(node.."_count"), "scale", vmath.vector3(1, 1, 1), gui.EASING_OUTELASTIC, 1)
+	end)
+
+	if bonus_level_kills[node] > 0 then
+		gui.animate(gui.get_node(node.."_x"), "scale", vmath.vector3(.4, .4, 1), gui.EASING_OUTELASTIC, 1)
+	end
+
+	timer.delay(1, false, function()
+		for a = 0, count do
+			timer.delay(0.1 * a, false, function()
+				gui.set_text(gui.get_node(node.."_count"), a)
+				sound.play("game_layer1:/main#win_count", {speed = 4})
+				if a == count and a > 0 then
+					gui.set_text(gui.get_node(node.."_points"), count * multiplier)
+					gui.animate(gui.get_node(node.."_="), "color.w", 1, gui.EASING_OUTELASTIC, 1, 0, function()
+						gui.animate(gui.get_node(node.."_x"), "color.w", 0, gui.EASING_LINEAR, .2, .2)
+						gui.animate(gui.get_node(node.."_="), "position.y", 7, gui.EASING_OUTELASTIC, .8, .2, function()
+							if not stop then
+								--timer.delay(2, false, function()
+									start_counting("big", 50, true)
+								--end)
+							else
+								total_points()
+							end
+						end)
+					end)
+				elseif a == count and a == 0 then
+					if not stop then
+						start_counting("big", 50, true)
+					else
+						total_points()
+					end
+				end
+			end)
+		end
+	end)
+end
+
+
+
+
+function total_points()
+	sound.play("game_layer1:/main#win_count")
+	gui.animate(gui.get_node("total_points"), "scale", vmath.vector3(.34, .34, 1), gui.EASING_OUTELASTIC, 1.2, 0, function()
+		sound.play("game_layer1:/main#win_count")
+		gui.set_text(gui.get_node("total_points_amount"), bonus_score)
+		gui.animate(gui.get_node("total_points_amount"), "scale", vmath.vector3(1.6, 1.6, 1), gui.EASING_OUTELASTIC, 1.2, .4)
+		finalise_gui()
+	end)
+end
+
+
+
+
+function finalise_gui()
+	gui.animate(gui.get_node("box1"), "scale", vmath.vector3(1, 1, 1), gui.EASING_INSINE, 1.2, 0, function()
+		allow_continue = true
+	end)
+end
+
+
+
+
+function hide_gui()
+	gui.set_text(gui.get_node("complete_bonus_health"), "+"..health_add)
+	gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,1), gui.EASING_INSINE, .1, 0, function()
+		gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1.4)
+	end)
+	pos = gui.get_position(gui.get_node("complete_bonus_health"))
+	pos.x = pos.x + math.random(220, 360) ; pos.y = pos.y + math.random(220, 360)
+	gui.animate(gui.get_node("complete_bonus_health"), "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 1.25)
+	gui.animate(gui.get_node("complete_bonus_health"), "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
+
+	gui.animate(gui.get_node("box1"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1)
+	gui.animate(gui.get_node("box1"), "scale", vmath.vector3(0,0,0), gui.EASING_INSINE, 1)
+	gui.animate(gui.get_node("WIN"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1.2)
+	gui.animate(gui.get_node("BG"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.1)
+
+	for a = 1, 4 do
+		gui.set_color(gui.get_node("clover"..a), vmath.vector4(1,1,1,0))
+	end
+
+	gui.stop_particlefx(gui.get_node("particlefx"))
+	gui.set_enabled(gui.get_node("crosshair"), false)
+	msg.post("game_layer1:/main#ctrl", "clean_emojis")
+	if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end
+
+	msg.post("game_layer2:/main#game_gui", "hide_after_level")
+	timer.delay(1, false, function()
+		bonus_level_active = false
+		msg.post("/main#game_gui", "show_level_intro")
+	end)
+
+	timer.delay(4, false, function()
+		gui.reset_nodes() ; msg.post("#", "disable")
+	end)
+end

@@ -15,3 +15,7 @@ materials {
   name: "sparks"
   material: "/main/render/materials/emoji_main_sparks.material"
 }
+materials {
+  name: "tile_particle"
+  material: "/main/render/materials/particlefx_tile.material"
+}

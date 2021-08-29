@@ -17,7 +17,7 @@ input_method = HiddenInputField
 title = SQUISHED
 developer = Dziq
 write_log = 0
-version = 0.92  (beta)
+version = 0.94  (beta)
 publisher = JOPS INTERACTIVE CO LTD
 dependencies#0 = https://github.com/subsoap/defos/archive/v2.5.0.zip
 dependencies#1 = https://github.com/selimanac/defold-random/archive/master.zip
@@ -36,9 +36,9 @@ debug = 0
 debug_alpha = 0.65
 
 [graphics]
-texture_profiles = /builtins/graphics/default.texture_profiles
+texture_profiles = /main/render/custom.texture_profiles
 max_debug_vertices = 30000
-verify_graphics_calls = 0
+verify_graphics_calls = 1
 
 [input]
 repeat_interval = 0.1

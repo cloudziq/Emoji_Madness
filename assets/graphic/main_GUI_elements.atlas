@@ -19,10 +19,6 @@ images {
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/graphic/a_emoji.png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
   image: "/assets/graphic/pause_overlay.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
@@ -52,6 +48,18 @@ images {
 }
 images {
   image: "/assets/graphic/slider.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/graphic/pistol.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/graphic/palmsy.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/graphic/luck.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

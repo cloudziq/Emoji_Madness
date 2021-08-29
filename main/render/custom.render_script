@@ -79,7 +79,7 @@ end
 
 
 
-dark_mode = true
+
 function update(self)
     if dark_mode == true then
         render.enable_render_target(self.target_1)
@@ -104,7 +104,6 @@ function update(self)
     render.draw(self.tile_pred)
     render.draw(self.particle_pred)
 
-
     if dark_mode == true then
         render.disable_render_target(self.target_1)
 
@@ -117,6 +116,7 @@ function update(self)
         render.set_projection(get_projection(self))
 
         render.draw(self.light_particle_pred)
+        render.draw(self.light_sprite_pred)
 
         render.disable_render_target(self.target_2)
 
@@ -149,7 +149,6 @@ function update(self)
     render.disable_state(render.STATE_STENCIL_TEST)
 
     render.draw_debug3d()
-
 end
 
 
