@@ -17,7 +17,7 @@ end
 
 
 function on_message(self, message_id, message, sender)
-	local node, a, i, delay, id
+	local node, a, i, delay, id, scale
 
 
 	if message_id == hash("show_bonus_level_intro") then
@@ -63,10 +63,10 @@ function on_message(self, message_id, message, sender)
 				gui.animate(gui.get_node("level_intro"), "position.x", pos_level.x, gui.EASING_OUTCIRC, 1)
 			else
 				bonus_level_active = 1
-				timer.delay(.1, false, function()
+				--timer.delay(.1, false, function()
 					msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = 90, scale = 1})
 					msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = 10, scale = 2, table_clear = false})
-				end)
+				--end)
 
 				msg.post("game_layer1:/main#ctrl", "fade_in_add_music")
 				msg.post("game_layer1:/main#ctrl", "fade_out_music")
@@ -80,24 +80,12 @@ function on_message(self, message_id, message, sender)
 				end
 			end)
 
+
 		-- next iterations (for each new level)
 		else
-			--if not bonus_level_active then
-				msg.post(".", "show_level_display")
-				msg.post(".", "hide_level_start")
-			--else
-				-- msg.post(".", "show_bonus_level_display")
-				-- gui.animate(gui.get_node("bonus_level"), "position.y", -1000, gui.EASING_INSINE, 4)
-				-- timer.delay(3, false, function() msg.post(".", "hide_level_start") end)
-				-- dark_mode = true
-			--end
+			msg.post(".", "show_level_display")
+			msg.post(".", "hide_level_start")
 		end
-
-		-- if bonus_level_active then
-		-- 	msg.post(".", "show_bonus_level_display")
-		-- 	-- gui.animate(gui.get_node("bonus_level"), "position.y", -1000, gui.EASING_INSINE, 4)
-		-- 	--timer.delay(3, false, function() msg.post(".", "hide_level_start") end)
-		-- end
 
 		gui.set_scale(gui.get_node("GO"), vmath.vector3(1.4, 1.4, 1.4))
 		gui.set_color(gui.get_node("GO_text"), vmath.vector4(0,0,0,0))
@@ -182,6 +170,17 @@ function on_message(self, message_id, message, sender)
 		gui.set_enabled(gui.get_node("crosshair"), false)
 		gui.animate(gui.get_node("display"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.6, .2)
 		gui.animate(gui.get_node("display_bonus_level"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.6, .2)
+
+
+
+
+	elseif message_id == hash("animate cursor") then
+		if weapon_collide then scale = vmath.vector3(4,4,0) else scale = vmath.vector3(1.64, 1.64, 0) end
+		gui.animate(gui.get_node("crosshair"), "color.w", .2, gui.EASING_LINEAR, .15)
+		gui.animate(gui.get_node("crosshair"), "scale", scale, gui.EASING_LINEAR, .15, 0, function ()
+			gui.animate(gui.get_node("crosshair"), "color.w", .64, gui.EASING_LINEAR, .1)
+			gui.animate(gui.get_node("crosshair"), "scale", vmath.vector3(3,3,3), gui.EASING_LINEAR, .1)
+		end)
 	end
 end
 

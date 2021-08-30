@@ -6,7 +6,9 @@ function on_message(self, message_id, message)
 	local id, timeout, delay = 0, 0, 4
 
 	if message_id == hash("generate_emojis") then
-		generate_emojis(message.emojis, "#emoji_factory", message.scale, message.table_clear)
+		timer.delay(0.1, false, function()
+			generate_emojis(message.emojis, "#emoji_factory", message.scale, message.table_clear)
+		end)
 
 
 	elseif message_id == hash("clean_emojis") then
@@ -42,7 +44,7 @@ function on_message(self, message_id, message)
 		clock_url = msg.url(nil, clock_id, nil)
 
 	elseif message_id == hash("bonus_level") then
-		level_id = factory.create("bonus#level")
+		level_id = factory.create("bonus#level", nil, nil, nil, 2.2)
 		level_url = msg.url(nil, level_id, nil)
 
 

@@ -1,18 +1,29 @@
 function init(self)
 	local x, y
+	local playback = go.PLAYBACK_ONCE_FORWARD
+	local easing = go.EASING_LINEAR
 
 	self.active = true
+	if not dark_mode then
+		self.fade_in =  2
+		self.time = 2
+		self.fade_out = 2
+	else
+		self.fade_in =  4
+		self.time = 6
+		self.fade_out = 4
+	end
 	x = rnd.range(80 + 50, window_w - 80 - 50)
-	y = rnd.range(80 + 50, window_h - 120 - 50)
+	y = rnd.range(80 + 50, window_h - 80 - 50 - 44)
 
 	go.set_scale(0.001)
 	go.set("#sprite", "tint.w", 0)
 	go.set_position(vmath.vector3(x, y, 1))
 
-	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, 3)
-	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 3, 0, function()
-		go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 2, 1)
-		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 2, 1, function()
+	go.animate("#sprite", "tint.w", playback, 1, easing, self.fade_in)
+	go.animate(".", "scale", playback, 1, easing, self.fade_in, 0, function()
+		go.animate("#sprite", "tint.w", playback, 0, easing, self.fade_out, self.time)
+		go.animate(".", "scale", playback, 0, easing, self.fade_out, self.time, function()
 			go.delete()
 		end)
 	end)

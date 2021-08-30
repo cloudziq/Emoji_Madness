@@ -99,7 +99,6 @@ function speed_change(dir)
 	end
 
 	msg.post("main:/main#game_proxy1", "set_time_step", {factor = proxy_speed , mode = 0})
-	pprint(proxy_speed)
 
 	if proxy_speed_changing == true then
 		timer.delay(delay, false, function() speed_change(dir) end)

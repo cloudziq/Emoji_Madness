@@ -1,3 +1,4 @@
+
 function get_offscreen_pos(offset, oposite, pos, spread)
 	local a, x, y, method
 	if spread == nil then spread = 0 end
@@ -44,10 +45,12 @@ end
 
 
 
-function get_onscreen_pos(offset)
+function get_onscreen_pos(offset, multiplier)
 	local x, y
-	x = rnd.range(offset + 50, window_w - offset - 50)
-	y = rnd.range(offset + 50, window_h - offset - 50 - 45)
+	if multiplier == nil then multiplier = 1 end
+	
+	x = rnd.range(offset, window_w - offset - (50 * multiplier))
+	y = rnd.range(offset, window_h - offset - (50 * multiplier) - 44)
 
 	return x, y
 end
@@ -56,7 +59,7 @@ end
 
 
 function generate_emojis(num, url, scale, clear)
-	local pos_x, pos_y, b, id
+	local pos_x, pos_y, b, id, multiplier
 
 	if clear == nil or clear then emoji_table = {} end
 	--if clear then emoji_table = {} end
@@ -65,7 +68,8 @@ function generate_emojis(num, url, scale, clear)
 		if not bonus_level_active then
 			pos_x, pos_y = get_offscreen_pos(200, false, nil, 100)
 		else
-			pos_x, pos_y = get_onscreen_pos(10)
+			if scale == 1 then multiplier = 1 else multiplier = 2 end
+			pos_x, pos_y = get_onscreen_pos(10, multiplier)
 		end
 		id = factory.create(url, vmath.vector3(pos_x, pos_y, 1), nil, nil, scale)
 		table.insert(emoji_table, id)

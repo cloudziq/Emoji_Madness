@@ -1,14 +1,11 @@
 go.property("speed",  8)
-go.property("wait",   4)
+go.property("wait",   2)
 go.property("score",  1)
 go.property("dest",   vmath.vector3())
 
 
 emojis = 10 ; level = 1  -- dummy values, will be overwriten anyway
 
-
--- local variables:
---local sprite_url
 
 -- local functions:
 local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
@@ -18,7 +15,7 @@ local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
 
 function init(self)
 	self.active         = true
-	self.delay          = rnd.range(2, (emojis / 3) - (level / 3))
+	self.delay          = rnd.range(2, (emojis / 3) - (level / 4))
 	self.wait_timeout   = 0
 	self.waiting        = false
 	self.going_away     = false
@@ -75,12 +72,12 @@ function update(self, dt)
 		else
 			pos = go.get_position()
 
-			if pos.x > 40 and pos.x < window_w - 40 and pos.y > 40 and pos.y < window_h - 70 and self.active == true and self.going_away == false then
+			if pos.x > 50 and pos.x < window_w - 50 and pos.y > 50 and pos.y < window_h -50 - 44 and self.active == true and self.going_away == false then
 				self.need_pos_check = false
-				msg.post(self.collide_url, "enable")
+				--msg.post(self.collide_url, "enable")
 			else
 				self.need_pos_check = true
-				msg.post(self.collide_url, "disable")
+				--msg.post(self.collide_url, "disable")
 			end
 		end
 	end
@@ -168,15 +165,15 @@ function emoji_waiting(self)
 
 		if socket.gettime() >= self.wait_timeout and self.going_away == false then
 			if bonus_level_active == 1 then particlefx.play(self.particle_url) end
-			self.waiting = false
-			self.going_away = true
+			msg.post(self.collide_url, "disable")
 			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .68))
 			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .96))
 
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, .77, 0, function()
-			--msg.post(self.collide_url, "disable")
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, .44, 0, function()
+				self.waiting = false
+				self.going_away = true
 				sound.play("game_layer1:/main#emoji_going_away", {speed = math.random(80, 120) / 100})
-				get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, .1)
+				get_new_emoji_pos(self, go.EASING_INSINE, go.EASING_LINEAR, .1)
 			end)
 		else
 			local pos = go.get_position()
@@ -201,7 +198,7 @@ end
 
 
 function on_message(self, message_id, message, sender)
-	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc, play_sound--, change_dest
+	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc, play_sound
 	local blood_scale = {20, 15, 60, 45}
 
 
@@ -243,7 +240,6 @@ function on_message(self, message_id, message, sender)
 
 
 			elseif message.group == hash("emoji") then
-				--change_dest = false
 				other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
 
 				if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
@@ -254,11 +250,6 @@ function on_message(self, message_id, message, sender)
 				end
 			end
 
-
-			-- if change_dest then
-			-- 	--go.cancel_animations(".", "position")
-			-- 	self.dest = pos + (message.normal * force) * (message.distance * distance)
-			-- end
 
 			go.set_position(pos + message.normal * message.distance) ; sprite_flip(pos.x)
 			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
@@ -299,7 +290,7 @@ function on_message(self, message_id, message, sender)
 
 
 			elseif message_id == hash("contact_point_response") and self.active == true then
-				time = rnd.range(18, 36) / 10
+				time = rnd.range(26, 44) / 10
 				time = time + (time * speed / 100)
 
 				pos = go.get_position() + message.normal * (message.distance * 1.22)
@@ -318,9 +309,10 @@ function on_message(self, message_id, message, sender)
 					self.need_pos_check = true
 					play_sound = false
 				end
+
 				if play_sound and socket.gettime() > self.sound_delay then
-					sound.play("game_layer1:/main#emoji_collide", {speed = math.random (12, 18) / 10})
-					self.sound_delay = socket.gettime() + 0.1
+					sound.play("game_layer1:/main#emoji_collide", {speed = math.random (14, 24) / 10})
+					self.sound_delay = socket.gettime() + 0.08
 				end
 
 				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
@@ -337,7 +329,7 @@ function on_message(self, message_id, message, sender)
 
 
 
-			-- bonus level handling:
+		-- bonus level handling:
 		else
 			if message.group == hash("weapon") and self.active == true then
 				self.active = false
@@ -374,7 +366,7 @@ function on_message(self, message_id, message, sender)
 				self.active = false
 				go.animate(emoji_table[a], "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_INSINE, 2, 0, function()
 					go.delete(emoji_table[a])
-					--pprint(a.." : "..emoji_table[a])
+
 					if a == table.maxn(emoji_table) and bonus_level_active then
 						msg.post("game_layer2:/main#game_gui", "show_bonus_level_intro")
 					end

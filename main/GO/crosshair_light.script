@@ -1,4 +1,4 @@
 function init(self)
-	go.set_scale(2.66)
-	go.set("#sprite", "tint.w", .52)
+	go.set_scale(4.2)
+	go.set("#sprite", "tint.w", .6)
 end

@@ -173,6 +173,7 @@ function hide_gui()
 	gui.set_enabled(gui.get_node("crosshair"), false)
 	msg.post("game_layer1:/main#ctrl", "clean_emojis")
 	if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end
+	for _, id in ipairs(BG_table) do msg.post(id, "reset anim") end
 
 	msg.post("game_layer2:/main#game_gui", "hide_after_level")
 	timer.delay(1, false, function()
