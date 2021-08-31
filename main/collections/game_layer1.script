@@ -12,7 +12,7 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("clean_emojis") then
-		msg.post(emoji_go_id, "clean_emojis")
+		msg.post(emoji_go_id, "clean_emojis", {continue = message.continue})
 
 
 	elseif message_id == hash("bonus level emoji at end") then
@@ -44,7 +44,7 @@ function on_message(self, message_id, message)
 		clock_url = msg.url(nil, clock_id, nil)
 
 	elseif message_id == hash("bonus_level") then
-		level_id = factory.create("bonus#level", nil, nil, nil, 2.2)
+		level_id = factory.create("bonus#level")
 		level_url = msg.url(nil, level_id, nil)
 
 

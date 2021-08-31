@@ -59,19 +59,18 @@ end
 
 
 function generate_emojis(num, url, scale, clear)
-	local pos_x, pos_y, b, id, multiplier
+	local x, y, a, id, multiplier
 
 	if clear == nil or clear then emoji_table = {} end
-	--if clear then emoji_table = {} end
 
 	for a = 1, num do
 		if not bonus_level_active then
-			pos_x, pos_y = get_offscreen_pos(200, false, nil, 100)
+			x, y = get_offscreen_pos(200, false, nil, 100)
 		else
 			if scale == 1 then multiplier = 1 else multiplier = 2 end
-			pos_x, pos_y = get_onscreen_pos(10, multiplier)
+			x, y = get_onscreen_pos(10, multiplier)
 		end
-		id = factory.create(url, vmath.vector3(pos_x, pos_y, 1), nil, nil, scale)
+		id = factory.create(url, vmath.vector3(x, y, 1), nil, nil, scale)
 		table.insert(emoji_table, id)
 	end
 	emoji_go_id = id  -- required for clean_emojis table
@@ -81,13 +80,11 @@ end
 
 
 function slider(container, pointer, left, right, action)
-	local pos_center, pos_pointer, pos--, left, right
+	local pos_center, pos_pointer, pos
 
 	pos = vmath.vector3(action.x, action.y , 0)
 	pos_pointer = gui.get_position(gui.get_node(pointer))
 	pos_center = gui.get_position(gui.get_node(container))
-	--left = gui.get_position(gui.get_node(left_node))
-	--right = gui.get_position(gui.get_node(right_node))
 
 	if pos.x - pos_center.x < left then 
 		pos.x = left

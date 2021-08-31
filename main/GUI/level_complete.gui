@@ -874,7 +874,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "YOU FOUND  !"
+  text: "YOU FOUND   !"
   font: "system"
   id: "bonus_level_info"
   xanchor: XANCHOR_NONE
@@ -902,11 +902,11 @@ nodes {
   shadow_alpha: 1.0
   template_node_child: false
   text_leading: 1.0
-  text_tracking: 0.04
+  text_tracking: 0.06
 }
 nodes {
   position {
-    x: 173.127
+    x: 189.583
     y: 0.0
     z: 0.0
     w: 1.0
