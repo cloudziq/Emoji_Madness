@@ -4,6 +4,7 @@ local clock_id, level_id
 
 function on_message(self, message_id, message)
 	local id, timeout, delay = 0, 0, 4
+	local music_variant
 
 	if message_id == hash("generate_emojis") then
 		timer.delay(0.1, false, function()
@@ -51,14 +52,17 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("fade_in_music") then
-		sound.play("main#level_loop")
-		sound.set_gain("main#level_loop", 0)
-		go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 0.6, go.EASING_LINEAR, message.time)
+		music_variant = message.mode == "dark" and "_dark" or ""
+		pprint(music_variant)
+		sound.play("main#level_loop"..music_variant)
+		sound.set_gain("main#level_loop"..music_variant, 0)
+		go.animate("main#level_loop"..music_variant, "gain", go.PLAYBACK_ONCE_FORWARD, 0.6, go.EASING_LINEAR, message.time)
 
 
 	elseif message_id == hash("fade_out_music") then
-		go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4, 0, function()
-			sound.stop("main#level_loop")
+		music_variant = message.mode == "dark" and "_dark" or ""
+		go.animate("main#level_loop"..music_variant, "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4, 0, function()
+			sound.stop("main#level_loop"..music_variant)
 		end)
 
 

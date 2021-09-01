@@ -263,7 +263,7 @@ function post_intro()
 
 	gui.animate(gui.get_node("stars"), "color", vmath.vector4(.1, .14, .18, 0.1), gui.EASING_LINEAR, 8, 1.2)
 
-	local offset = 400
+	local offset = 200
 
 	for a = 1,8 do
 		local node = gui.get_node(a)

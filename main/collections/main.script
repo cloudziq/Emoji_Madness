@@ -1,6 +1,6 @@
 emoji_in_atlas    = 100
 blood_in_atlas    = 9
-level_bg_in_atlas = 58
+level_bg_in_atlas = 59
 
 
 menu_options_visible = false

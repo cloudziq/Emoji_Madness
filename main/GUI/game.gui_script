@@ -20,7 +20,30 @@ function on_message(self, message_id, message, sender)
 	local node, a, i, delay, id, scale
 
 
-	if message_id == hash("show_bonus_level_intro") then
+	if message_id == hash("show darkness intro") then
+		delay = 0 ; weapon_collide = false
+		for i = 1, 3 do
+			node = gui.get_node("dark_text"..i) ; a = gui.get_color(node)
+			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
+			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
+			delay = delay + .88
+		end
+		timer.delay(3, false, function()
+			delay = 1
+			for i = 3, 1, -1 do
+				node = gui.get_node("dark_text"..i)-- ; a = gui.get_color(node)
+				--gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
+				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.25, delay)
+				delay = delay + .44
+			end
+		end)
+		gui.set_enabled(gui.get_node("DARKNESS"), true)
+		timer.delay(4.8, false, function()
+			msg.post("#", "show_level_intro")
+		end)
+
+
+	elseif message_id == hash("show_bonus_level_intro") then
 		delay = 0 ; weapon_collide = false
 		gui.set_enabled(gui.get_node("crosshair"), true)
 		gui.set_position(gui.get_node("start_info"), vmath.vector3(window_w / 2 , -100, 1))
@@ -55,6 +78,7 @@ function on_message(self, message_id, message, sender)
 			gui.set_color(gui.get_node("display"), vmath.vector4(0,0,0,0))
 			gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
 			gui.animate(gui.get_node("BG"), "color", vmath.vector4(.22, .26, .32, .52), gui.EASING_LINEAR, 1.2)
+			gui.set_enabled(gui.get_node("DARKNESS"), false)
 
 			if not bonus_level_active then
 				gui.set_enabled(gui.get_node("display_bonus_level"), false)
@@ -68,8 +92,13 @@ function on_message(self, message_id, message, sender)
 					msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = 10, scale = 2, table_clear = false})
 				end)
 
+				if level < dark_start_level then
+					msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = ""})
+				else
+					msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "dark"})
+				end
 				msg.post("game_layer1:/main#ctrl", "fade_in_add_music")
-				msg.post("game_layer1:/main#ctrl", "fade_out_music")
+				-- msg.post("game_layer1:/main#ctrl", "fade_out_music")
 			end
 
 			gui.set_position(gui.get_node("start_info"), vmath.vector3(window_w / 2 , -100, 1))

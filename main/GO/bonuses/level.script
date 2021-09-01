@@ -11,7 +11,7 @@ function init(self)
 		self.fade_out = 2
 	else
 		self.fade_in =  4
-		self.time = 9
+		self.time = 6
 		self.fade_out = 4
 	end
 	x = rnd.range(80 + 50, window_w - 80 - 50)
@@ -19,13 +19,13 @@ function init(self)
 
 	go.set_scale(0.001)
 	go.set("#sprite", "tint.w", 0)
-	go.set("#halo", "tint", vmath.vector4(.2, .4, .2, 0))
-	go.set_position(vmath.vector3(x, y, 1))
+	go.set("#halo", "tint", vmath.vector4(.1, .2, .1, 0))
+	go.set_position(vmath.vector3(x, y, 0))
 
 	go.animate("#sprite", "tint.w", playback, 1, easing, self.fade_in)
-	go.animate(".", "scale", playback, 1.32, easing, self.fade_in, 0, function()
+	go.animate(".", "scale", playback, 1.2, easing, self.fade_in, 0, function()
 		go.animate("#sprite", "tint.w", playback, 0, easing, self.fade_out, self.time)
-		go.animate("#halo", "tint.w", playback2, 1, easing, self.fade_out / 1.4)
+		go.animate("#halo", "tint.w", playback2, 1, easing, self.fade_out / 1.8)
 		go.animate(".", "scale", playback, 0, easing, self.fade_out, self.time, function()
 			go.delete(".")
 		end)
@@ -41,8 +41,8 @@ function on_message(self, message_id, message, sender)
 			self.active = false
 			bonus_level_active = true
 			go.cancel_animations(".", "scale")
-			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 2)
-			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 4, 0, function()
+			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
+			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 2, 0, function()
 				go.delete(".")
 			end)
 			go.set_position(go.get_position(), "/bonus#level_bonus_particles")

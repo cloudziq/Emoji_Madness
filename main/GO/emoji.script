@@ -1,5 +1,5 @@
-go.property("speed",  8)
-go.property("wait",   2.62)
+go.property("speed",  6.4)
+go.property("wait",   2.64)
 go.property("score",  1)
 go.property("dest",   vmath.vector3())
 
@@ -131,7 +131,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 1.22
+			time = (self.speed - (self.speed * (speed / 100))) * 1.16
 			pos_x, pos_y = get_offscreen_pos(100, true, go.get_position())
 		end
 		sprite_flip(pos_x)
@@ -212,7 +212,7 @@ function on_message(self, message_id, message, sender)
 	if main_menu_visible == true then
 
 
-		if message_id == hash("contact_point_response") and self.active == true then
+		if message_id == collide_contact_hash and self.active == true then
 			pos = go.get_position()
 
 			if self.collide_type == 0 then
@@ -270,7 +270,7 @@ function on_message(self, message_id, message, sender)
 	-- for levels
 	else
 		if bonus_level_active ~= 1 then
-			if message.group == hash("weapon") and self.active == true then
+			if message.group == collide_weapon_hash and self.active == true then
 
 				emojis_left = emojis_left - 1 ; killed = killed + 1
 				score_calc = self.score
@@ -345,11 +345,11 @@ function on_message(self, message_id, message, sender)
 				go.set_position(vmath.vector3(pos.x, pos.y, .8))
 
 				if go.get_scale().x == 1 then
-					bonus_score = bonus_score + 10
+					bonus_score = bonus_score + 5
 					bonus_level_kills.small = bonus_level_kills.small + 1
 					make_blood(pos, blood_scale)
 				else
-					bonus_score = bonus_score + 50
+					bonus_score = bonus_score + 20
 					bonus_level_kills.big = bonus_level_kills.big + 1
 					make_blood(pos, blood_scale, 1.6)
 				end
@@ -370,7 +370,6 @@ function on_message(self, message_id, message, sender)
 
 
 		if message_id == hash("clean_emojis") then
-			pprint(#emoji_table)
 			for a = 1, table.maxn(emoji_table) do
 				self.active = false
 				go.animate(emoji_table[a], "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_INSINE, 2, 0, function()

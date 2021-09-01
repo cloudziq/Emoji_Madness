@@ -230,6 +230,10 @@ images {
   image: "/assets/graphic/level_bg/bg58.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
+images {
+  image: "/assets/graphic/level_bg/bg59.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
 margin: 0
 extrude_borders: 0
 inner_padding: 0
