@@ -46,7 +46,7 @@ function init(self)
 			get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, self.delay)
 		end
 	else
-		sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,.25))
+		sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,0))
 		self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
 		self.sprite_url = msg.url(nil, go.get_id(), "sprite")
 		self.particle_url = msg.url(nil, go.get_id(), "particle")
@@ -119,6 +119,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 	if self.active == true then
 		local pos_x, pos_y
 		local radius, x, y
+		local dist_add = bonus_level_active == 1 and 50 or 0
 
 		if bonus_level_active == 1 then self.active = false end
 
@@ -132,7 +133,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
 			time = (self.speed - (self.speed * (speed / 100))) * 1.16
-			pos_x, pos_y = get_offscreen_pos(100, true, go.get_position())
+			pos_x, pos_y = get_offscreen_pos(100 + dist_add, true, go.get_position())
 		end
 		sprite_flip(pos_x)
 

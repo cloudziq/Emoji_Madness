@@ -15,7 +15,7 @@ components {
 }
 components {
   id: "particles"
-  component: "/main/GO/bonuses/clock.particlefx"
+  component: "/main/GO/bonuses/clock_dark.particlefx"
   position {
     x: 0.0
     y: 0.0
@@ -98,7 +98,7 @@ embedded_components {
   type: "sprite"
   data: "tile_set: \"/assets/graphic/lights.atlas\"\n"
   "default_animation: \"emoji_light_small\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
+  "material: \"/main/render/materials/light_sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
   position {

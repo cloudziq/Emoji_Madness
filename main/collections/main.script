@@ -5,16 +5,10 @@ level_bg_in_atlas = 59
 
 menu_options_visible = false
 post_game  = false
-play_intro = false
+play_intro = true
 pause_id   = nil
 proxy_speed = 1    --for game_layer1 speed control
-dark_mode = false
 
-
--- abc = {}
--- abc[1] = "crab"
--- abc[2] = "ninja"
--- print(abc[2])
 
 
 
@@ -32,7 +26,7 @@ function init(self)
 	screen_w = display[1].bounds.width
 	screen_h = display[1].bounds.height - 36
 
-	screen_w = 1650 ; screen_h = 875  -- smaller window
+	--screen_w = 1650 ; screen_h = 875  -- smaller window
 	--screen_w = 1650 ; screen_h = 600   -- for recording
 
 	window_w = 1280 * 4 ; window_h = 1320 * 4
@@ -84,9 +78,32 @@ function on_message(self, message_id, message, sender)
 		pprint(tostring(sender).." UNLOADED")
 
 
+
+
 	elseif message_id == hash("start_game") then
 		msg.post("#game_proxy1", "async_load")
 		msg.post("#game_proxy2", "async_load")
+
+
+
+
+	elseif message_id == hash("fade dark") then
+		local dark_fade_timer
+		local multiplier = message.multiplier
+		local dark_fade_delay = message.time / (message.time * 60 * 6)
+		local is_break = false
+
+		dark_fade_timer = timer.delay(dark_fade_delay, true, function()
+			if multiplier < 0 then multiplier = 0 ; is_break = true end
+			if multiplier > 1 then multiplier = 1 ; is_break = true end
+
+			go.set("/render_target#quad", "mult", vmath.vector4(multiplier))
+			multiplier = message.multiplier == 0 and multiplier + dark_fade_delay or multiplier - dark_fade_delay
+
+			if is_break then
+				timer.cancel(dark_fade_timer)
+			end
+		end)
 
 
 

@@ -101,6 +101,10 @@ function update(self)
 
     render.set_projection(get_projection(self))
 
+    -- if not dark_mode then
+    --     render.draw(self.light_particle_pred)
+    --     render.draw(self.light_sprite_pred)
+    -- end
     render.draw(self.tile_pred)
     render.draw(self.particle_pred)
 

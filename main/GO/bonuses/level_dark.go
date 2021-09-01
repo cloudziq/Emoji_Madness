@@ -1,21 +1,6 @@
 components {
   id: "clock"
-  component: "/main/GO/bonuses/clock.script"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-components {
-  id: "particles"
-  component: "/main/GO/bonuses/clock.particlefx"
+  component: "/main/GO/bonuses/level.script"
   position {
     x: 0.0
     y: 0.0
@@ -32,7 +17,7 @@ embedded_components {
   id: "sprite"
   type: "sprite"
   data: "tile_set: \"/assets/graphic/bonuses.atlas\"\n"
-  "default_animation: \"clock\"\n"
+  "default_animation: \"luck\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
@@ -97,8 +82,8 @@ embedded_components {
   id: "halo"
   type: "sprite"
   data: "tile_set: \"/assets/graphic/lights.atlas\"\n"
-  "default_animation: \"emoji_light_small\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
+  "default_animation: \"emoji_light_big\"\n"
+  "material: \"/main/render/materials/light_sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
   position {

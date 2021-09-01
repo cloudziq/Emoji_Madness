@@ -50,7 +50,7 @@ function get_onscreen_pos(offset, multiplier)
 	if multiplier == nil then multiplier = 1 end
 	
 	x = rnd.range(offset + 25, window_w - offset - (25 * multiplier))
-	y = rnd.range(offset + 25, window_h - offset - (25 * multiplier) - 25)
+	y = rnd.range(offset + 25, window_h - offset - (25 * multiplier) - 30)
 
 	return x, y
 end
@@ -172,12 +172,3 @@ function load_records()
 		return data.records
 	end
 end
-
-
-
-
--- function table_len(table)
--- 	local count = 0
--- 	for _ in pairs(table) do count = count + 1 end
--- 	return count
--- end

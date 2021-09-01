@@ -17,6 +17,8 @@ function init(self)
 	x = rnd.range(80 + 50, window_w - 80 - 50)
 	y = rnd.range(80 + 50, window_h - 80 - 50 - 44)
 
+	--go.set("#halo", "material", /builtins/materials/sprite.material)
+
 	go.set_scale(0.001)
 	go.set("#sprite", "tint.w", 0)
 	go.set("#halo", "tint", vmath.vector4(.1, .2, .1, 0))
@@ -36,6 +38,8 @@ end
 
 
 function on_message(self, message_id, message, sender)
+	local pos
+	
 	if message_id == hash("collision_response") then
 		if message.group == hash("weapon") and bonus_level_visible == true and self.active == true then
 			self.active = false
@@ -45,8 +49,11 @@ function on_message(self, message_id, message, sender)
 			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 2, 0, function()
 				go.delete(".")
 			end)
-			go.set_position(go.get_position(), "/bonus#level_bonus_particles")
-			particlefx.play("/bonus#level_bonus_particles")
+
+			local type = dark_mode and "_dark" or ""
+			pos = go.get_position()
+			go.set_position(vmath.vector3(pos.x, pos.y, 0), "/bonus#level_bonus_particles"..type)
+			particlefx.play("/bonus#level_bonus_particles"..type)
 			sound.play("/main#health_bonus")
 		end
 	end

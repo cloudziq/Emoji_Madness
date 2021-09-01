@@ -4,7 +4,7 @@ local clock_id, level_id
 
 function on_message(self, message_id, message)
 	local id, timeout, delay = 0, 0, 4
-	local music_variant
+	local music_variant, type
 
 	if message_id == hash("generate_emojis") then
 		timer.delay(0.1, false, function()
@@ -39,13 +39,15 @@ function on_message(self, message_id, message)
 
 
 
-	-- bonuses:
+		-- bonuses:
 	elseif message_id == hash("bonus_clock") then
-		clock_id = factory.create("bonus#clock")
+		type = dark_mode and "_dark" or ""
+		clock_id = factory.create("bonus#clock"..type)
 		clock_url = msg.url(nil, clock_id, nil)
 
 	elseif message_id == hash("bonus_level") then
-		level_id = factory.create("bonus#level")
+		type = dark_mode and "_dark" or ""
+		level_id = factory.create("bonus#level"..type)
 		level_url = msg.url(nil, level_id, nil)
 
 
@@ -53,7 +55,6 @@ function on_message(self, message_id, message)
 
 	elseif message_id == hash("fade_in_music") then
 		music_variant = message.mode == "dark" and "_dark" or ""
-		pprint(music_variant)
 		sound.play("main#level_loop"..music_variant)
 		sound.set_gain("main#level_loop"..music_variant, 0)
 		go.animate("main#level_loop"..music_variant, "gain", go.PLAYBACK_ONCE_FORWARD, 0.6, go.EASING_LINEAR, message.time)
