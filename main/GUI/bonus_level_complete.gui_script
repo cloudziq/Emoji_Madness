@@ -18,7 +18,7 @@ function on_message(self, message_id, message)
 	if message_id == hash("show") then
 		allow_continue = false
 		prepare_gui()
-		start_counting("small", 10, false)
+		start_counting("small", 5, false)
 	end
 end
 
@@ -45,12 +45,12 @@ end
 
 
 function prepare_gui()
+	local node, col
 	menu_col = gui.get_color(gui.get_node("WIN"))
 	points_col = gui.get_color(gui.get_node("small_="))
 
 	--gui.set_color(gui.get_node("WIN"), vmath.vector4(1,1,1,0))
 	gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
-	gui.set_color(gui.get_node("complete_bonus_health"), vmath.vector4(0,0,0,0))
 	gui.set_scale(gui.get_node("total_points"), vmath.vector3(0,0,0))
 	gui.set_scale(gui.get_node("total_points_amount"), vmath.vector3(0,0,0))
 	gui.set_scale(gui.get_node("box1"), vmath.vector3(0,0,1))
@@ -63,6 +63,11 @@ function prepare_gui()
 	gui.set_scale(gui.get_node("big_count"), vmath.vector3(0,0,0,1))
 	gui.set_scale(gui.get_node("big_x"), vmath.vector3(0,0,1))
 	gui.set_color(gui.get_node("big_="), vmath.vector4(points_col.x, points_col.y, points_col.z , 0))
+
+	node = gui.get_node("complete_bonus_health") ; col = gui.get_color(node)
+	gui.set_color(node, vmath.vector4(col.x, col.y, col.z ,0))
+	node = gui.get_node("complete_bonus_points") ; col = gui.get_color(node)
+	gui.set_color(node, vmath.vector4(col.x, col.y, col.z ,0))
 
 	for a = 1, 4 do
 		gui.set_color(gui.get_node("clover"..a), vmath.vector4(1,1,1,0))
@@ -106,7 +111,7 @@ function start_counting(node, multiplier, stop)
 						gui.animate(gui.get_node(node.."_="), "position.y", 7, gui.EASING_OUTELASTIC, .8, .2, function()
 							if not stop then
 								--timer.delay(2, false, function()
-									start_counting("big", 50, true)
+									start_counting("big", 20, true)
 								--end)
 							else
 								total_points()
@@ -115,7 +120,7 @@ function start_counting(node, multiplier, stop)
 					end)
 				elseif a == count and a == 0 then
 					if not stop then
-						start_counting("big", 50, true)
+						start_counting("big", 20, true)
 					else
 						total_points()
 					end
@@ -151,14 +156,25 @@ end
 
 
 function hide_gui()
-	gui.set_text(gui.get_node("complete_bonus_health"), "+"..health_add)
-	gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,1), gui.EASING_INSINE, .1, 0, function()
-		gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1.4)
+	node = gui.get_node("complete_bonus_health")
+	gui.set_text(node, "+"..health_add)
+	gui.animate(node, "color.w", 1, gui.EASING_INSINE, .1, 0, function()
+		gui.animate(node, "color.w", 0, gui.EASING_INSINE, 2.4)
 	end)
-	pos = gui.get_position(gui.get_node("complete_bonus_health"))
+	pos = gui.get_position(node)
 	pos.x = pos.x + math.random(220, 360) ; pos.y = pos.y + math.random(220, 360)
-	gui.animate(gui.get_node("complete_bonus_health"), "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 1.25)
-	gui.animate(gui.get_node("complete_bonus_health"), "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
+	gui.animate(node, "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 1.6)
+	gui.animate(node, "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
+
+	node = gui.get_node("complete_bonus_points")
+	gui.set_text(node, "+ "..(level - 1).." points")
+	gui.animate(node, "color.w", 1, gui.EASING_INSINE, .1, 0, function()
+		gui.animate(node, "color.w", 0, gui.EASING_INSINE, 3.2, 1)
+	end)
+	pos = gui.get_position(node)
+	pos.x = pos.x - math.random(80, 100) ; pos.y = pos.y - math.random(220, 260)
+	gui.animate(node, "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 2.4)
+	gui.animate(node, "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 2.5)
 
 	gui.animate(gui.get_node("box1"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1)
 	gui.animate(gui.get_node("box1"), "scale", vmath.vector3(0,0,0), gui.EASING_INSINE, 1)
@@ -180,7 +196,7 @@ function hide_gui()
 	msg.post("game_layer2:/main#game_gui", "hide_after_level")
 	msg.post("#ctrl", "reset anim")
 
-	timer.delay(4, false, function()
+	timer.delay(6, false, function()
 		gui.reset_nodes() ; msg.post("#", "disable")
 	end)
 end

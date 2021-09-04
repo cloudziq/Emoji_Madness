@@ -1,11 +1,11 @@
 emoji_in_atlas    = 100
 blood_in_atlas    = 9
-level_bg_in_atlas = 59
+level_bg_in_atlas = 64
 
 
 menu_options_visible = false
 post_game  = false
-play_intro = true
+play_intro = false
 pause_id   = nil
 proxy_speed = 1    --for game_layer1 speed control
 
@@ -26,7 +26,7 @@ function init(self)
 	screen_w = display[1].bounds.width
 	screen_h = display[1].bounds.height - 36
 
-	--screen_w = 1650 ; screen_h = 875  -- smaller window
+	screen_w = 1650 ; screen_h = 875  -- smaller window
 	--screen_w = 1650 ; screen_h = 600   -- for recording
 
 	window_w = 1280 * 4 ; window_h = 1320 * 4

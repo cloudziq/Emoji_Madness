@@ -855,7 +855,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "v0.96 (beta)"
+  text: "v0.98 (pre-release)"
   font: "system"
   id: "version_number"
   xanchor: XANCHOR_NONE
@@ -984,7 +984,7 @@ nodes {
 nodes {
   position {
     x: 632.0
-    y: 323.0
+    y: 354.0
     z: 0.0
     w: 1.0
   }
@@ -1101,7 +1101,7 @@ nodes {
 nodes {
   position {
     x: 632.0
-    y: 147.0
+    y: 217.0
     z: 0.0
     w: 1.0
   }
@@ -1118,7 +1118,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 480.0
+    x: 490.0
     y: 128.0
     z: 0.0
     w: 1.0
@@ -1187,7 +1187,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "HALL OF FAME"
   font: "Vellyc"
-  id: "start text1"
+  id: "hall_node_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -1206,6 +1206,123 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
   parent: "HALL_OF_FAME"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 0.1
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 632.0
+    y: 99.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.7
+    y: 0.7
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 180.0
+    y: 128.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.9019608
+    y: 0.9019608
+    z: 0.8
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: "backgrounds/slider"
+  id: "INFO"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  layer: ""
+  inherit_alpha: true
+  slice9 {
+    x: 64.0
+    y: 64.0
+    z: 64.0
+    w: 64.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 1.0
+  template_node_child: false
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: 0.796
+    y: -3.912
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.75
+    y: 0.75
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "INFO"
+  font: "Vellyc"
+  id: "info_node_text"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.7019608
+    y: 0.9019608
+    z: 0.9019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.5019608
+    y: 0.7019608
+    z: 0.5019608
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "INFO"
   layer: ""
   inherit_alpha: false
   alpha: 1.0

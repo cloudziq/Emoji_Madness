@@ -101,6 +101,21 @@ end
 
 
 
+function animate_node(node, scale, range, param)
+	local pos, prop = gui.get_position(node)
+	prop = not param and "scale" or "scale."..param
+
+	gui.animate(node, prop, scale * (1 + range), go.EASING_INOUTSINE, .6, 0, function()
+		gui.animate(node, prop, scale * (1 - range), go.EASING_INOUTSINE, .6, 0, function()
+			animate_node(node, scale, range, param)
+		end)
+	end)
+
+end
+
+
+
+
 function pause(proxy)
 	if menu_options_visible == false then
 		if defos.is_cursor_clipped() then

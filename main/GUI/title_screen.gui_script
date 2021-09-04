@@ -12,6 +12,7 @@ local title_music_delay
 
 --local variables:
 local text_dziq_pos, text_dziq_rot, dziq_image_pos, dziq_image_rot, presents_pos, start_allow, new_game_pos, hall_of_fame_pos
+local anim_new_game_node, anim_hall_node, anim_info_node = false, false, false
 
 --local functions:
 local title_prepare, intro, post_intro, fade_gui
@@ -49,7 +50,7 @@ function on_message(self, message_id, message, sender)
 
 
 	elseif message_id == hash("hide_gui") then
-		fade_gui(3)                     -- fade/move title gui away
+		fade_gui(3)
 		msg.post("#ctrl", "hide_main_menu")
 		sound.play("#game_start")
 	end
@@ -80,19 +81,72 @@ function on_input(self, action_id, action)
 				right_click_timeout = socket.gettime() + 4
 			end
 
+		end
 
-		elseif action_id == hash("click1") then
-			if start_allow == true then
+		if start_allow == true then
 
-				if gui.pick_node(gui.get_node("NEW_GAME"), action.x, action.y) and action.pressed then
+			if gui.pick_node(gui.get_node("NEW_GAME"), action.x, action.y) then
+				if not anim_new_game_node then
+					anim_new_game_node = true
+					animate_node(gui.get_node("NEW_GAME"), vmath.vector3(1, 1, 1), .06, "x")
+					animate_node(gui.get_node("new_game_text"), vmath.vector3(.75, .75, 1), .08)
+				end
+
+				if action_id == hash("click1") and action.pressed then
+					gui.cancel_animation(gui.get_node("NEW_GAME"), "scale")
+					gui.cancel_animation(gui.get_node("new_game_text"), "scale")
 					msg.post("/main#ctrl", "menu_end")
 					start_allow = false
 				end
+			else
+				gui.animate(gui.get_node("NEW_GAME"), "scale", vmath.vector3(1, 1, 1), go.EASING_INOUTSINE, 1)
+				gui.animate(gui.get_node("new_game_text"), "scale", vmath.vector3(.75, .75, 1), go.EASING_INOUTSINE, 1)
+				anim_new_game_node = false
+			end
 
-				if gui.pick_node(gui.get_node("HALL_OF_FAME"), action.x, action.y) and action.pressed then
+
+
+
+			if gui.pick_node(gui.get_node("HALL_OF_FAME"), action.x, action.y) then
+				if not anim_hall_node then
+					anim_hall_node = true
+					animate_node(gui.get_node("HALL_OF_FAME"), vmath.vector3(.8, .8, 1), .06, "x")
+					animate_node(gui.get_node("hall_node_text"), vmath.vector3(.75, .75, 1), .08)
+				end
+
+				if action_id == hash("click1") and action.pressed then
+					gui.cancel_animation(gui.get_node("HALL_OF_FAME"), "scale")
+					gui.cancel_animation(gui.get_node("hall_node_text"), "scale")
 					msg.post("/hall#hall_of_fame", "show")
 					msg.post(".", "release_input_focus")
 				end
+
+			else
+				gui.animate(gui.get_node("HALL_OF_FAME"), "scale", vmath.vector3(.8, .8, 1), go.EASING_INOUTSINE, 1)
+				gui.animate(gui.get_node("hall_node_text"), "scale", vmath.vector3(.75, .75, 1), go.EASING_INOUTSINE, 1)
+				anim_hall_node = false
+			end
+
+
+
+
+			if gui.pick_node(gui.get_node("INFO"), action.x, action.y) then
+				if not anim_info_node then
+					anim_info_node = true
+					animate_node(gui.get_node("INFO"), vmath.vector3(.7, .7, 1), .06, "x")
+					animate_node(gui.get_node("info_node_text"), vmath.vector3(.75, .75, 1), .08)
+				end
+
+				if action_id == hash("click1") and action.pressed then
+					gui.cancel_animation(gui.get_node("INFO"), "scale")
+					gui.cancel_animation(gui.get_node("info_node_text"), "scale")
+					-- msg.post("/main#ctrl", "menu_end")
+					-- start_allow = false
+				end
+			else
+				gui.animate(gui.get_node("INFO"), "scale", vmath.vector3(.7, .7, 1), go.EASING_INOUTSINE, 1)
+				gui.animate(gui.get_node("info_node_text"), "scale", vmath.vector3(.75, .75, 1), go.EASING_INOUTSINE, 1)
+				anim_info_node = false
 			end
 		end
 	end
@@ -141,13 +195,15 @@ function title_prepare()
 	presents_pos = gui.get_position(gui.get_node("text_presents"))
 	new_game_pos = gui.get_position(gui.get_node("NEW_GAME"))
 	hall_of_fame_pos = gui.get_position(gui.get_node("HALL_OF_FAME"))
+	info_pos = gui.get_position(gui.get_node("INFO"))
 
 	gui.set_position(gui.get_node("dziq"), vmath.vector3(1600, 115, 0))
 	gui.set_position(gui.get_node("text_dziq"), vmath.vector3(-1000, 400, 0))
 	gui.set_position(gui.get_node("text_presents"), vmath.vector3(2000, 900, 0))
 	gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
-	gui.set_position(gui.get_node("NEW_GAME"), vmath.vector3(new_game_pos.x, new_game_pos.y - 400, 1))
-	gui.set_position(gui.get_node("HALL_OF_FAME"), vmath.vector3(hall_of_fame_pos.x, hall_of_fame_pos.y - 400, 1))
+	gui.set_position(gui.get_node("NEW_GAME"), vmath.vector3(new_game_pos.x, new_game_pos.y - 600, 1))
+	gui.set_position(gui.get_node("HALL_OF_FAME"), vmath.vector3(hall_of_fame_pos.x, hall_of_fame_pos.y - 500, 1))
+	gui.set_position(gui.get_node("INFO"), vmath.vector3(info_pos.x, info_pos.y - 400, 1))
 
 	for a = 1,8 do
 		letter_pos[a] = gui.get_position(gui.get_node(a))
@@ -260,10 +316,9 @@ function post_intro()
 		gui.animate(node, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 2, .22)
 	end)
 	gui.animate(gui.get_node("HALL_OF_FAME"), "position.y", hall_of_fame_pos.y, gui.EASING_OUTELASTIC, 1.2, 4)
+	gui.animate(gui.get_node("INFO"), "position.y", info_pos.y, gui.EASING_OUTELASTIC, 1.2, 4.5)
 
 	gui.animate(gui.get_node("stars"), "color", vmath.vector4(.1, .14, .18, 0.1), gui.EASING_LINEAR, 8, 1.2)
-
-	local offset = 200
 
 	for a = 1,8 do
 		local node = gui.get_node(a)
@@ -273,7 +328,7 @@ function post_intro()
 		gui.set_enabled(node, true)
 		gui.set_color(node, vmath.vector4(color - .12, color - .08, color, 1)) ; color = color - 0.06
 
-		pos_x, pos_y = get_offscreen_pos(offset)
+		pos_x, pos_y = get_offscreen_pos(200)
 
 		-- set new letter position outside of screen and animate it to original position
 		gui.set_position(node, vmath.vector3(pos_x, pos_y, 0))
@@ -308,9 +363,12 @@ function fade_gui()
 	end
 
 	node = gui.get_node("NEW_GAME")
-	gui.animate(node, "position.y", gui.get_position(node).y - 400, gui.EASING_INCIRC, 3)
+	gui.animate(node, "position.y", gui.get_position(node).y - 600, gui.EASING_INCIRC, 3)
 
 	node = gui.get_node("HALL_OF_FAME")
+	gui.animate(node, "position.y", gui.get_position(node).y - 500, gui.EASING_INCIRC, 3, .5)
+
+	node = gui.get_node("INFO")
 	gui.animate(node, "position.y", gui.get_position(node).y - 400, gui.EASING_INCIRC, 3, .5)
 
 	node = gui.get_node("version_number")

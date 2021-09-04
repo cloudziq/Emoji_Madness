@@ -166,7 +166,7 @@ function on_message(self, message_id, message, sender)
 			--timer.delay(1.8, false, function () msg.post("/main#ctrl", "level_start") end)
 		end
 
-		timer.delay(1.8, false, function () msg.post("/main#ctrl", "level_start") end)
+		timer.delay(2.5, false, function () msg.post("/main#ctrl", "level_start") end)
 
 
 

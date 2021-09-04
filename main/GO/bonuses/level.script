@@ -1,8 +1,14 @@
+
+-- local variables:
+local playback = go.PLAYBACK_ONCE_FORWARD
+local playback2 = go.PLAYBACK_LOOP_PINGPONG
+local easing = go.EASING_LINEAR
+
+
+
+
 function init(self)
 	local x, y
-	local playback = go.PLAYBACK_ONCE_FORWARD
-	local playback2 = go.PLAYBACK_LOOP_PINGPONG
-	local easing = go.EASING_LINEAR
 
 	self.active = true
 	if not dark_mode then
@@ -56,5 +62,13 @@ function on_message(self, message_id, message, sender)
 			particlefx.play("/bonus#level_bonus_particles"..type)
 			sound.play("/main#health_bonus")
 		end
+
+
+	elseif message_id == hash("delete clover") then
+		go.cancel_animations(".", "scale")
+		go.animate("#sprite", "tint.w", playback, 0, easing, self.fade_out, 0)
+		go.animate(".", "scale", playback, 0, easing, self.fade_out, 0, function()
+			go.delete(".")
+		end)
 	end
 end

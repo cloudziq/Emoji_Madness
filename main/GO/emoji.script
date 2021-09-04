@@ -1,5 +1,5 @@
-go.property("speed",  6.4)
-go.property("wait",   2.64)
+go.property("speed",  6.44)
+go.property("wait",   2.82)
 go.property("score",  1)
 go.property("dest",   vmath.vector3())
 
@@ -62,12 +62,12 @@ function update(self, dt)
 
 		-- disable emojis at the end of main menu
 		if main_menu_visible == true then
-			--msg.post("#collide_weapon", "disable")
 			if allow_title_emojis == false and self.active == true then
 				self.active = false
 				msg.post(msg.url(nil, go.get_id(), "collide_emoji"), "disable")
 
-				pos_x, pos_y = get_offscreen_pos(400)
+				pos = go.get_position()
+				pos_x, pos_y = get_offscreen_pos(400, true, pos)
 				go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, math.random(36, 360) / 100, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos_x, pos_y, 1), go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10, function ()
 					go.delete()
@@ -275,9 +275,11 @@ function on_message(self, message_id, message, sender)
 
 				emojis_left = emojis_left - 1 ; killed = killed + 1
 				score_calc = self.score
-				if self.waiting == false and self.going_away == false then score_calc = score_calc * 3 end
+				if self.waiting == false and self.going_away == false then score_calc = score_calc * 4 end
 				if self.waiting == true then score_calc = score_calc * 2 end
 				score = score + score_calc
+
+				if self.going_away then sound.stop("game_layer1:/main#emoji_going_away") end
 
 				msg.post("game_layer2:/main#game_gui", "display_update")
 				sound.play("game_layer1:/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
@@ -308,12 +310,12 @@ function on_message(self, message_id, message, sender)
 
 				if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
 					self.dest.x = pos.x
-					self.need_pos_check = true
+					--self.need_pos_check = true
 					play_sound = false
 				end
 				if self.dest.y < other_dest.y + 60 and self.dest.y > other_dest.y - 60 then
 					self.dest.y = pos.y
-					self.need_pos_check = true
+					--self.need_pos_check = true
 					play_sound = false
 				end
 

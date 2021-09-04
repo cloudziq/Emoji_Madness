@@ -11,7 +11,7 @@ end
 
 
 function on_message(self, message_id, message)
-	local node, pos
+	local node, pos, col
 	local nodes_to_tweak = {"killed", "killed_count", "escaped", "escaped_count", "bonus_text"}
 	local menu_color = gui.get_color(gui.get_node("WIN"))
 
@@ -27,7 +27,10 @@ function on_message(self, message_id, message)
 		gui.set_scale(gui.get_node("bonus_text"), vmath.vector3(0,0,1))
 		gui.set_scale(gui.get_node("bonus_level_info"), vmath.vector3(0,0,1))
 		gui.set_scale(gui.get_node("box1"), vmath.vector3(0,0,1))
-		gui.set_color(gui.get_node("complete_bonus_health"), vmath.vector4(0,0,0,0))
+		node = gui.get_node("complete_bonus_health") ; col = gui.get_color(node)
+		gui.set_color(node, vmath.vector4(col.x, col.y, col.z ,0))
+		node = gui.get_node("complete_bonus_points") ; col = gui.get_color(node)
+		gui.set_color(node, vmath.vector4(col.x, col.y, col.z ,0))
 
 		gui.animate(gui.get_node("WIN"), "color", menu_color, gui.EASING_LINEAR, .8)
 		gui.animate(gui.get_node("BG"), "color", vmath.vector4(0,0,0,1), gui.EASING_LINEAR, 2)
@@ -37,7 +40,7 @@ function on_message(self, message_id, message)
 		end
 
 		if bonus_level_active then
-			--tweak some nodes position if clover found:
+			--tweak some nodes position if clover collected:
 			for _, a in ipairs(nodes_to_tweak) do
 				node = gui.get_node(a) ; pos = gui.get_position(node)
 				gui.set_position(node, vmath.vector3(pos.x, pos.y + 18, 0))
@@ -99,14 +102,29 @@ function on_message(self, message_id, message)
 
 	elseif message_id == hash("hide") then
 		if not bonus_level_active then
-			gui.set_text(gui.get_node("complete_bonus_health"), "+"..health_add)
-			gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,1), gui.EASING_INSINE, .1, 0, function()
-				gui.animate(gui.get_node("complete_bonus_health"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1.4)
+			node = gui.get_node("complete_bonus_health")
+			gui.set_text(node, "+"..health_add)
+			gui.animate(node, "color.w", 1, gui.EASING_INSINE, .1, 0, function()
+				gui.animate(node, "color.w", 0, gui.EASING_INSINE, 3.2)
 			end)
-			pos = gui.get_position(gui.get_node("complete_bonus_health"))
+			pos = gui.get_position(node)
 			pos.x = pos.x + math.random(220, 360) ; pos.y = pos.y + math.random(220, 360)
-			gui.animate(gui.get_node("complete_bonus_health"), "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 1.25)
-			gui.animate(gui.get_node("complete_bonus_health"), "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
+			gui.animate(node, "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 1.6)
+			gui.animate(node, "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
+
+			node = gui.get_node("complete_bonus_points")
+			if level - 1 == 1 then
+				gui.set_text(node, "+ "..(level - 1).." point")
+			else
+				gui.set_text(node, "+ "..(level - 1).." points")
+			end
+			gui.animate(node, "color.w", 1, gui.EASING_INSINE, .1, 0, function()
+				gui.animate(node, "color.w", 0, gui.EASING_INSINE, 2.6, 1)
+			end)
+			pos = gui.get_position(node)
+			pos.x = pos.x - math.random(80, 100) ; pos.y = pos.y - math.random(220, 260)
+			gui.animate(node, "position", vmath.vector3(pos.x, pos.y, 1), gui.EASING_INSINE, 2.4)
+			gui.animate(node, "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 2.5)
 		end
 
 		gui.animate(gui.get_node("box1"), "color", vmath.vector4(1,1,1,0), gui.EASING_INSINE, 1)
@@ -123,7 +141,7 @@ function on_message(self, message_id, message)
 		gui.set_enabled(gui.get_node("crosshair"), false)
 		if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end
 
-		timer.delay(4, false, function()
+		timer.delay(6, false, function()
 			gui.reset_nodes() ; msg.post("#", "disable")
 		end)
 	end

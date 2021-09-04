@@ -62,12 +62,12 @@ function update(self, dt)
 		elseif self.color == false and self.change == false then
 			self.color = true
 			if bonus_level_active == 1 then
-				time = 1 ; delay = 0 ; easing = go.EASING_LINEAR
+				time = math.random(10, 100) / 100 ; delay = 0 ; easing = go.EASING_LINEAR
 			else
 				time = math.random(18, 32) ; delay = 4 ; easing = go.EASING_INOUTSINE
 			end
 
-			tint = vmath.vector4(math.random(10, 100) / 100, math.random(14, 100) / 100, math.random(18, 100) / 100, math.random(2, 64) / 100)
+			tint = vmath.vector4(math.random(10, 100) / 100, math.random(14, 100) / 100, math.random(18, 100) / 100, math.random(2, 52) / 100)
 			go.animate(self.sprite_id, "tint", go.PLAYBACK_ONCE_FORWARD, tint, easing, time, delay, function()
 				if bonus_level_active ~= 1 then self.color = false end
 			end)
@@ -76,7 +76,7 @@ function update(self, dt)
 		elseif self.scale == false then
 			self.scale = true
 			if bonus_level_active == 1 then
-				time = 1 ; delay = 0 ; easing = go.EASING_LINEAR
+				time = math.random(10, 100) / 100 ; delay = 0 ; easing = go.EASING_LINEAR
 			else
 				time = math.random(10, 26) ; delay = 6 ; easing = go.EASING_INOUTSINE
 			end

@@ -1,7 +1,7 @@
 sound: "/assets/music/level_loop_dark.ogg"
 looping: 1
 group: "music"
-gain: 1.4
+gain: 1.6
 pan: 0.0
 speed: 1.0
 loopcount: 0

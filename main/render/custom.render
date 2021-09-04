@@ -1,7 +1,7 @@
 script: "/main/render/custom.render_script"
 materials {
   name: "light_particle"
-  material: "/main/render/materials/emoji_main_sparks.material"
+  material: "/main/render/materials/light_particle.material"
 }
 materials {
   name: "light_sprite"
@@ -10,10 +10,6 @@ materials {
 materials {
   name: "quad"
   material: "/main/render/materials/quad.material"
-}
-materials {
-  name: "sparks"
-  material: "/main/render/materials/emoji_main_sparks.material"
 }
 materials {
   name: "tile_particle"
