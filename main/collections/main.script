@@ -5,7 +5,7 @@ level_bg_in_atlas = 64
 
 menu_options_visible = false
 post_game  = false
-play_intro = false
+play_intro = true
 pause_id   = nil
 proxy_speed = 1    --for game_layer1 speed control
 

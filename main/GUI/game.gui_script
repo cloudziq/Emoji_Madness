@@ -24,7 +24,7 @@ function on_message(self, message_id, message, sender)
 		delay = 0 ; weapon_collide = false
 
 		dark_mode = true
-		msg.post("main:/main#ctrl", "fade dark", {time = 5, multiplier = 1})
+		msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 1})
 
 		for i = 1, 3 do
 			node = gui.get_node("dark_text"..i) ; a = gui.get_color(node)
@@ -35,8 +35,7 @@ function on_message(self, message_id, message, sender)
 		timer.delay(3, false, function()
 			delay = 1
 			for i = 3, 1, -1 do
-				node = gui.get_node("dark_text"..i)-- ; a = gui.get_color(node)
-				--gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
+				node = gui.get_node("dark_text"..i)
 				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.25, delay)
 				delay = delay + .44
 			end
@@ -47,11 +46,38 @@ function on_message(self, message_id, message, sender)
 		end)
 
 
+
+
+	elseif message_id == hash("show_bonus_available_info") then
+		delay = 0 ; weapon_collide = false
+
+		for i = 1, 4 do
+			node = gui.get_node("tt"..i) ; a = gui.get_color(node)
+			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
+			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
+			delay = delay + .62
+		end
+		timer.delay(3, false, function()
+			delay = 1
+			for i = 4, 1, -1 do
+				node = gui.get_node("tt"..i)
+				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.25, delay)
+				delay = delay + .32
+			end
+		end)
+		gui.set_enabled(gui.get_node("BONUS_AVAILABLE"), true)
+		timer.delay(4.8, false, function()
+			msg.post("#", "show_level_intro")
+		end)
+
+
+
+
 	elseif message_id == hash("show_bonus_level_intro") then
 		delay = 0 ; weapon_collide = false
 
 		if dark_mode then
-			msg.post("main:/main#ctrl", "fade dark", {time = 5, multiplier = 0})
+			msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 0})
 		end
 
 		gui.set_enabled(gui.get_node("crosshair"), true)
@@ -88,6 +114,8 @@ function on_message(self, message_id, message, sender)
 			gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
 			gui.animate(gui.get_node("BG"), "color", vmath.vector4(.22, .26, .32, .52), gui.EASING_LINEAR, 1.2)
 			gui.set_enabled(gui.get_node("DARKNESS"), false)
+			gui.set_enabled(gui.get_node("BONUS_AVAILABLE"), false)
+
 
 			if not bonus_level_active then
 				gui.set_enabled(gui.get_node("display_bonus_level"), false)
@@ -121,8 +149,8 @@ function on_message(self, message_id, message, sender)
 			-- next iterations (for each new level)
 		else
 			timer.delay(.4, false, function()
-				msg.post(".", "show_level_display")
-				msg.post(".", "hide_level_start")
+				msg.post("#", "show_level_display")
+				msg.post("#", "hide_level_start")
 			end)
 		end
 
@@ -166,31 +194,64 @@ function on_message(self, message_id, message, sender)
 			--timer.delay(1.8, false, function () msg.post("/main#ctrl", "level_start") end)
 		end
 
-		timer.delay(2.5, false, function () msg.post("/main#ctrl", "level_start") end)
+		timer.delay(2.5, false, function ()
+			msg.post("/main#ctrl", "level_start")
+			msg.post("#", "display_update")
+		end)
 
 
 
 
 	elseif message_id == hash("show_level_display") then
+		if level >= level_bonus_unlocked then
+			gui.set_enabled(gui.get_node("clover_icon"), true)
+			gui.set_enabled(gui.get_node("clock_icon"), true)
+			gui.set_enabled(gui.get_node("bonus_item_requirement"), true)
+		else
+			gui.set_enabled(gui.get_node("clover_icon"), false)
+			gui.set_enabled(gui.get_node("clock_icon"), false)
+			gui.set_enabled(gui.get_node("bonus_item_requirement"), false)
+		end
 		gui.set_text(gui.get_node("level"), "LEVEL "..level)
 		gui.set_text(gui.get_node("health"), tostring(health))
-		gui.set_text(gui.get_node("emojis"), tostring(emojis))
+		gui.set_text(gui.get_node("emojis_killed"), "0")
+		gui.set_text(gui.get_node("emojis_left"), tostring(emojis))
+		gui.set_text(gui.get_node("bonus_item_requirement"), tostring(bonus_requirement + 1))
 		gui.set_text(gui.get_node("score"), "SCORE: "..score)
 		gui.animate(gui.get_node("display"), "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 2.8, 1.65)
 
 
 	elseif message_id == hash("show_bonus_level_display") then
+		gui.set_text(gui.get_node("bullets"), "20")
 		gui.animate(gui.get_node("display_bonus_level"), "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 1.8, 1.2)
 
 
 	elseif message_id == hash("display_update") then
 		gui.set_text(gui.get_node("score"), "SCORE: "..score)
 		gui.set_text(gui.get_node("health"), tostring(health))
-		gui.set_text(gui.get_node("emojis"), tostring(emojis_left))
+		gui.set_text(gui.get_node("emojis_killed"), tostring(killed))
+		gui.set_text(gui.get_node("emojis_left"), tostring(emojis_left))
+		gui.set_text(gui.get_node("bonus_item_requirement"), tostring(bonus_requirement))
 		if message.stat == "emoji_left" then
 			gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function()
 				gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .14)
 			end)
+		end
+		if level >= level_bonus_unlocked then
+			if killed >= bonus_requirement and emojis_left >= bonus_requirement then
+				gui.set_color(gui.get_node("bonus_item_requirement"), vmath.vector3(.4, 1, .4))
+				gui.set_color(gui.get_node("crosshair"), vmath.vector3(.4, 1, .4))
+			else
+				if emojis_left >= bonus_requirement then
+					gui.set_color(gui.get_node("crosshair"), vmath.vector3(1, .6, .6))
+					gui.set_color(gui.get_node("bonus_item_requirement"), vmath.vector3(1, .4, .4))
+				else
+					gui.set_color(gui.get_node("crosshair"), vmath.vector3(.8, .8, .8))
+					gui.set_enabled(gui.get_node("clover_icon"), false)
+					gui.set_enabled(gui.get_node("clock_icon"), false)
+					gui.set_enabled(gui.get_node("bonus_item_requirement"), false)
+				end
+			end
 		end
 
 

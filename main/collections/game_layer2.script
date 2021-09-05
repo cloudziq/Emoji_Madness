@@ -6,6 +6,8 @@ health = 5
 emojis = 8
 speed  = 0   -- (self.speed minus this value as percentage)
 dark_start_level = 16
+level_bonus_unlocked = 3
+bonus_requirement = 0
 
 bonus_clock_active = false
 bonus_level_active = false
@@ -57,9 +59,17 @@ function update(self, dt)
 		post_clean_start = false
 		if not bonus_level_active then
 			if level == dark_start_level then
+				emojis_add = 2
 				msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2})
 				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, mode = "dark"})
 				msg.post("main#game_gui", "show darkness intro")
+
+			elseif level == level_bonus_unlocked then
+				bonus_requirement = 5 - 1
+				timer.delay(1.4, false, function()
+					msg.post("#game_gui", "show_bonus_available_info")
+				end)
+
 			else
 				msg.post("main#game_gui", "show_level_intro")
 			end
@@ -91,15 +101,15 @@ function update(self, dt)
 
 
 		--bonus_clock_spawn
-		if math.random(1, 12000) >= 11999 and bonus_clock_visible == false and player_bonus_item == "" and emojis_left >= 14 and killed > 6  then
-		--if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and player_bonus_item == "" and killed > 1 and emojis_left >= 2 then
+		if math.random(1, 12000) >= 11999 and bonus_clock_visible == false and emojis_left >= bonus_requirement and killed >= bonus_requirement and level >= level_bonus_unlocked then
+		--if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and killed > 1 and emojis_left >= 2 then
 			msg.post("game_layer1:/main#ctrl", "bonus_clock")
 			bonus_clock_visible = true
 		end
 
 		--bonus_level_spawn
-		if math.random(1, 20000) >= 19998 and bonus_level_visible == false and player_bonus_item == "" and emojis_left >= 14 and killed >= 6 and level >= 4 then
-		--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and player_bonus_item == "" and emojis_left >= 1 and killed >= 10 and level >= 2 then
+		if math.random(1, 16000) >= 15998 and bonus_level_visible == false and emojis_left >= bonus_requirement and killed >= bonus_requirement and level >= level_bonus_unlocked then
+		--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and emojis_left >= 1 and killed >= 1 then
 			msg.post("game_layer1:/main#ctrl", "bonus_level")
 			bonus_level_visible = true
 		end
@@ -122,7 +132,7 @@ function update(self, dt)
 
 		-- reset bonuses visible status (they can appear again)
 		bonus_clock_visible = false
-		if bonus_level_visible then msg.post(level_url, "delete clover") end
+		if bonus_level_visible and not bonus_level_active then msg.post(level_url, "delete clover") end
 		bonus_level_visible = false
 	end
 
@@ -140,7 +150,7 @@ function update(self, dt)
 			if level - 1 < dark_start_level then
 				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, mode = ""})
 			else
-				msg.post("main:/main#ctrl", "fade dark", {time = 5, multiplier = 1})
+				msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 1})
 				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, mode = "dark"})
 			end
 		end)
@@ -205,6 +215,7 @@ function level_prepare()
 	if level >= dark_start_level then dark_mode = true end
 	escaped = 0 ; killed = 0
 	emojis_left = emojis
+	bonus_requirement = bonus_requirement + 1
 	blood_table = {}
 	weapon_collide = true
 	level_play = true

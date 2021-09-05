@@ -4,7 +4,7 @@ local letter_pos, letter_col = {}, {}
 allow_title_clicks = false
 allow_title_emojis = true
 
-local menu_emoji_amount = 100
+local menu_emoji_amount = 80
 
 local emoji_delay
 local title_music_delay
@@ -179,7 +179,7 @@ end
 
 
 function title_prepare()
-	if play_intro == true then title_music_delay = 5.2 else title_music_delay = 0 end
+	if play_intro == true then title_music_delay = 7 else title_music_delay = 0 end
 
 	msg.post("/main#ctrl", "start_menu_music", {delay = title_music_delay})
 
@@ -197,7 +197,7 @@ function title_prepare()
 	hall_of_fame_pos = gui.get_position(gui.get_node("HALL_OF_FAME"))
 	info_pos = gui.get_position(gui.get_node("INFO"))
 
-	gui.set_position(gui.get_node("dziq"), vmath.vector3(1600, 115, 0))
+	gui.set_position(gui.get_node("dziq"), vmath.vector3(1600, dziq_image_pos.y, 0))
 	gui.set_position(gui.get_node("text_dziq"), vmath.vector3(-1000, 400, 0))
 	gui.set_position(gui.get_node("text_presents"), vmath.vector3(2000, 900, 0))
 	gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
@@ -246,9 +246,11 @@ function intro()
 	gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_rot.z - 24, gui.EASING_INBOUNCE, .1, 1.6, function ()
 		gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_rot.z + 28, gui.EASING_INBOUNCE, .1, .18)
 	end)
-
-	gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z - 12, gui.EASING_INBOUNCE, .1, 1.6, function ()
-		gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z + 2, gui.EASING_INBOUNCE, .1, .18)
+	--
+	gui.animate(gui.get_node("dziq"), "position.y", dziq_image_pos.y + 36, gui.EASING_INBOUNCE, .1, 1.6)
+	gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z - 18, gui.EASING_INBOUNCE, .1, 1.6, function ()
+		gui.animate(gui.get_node("dziq"), "position.y", dziq_image_pos.y - 10, gui.EASING_INBOUNCE, .2, .16)
+		gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z + 4, gui.EASING_INBOUNCE, .2, .18)
 	end)
 	-- <<
 	gui.animate(gui.get_node("text_presents"), "position", presents_pos, gui.EASING_LINEAR, 1, 0.25, function ()
@@ -256,7 +258,8 @@ function intro()
 	end)
 
 	gui.animate(gui.get_node("dziq"), "position.x", dziq_image_pos.x, gui.EASING_OUTSINE, 1, 1, function ()
-		gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_pos.z, gui.EASING_LINEAR, 1.6, .8)
+		gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_pos.z, gui.EASING_LINEAR, .6, .8)
+		gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z + 8, gui.EASING_INSINE, 2, .35)
 		gui.animate(gui.get_node("dziq"), "position.x", 2000, gui.EASING_INQUINT, 2, .45, function ()
 			gui.set_enabled(gui.get_node("dziq"), false)
 		end)
@@ -305,7 +308,7 @@ function post_intro()
 		end
 	end)
 
-	gui.animate(gui.get_node("NEW_GAME"), "position.y", new_game_pos.y, gui.EASING_OUTELASTIC, 1.1, 3.5, function()
+	gui.animate(gui.get_node("NEW_GAME"), "position.y", new_game_pos.y, gui.EASING_OUTELASTIC, 1.1, 4.5, function()
 		start_allow = true
 		allow_title_clicks = true
 		sound.play("#menu_start_button", {delay = 0, gain = .44, pan = 0})
@@ -316,7 +319,7 @@ function post_intro()
 		gui.animate(node, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 2, .22)
 	end)
 	gui.animate(gui.get_node("HALL_OF_FAME"), "position.y", hall_of_fame_pos.y, gui.EASING_OUTELASTIC, 1.2, 4)
-	gui.animate(gui.get_node("INFO"), "position.y", info_pos.y, gui.EASING_OUTELASTIC, 1.2, 4.5)
+	gui.animate(gui.get_node("INFO"), "position.y", info_pos.y, gui.EASING_OUTELASTIC, 1.2, 3.5)
 
 	gui.animate(gui.get_node("stars"), "color", vmath.vector4(.1, .14, .18, 0.1), gui.EASING_LINEAR, 8, 1.2)
 

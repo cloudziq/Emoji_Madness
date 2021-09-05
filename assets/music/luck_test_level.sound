@@ -1,4 +1,4 @@
-sound: "/assets/music/level_loop_add.ogg"
+sound: "/assets/music/luck_test_level.ogg"
 looping: 1
 group: "music"
 gain: 1.0

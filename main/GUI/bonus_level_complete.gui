@@ -768,7 +768,7 @@ nodes {
 }
 nodes {
   position {
-    x: 287.282
+    x: 280.443
     y: -60.0
     z: 0.0
     w: 1.0
@@ -780,8 +780,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.6
-    y: 0.6
+    x: 1.0
+    y: 1.0
     z: 1.0
     w: 1.0
   }
@@ -806,15 +806,15 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.5019608
-    y: 0.6
-    z: 1.0
+    x: 0.101960786
+    y: 0.3019608
+    z: 0.101960786
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.3019608
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -823,8 +823,8 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
@@ -843,8 +843,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.6
-    y: 1.6
+    x: 1.0
+    y: 1.0
     z: 1.0
     w: 1.0
   }
@@ -1146,7 +1146,7 @@ nodes {
 }
 nodes {
   position {
-    x: 251.839
+    x: 245.0
     y: -60.0
     z: 0.0
     w: 1.0
@@ -1158,8 +1158,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.6
-    y: 0.6
+    x: 1.0
+    y: 1.0
     z: 1.0
     w: 1.0
   }
@@ -1184,15 +1184,15 @@ nodes {
   yanchor: YANCHOR_NONE
   pivot: PIVOT_W
   outline {
-    x: 0.5019608
-    y: 0.6
-    z: 1.0
+    x: 0.101960786
+    y: 0.3019608
+    z: 0.101960786
     w: 1.0
   }
   shadow {
-    x: 0.8
-    y: 0.8
-    z: 0.2
+    x: 0.101960786
+    y: 0.3019608
+    z: 0.101960786
     w: 1.0
   }
   adjust_mode: ADJUST_MODE_FIT
@@ -1201,8 +1201,8 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
+  outline_alpha: 0.0
+  shadow_alpha: 0.0
   template_node_child: false
   text_leading: 1.0
   text_tracking: 0.0
@@ -1221,8 +1221,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.6
-    y: 1.6
+    x: 1.0
+    y: 1.0
     z: 1.0
     w: 1.0
   }

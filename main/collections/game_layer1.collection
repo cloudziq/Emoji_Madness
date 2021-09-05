@@ -155,7 +155,7 @@ embedded_instances {
   "}\n"
   "components {\n"
   "  id: \"level_loop_add\"\n"
-  "  component: \"/assets/music/level_loop_add.sound\"\n"
+  "  component: \"/assets/music/luck_test_level.sound\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"
