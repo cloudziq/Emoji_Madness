@@ -37,7 +37,7 @@ function init(self)
 			sprite.set_constant("#sprite", "tint", vmath.vector4(.32, .36, .52, 1))
 			timer.delay(1.82, false, function() msg.post("#collide_emoji", "enable") end)
 			go.set_scale(math.random(36, 360) / 100)
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.2, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.1, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 		else
 			self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
@@ -132,7 +132,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 1.24
+			time = (self.speed - (self.speed * (speed / 100))) * 1.44
 			pos_x, pos_y = get_offscreen_pos(100 + dist_add, true, go.get_position())
 		end
 		sprite_flip(pos_x)
@@ -307,6 +307,7 @@ function on_message(self, message_id, message, sender)
 
 				other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
 				if self.need_pos_check then play_sound = false else play_sound = true end
+				--play_sound = true
 
 				if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
 					self.dest.x = pos.x
@@ -396,10 +397,7 @@ function on_message(self, message_id, message, sender)
 				sound.play("/main#plumk", {gain = 0.22, speed = math.random(100, 200) / 100})
 			end)
 			go.animate(self.sprite_url, "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INSINE, .2, message.delay, function()
-				if self.active then
-					-- particlefx.play(self.particle_url)
-					emoji_waiting(self)
-				end
+				if self.active then emoji_waiting(self) end
 			end)
 
 

@@ -1988,7 +1988,7 @@ nodes {
 }
 nodes {
   position {
-    x: -428.0
+    x: -412.0
     y: -31.0
     z: 0.0
     w: 1.0
@@ -2052,7 +2052,7 @@ nodes {
 }
 nodes {
   position {
-    x: -37.0
+    x: 416.0
     y: -30.0
     z: 0.0
     w: 1.0
@@ -2107,7 +2107,7 @@ nodes {
 }
 nodes {
   position {
-    x: 6.0
+    x: 436.0
     y: -30.0
     z: 0.0
     w: 1.0
@@ -2186,9 +2186,9 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.9019608
-    y: 0.3019608
-    z: 0.3019608
+    x: 0.5019608
+    y: 0.7019608
+    z: 0.5019608
     w: 1.0
   }
   type: TYPE_TEXT
@@ -2225,7 +2225,7 @@ nodes {
 }
 nodes {
   position {
-    x: 258.0
+    x: 464.0
     y: -30.0
     z: 0.0
     w: 1.0
@@ -2374,7 +2374,7 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "emojis/e62"
+  texture: "emojis/e69"
   id: "emoji_icon"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
@@ -2450,124 +2450,6 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
   parent: "emoji_icon"
-  layer: ""
-  inherit_alpha: true
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.0
-}
-nodes {
-  position {
-    x: 491.0
-    y: -30.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  size {
-    x: 38.0
-    y: 38.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_BOX
-  blend_mode: BLEND_MODE_ALPHA
-  texture: "emojis/e68"
-  id: "emoji_icon2"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_E
-  adjust_mode: ADJUST_MODE_FIT
-  parent: "display"
-  layer: ""
-  inherit_alpha: true
-  slice9 {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-  clipping_mode: CLIPPING_MODE_NONE
-  clipping_visible: true
-  clipping_inverted: false
-  alpha: 1.0
-  template_node_child: false
-  size_mode: SIZE_MODE_MANUAL
-}
-nodes {
-  position {
-    x: 7.683
-    y: -1.0
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 0.51
-    y: 0.51
-    z: 0.51
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 1.0
-    y: 0.9019608
-    z: 0.7019608
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "XX"
-  font: "system"
-  id: "emojis_killed"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_W
-  outline {
-    x: 0.5019608
-    y: 0.7019608
-    z: 0.5019608
-    w: 1.0
-  }
-  shadow {
-    x: 0.0
-    y: 0.101960786
-    z: 0.5019608
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "emoji_icon2"
   layer: ""
   inherit_alpha: true
   alpha: 1.0

@@ -165,9 +165,9 @@ end
 local function set_default_records()
 	local table = {}
 
-	--         name:               points:  level:  kills:  
-	table[1] = {"dziq",            409,     12,     215}
-	table[2] = {"gertruda",        340,     11,     186}
+	--         name:               points:  level:  kills:
+	table[1] = {"dziq",            1443,    16,     467}
+	table[2] = {"nat zab",         409,     12,     215}
 	table[3] = {"moron_quin",      60,      3,      22}
 	table[4] = {"suckergoth",      2,       1,      2}
 	table[5] = {"fuckINQ009",      1,       1,      1}
@@ -175,7 +175,7 @@ local function set_default_records()
 	return table
 end
 
-hall_format = 1
+hall_format = 2
 
 function load_records()
 	local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")

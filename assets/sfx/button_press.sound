@@ -1,0 +1,7 @@
+sound: "/assets/sfx/button_press.wav"
+looping: 0
+group: "sound"
+gain: 1.0
+pan: 0.0
+speed: 4.0
+loopcount: 0

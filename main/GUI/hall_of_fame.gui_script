@@ -1,7 +1,8 @@
 --local variables:
-local table, place, info_node, back_button, allow_enter
+local table, place, info_node, back_button, node_text, allow_enter
 local info_node_blink = true
 local show_type_info = true
+local anim_menu_node = false
 text = ""
 local fields = {"name", "score", "level", "kills"}
 
@@ -65,8 +66,10 @@ function on_message(self, message_id, message, sender)
 		
 		if post_game == true then
 			back_button = gui.get_node("box1")
+			node_text = gui.get_node("main_menu_link1")
 		else
 			back_button = gui.get_node("box2")
+			node_text = gui.get_node("main_menu_link2")
 		end
 
 		place = set_gui()
@@ -146,7 +149,6 @@ function on_input(self, action_id, action)
 							allow_enter = false
 							gui.animate(gui.get_node(place), "color.w", .16, gui.EASING_OUTQUART, 1.4)
 							if place ~= nil then
-								pprint("RECORDS SAVED")
 								table[place] = {text, score, level, total_kills}
 								local file = sys.get_save_file("SQUISHED", "hall_of_fame.dzq")
 								sys.save(file, {records = table, format = hall_format})
@@ -157,10 +159,23 @@ function on_input(self, action_id, action)
 			end
 		end
 
+		if gui.is_enabled(back_button) then
+			if gui.pick_node(back_button, action.x, action.y) then
+				if not anim_menu_node then
+					anim_menu_node = true
+					animate_node(back_button, vmath.vector3(1,1,1), .06, "x")
+					animate_node(node_text, vmath.vector3(.5, .5, 1), .08)
+				end
 
-
-		if gui.pick_node(back_button, action.x, action.y) and action_id == hash("click1") and action.pressed and gui.is_enabled(back_button) then
-			msg.post("#", "hide")
+				if action_id == hash("click1") and action.pressed then
+					sound.play("main:/main#button_press")
+					msg.post("#", "hide")
+				end
+			else
+				gui.animate(back_button, "scale", vmath.vector3(1,1,1), go.EASING_INOUTSINE, 1)
+				gui.animate(node_text, "scale", vmath.vector3(.5, .5, 1), go.EASING_INOUTSINE, 1)
+				anim_menu_node = false
+			end
 		end
 	end
 end
@@ -175,8 +190,22 @@ function set_gui(exclude)
 	if exclude == nil then start_val = 1 else start_val = exclude end
 	for a = start_val, 5 do
 		for b = 1, 4 do
-			if b == 2 and score > table[a][b] and record == nil and post_game == true then
-				record = a
+			if record == nil and post_game == true then
+				if b == 2 and score >= table[a][b] then
+					if score == table[a][b] then
+						if level >= table[a][b + 1] then
+							if level == table[a][b + 1] then
+								if total_kills >= table[a][b + 2] then
+									record = a
+								end
+							else
+								record = a
+							end
+						end
+					else
+						record = a
+					end
+				end
 			end
 			gui.set_text(gui.get_node(fields[b]..a), table[a][b])
 		end

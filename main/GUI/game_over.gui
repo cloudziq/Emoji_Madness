@@ -527,7 +527,7 @@ nodes {
     w: 1.0
   }
   size {
-    x: 362.0
+    x: 264.0
     y: 120.0
     z: 0.0
     w: 1.0
@@ -576,9 +576,9 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.496
-    y: 0.496
-    z: 0.496
+    x: 0.5
+    y: 0.5
+    z: 1.0
     w: 1.0
   }
   size {
@@ -595,7 +595,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "HALL OF FAME"
+  text: "RECORDS"
   font: "Vellyc"
   id: "hall of fame"
   xanchor: XANCHOR_NONE

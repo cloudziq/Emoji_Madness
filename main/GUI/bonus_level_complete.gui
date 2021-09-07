@@ -1339,9 +1339,9 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.496
-    y: 0.496
-    z: 0.496
+    x: 0.5
+    y: 0.5
+    z: 1.0
     w: 1.0
   }
   size {
@@ -1360,7 +1360,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "NEXT LEVEL"
   font: "Vellyc"
-  id: "hall of fame"
+  id: "next_level"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER

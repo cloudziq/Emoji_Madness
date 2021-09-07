@@ -1,3 +1,10 @@
+
+-- local variables:
+anim_resume_node, anim_back_node, anim_options_node = false, false, false
+
+
+
+
 function init(self)
 	msg.post("#", "disable")
 end
@@ -31,38 +38,67 @@ end
 
 function on_input(self, action_id, action)
 	if gui.pick_node(gui.get_node("resume"), action.x, action.y) then
-		if resume_node_anim == nil then
-			resume_node_anim = 1
-			resume_anim()
+		if not anim_resume_node then
+			anim_resume_node = true
+			animate_node(gui.get_node("box1"), vmath.vector3(1,1,1), .06, "x")
+			animate_node(gui.get_node("resume"), vmath.vector3(.5, .5, 1), .08)
 		end
 		
 		if action_id == hash("click1") and action.pressed then
+			sound.play("/main#button_press")
 			pause(pause_id)
 		end
 	else
-		resume_node_anim = nil
-		gui.animate(gui.get_node("resume"), "scale", .496, gui.EASING_INSINE, .5)
+		gui.animate(gui.get_node("box1"), "scale", vmath.vector3(1,1,1), go.EASING_INOUTSINE, 1)
+		gui.animate(gui.get_node("resume"), "scale", vmath.vector3(.5, .5, 1), go.EASING_INOUTSINE, 1)
+		anim_resume_node = false
 	end
 
 
-	if action.pressed and action_id == hash("click1") then
-		if gui.pick_node(gui.get_node("back_button"), action.x, action.y) and gui.is_enabled(gui.get_node("BACK")) then
+	if gui.pick_node(gui.get_node("back_button"), action.x, action.y) and gui.is_enabled(gui.get_node("BACK")) then
+		if not anim_back_node then
+			anim_back_node = true
+			animate_node(gui.get_node("back_button"), vmath.vector3(1,1,1), .06, "x")
+			animate_node(gui.get_node("main_menu_link"), vmath.vector3(.7, .7, 1), .08)
+		end
+
+		if action.pressed and action_id == hash("click1") then
+			sound.play("/main#button_press")
 			msg.post("main:/main#ctrl", "show_title_menu")
+		end
+	else
+		gui.animate(gui.get_node("back_button"), "scale", vmath.vector3(1,1,1), go.EASING_INOUTSINE, 1)
+		gui.animate(gui.get_node("main_menu_link"), "scale", vmath.vector3(.7, .7, 1), go.EASING_INOUTSINE, 1)
+		anim_back_node = false
+	end
 
 
-		elseif gui.pick_node(gui.get_node("options_button"), action.x, action.y) then
+	if gui.pick_node(gui.get_node("options_button"), action.x, action.y) then
+		if not anim_options_node then
+			anim_options_node = true
+			animate_node(gui.get_node("options_button"), vmath.vector3(.72, .72, 1), .06, "x")
+			animate_node(gui.get_node("options_link"), vmath.vector3(.7, .7, 1), .08)
+		end
+
+		if action.pressed and action_id == hash("click1") then
 			msg.post("#", "release_input_focus")
+			sound.play("/main#button_press")
 			gui.set_enabled(gui.get_node("options_button"), false)
 			msg.post("main:/main#options", "show")
 		end
+
+	else
+		gui.animate(gui.get_node("options_button"), "scale", vmath.vector3(.72, .72, 1), go.EASING_INOUTSINE, 1)
+		gui.animate(gui.get_node("options_link"), "scale", vmath.vector3(.7, .7, 1), go.EASING_INOUTSINE, 1)
+		anim_options_node = false
 	end
 end
 
 
 
 
-function resume_anim()
-	gui.animate(gui.get_node("resume"), "scale", math.random(56, 70) / 100, gui.EASING_INSINE, .5, 0, function()
-		resume_anim()
-	end)
-end
+-- function resume_anim()
+-- 	gui.animate(gui.get_node("resume"), "scale", math.random(56, 70) / 100, gui.EASING_INSINE, .5, 0, function()
+-- 		resume_anim()
+-- 	end)
+-- end
