@@ -57,7 +57,6 @@ function on_input(self, action_id, action)
 		end
 
 		if action_id == hash("click1") and action.pressed then
-			sound.play("/main#button_press")
 			msg.post("#", "hide")
 		end
 	else
@@ -72,19 +71,20 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("show") then
-		gui.set_render_order(1)
+		gui.set_render_order(2)
 		menu_options_visible = true
 
 		set_start_slider_values()
 
-		msg.post("#", "acquire_input_focus")
+		msg.post(".", "acquire_input_focus")
 		msg.post("#", "enable")
 
 
 	elseif message_id == hash("hide") then
 		menu_options_visible = false
 		msg.post("#", "disable")
-		msg.post("/main#pause", "restore options button")
+		msg.post("/pause#pause", "restore options button")
+		sound.play("/main#button_press")
 
 		local file = sys.get_save_file("SQUISHED", "config.dzq")
 		sys.save(file, {sound_vol = sound_vol, music_vol = music_vol})

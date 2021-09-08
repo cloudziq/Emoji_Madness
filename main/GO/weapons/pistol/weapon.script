@@ -1,5 +1,9 @@
 function init(self)
-	timer.delay(0.04, false, function () go.delete() end)
+	score = score - 1
+	timer.delay(0.04, false, function ()
+		msg.post("game_layer2:/main#game_gui", "display_update")
+		go.delete()
+	end)
 end
 
 

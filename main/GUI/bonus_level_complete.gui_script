@@ -20,7 +20,7 @@ function on_message(self, message_id, message)
 	if message_id == hash("show") then
 		allow_continue = false
 		prepare_gui()
-		start_counting("small", 5, false)
+		start_counting("small", 10, false)
 	end
 end
 
@@ -127,7 +127,7 @@ function start_counting(node, multiplier, stop)
 						gui.animate(gui.get_node(node.."_x"), "color.w", 0, gui.EASING_LINEAR, .2, .2)
 						gui.animate(gui.get_node(node.."_="), "position.y", 7, gui.EASING_OUTELASTIC, .8, .2, function()
 							if not stop then
-								start_counting("big", 20, true)
+								start_counting("big", 40, true)
 							else
 								total_points()
 							end
@@ -135,7 +135,7 @@ function start_counting(node, multiplier, stop)
 					end)
 				elseif a == count and a == 0 then
 					if not stop then
-						start_counting("big", 20, true)
+						start_counting("big", 40, true)
 					else
 						total_points()
 					end

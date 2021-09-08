@@ -1,6 +1,6 @@
 go.property("speed",  6.44)
 go.property("wait",   3.20)
-go.property("score",  1)
+go.property("score",  2)
 go.property("dest",   vmath.vector3())
 
 
@@ -273,9 +273,10 @@ function on_message(self, message_id, message, sender)
 		if bonus_level_active ~= 1 then
 			if message.group == collide_weapon_hash and self.active == true then
 
+				score = score + 1
 				emojis_left = emojis_left - 1 ; killed = killed + 1
 				score_calc = self.score
-				if self.waiting == false and self.going_away == false then score_calc = score_calc * 4 end
+				if self.waiting == false and self.going_away == false then score_calc = score_calc * 3 end
 				if self.waiting == true then score_calc = score_calc * 2 end
 				score = score + score_calc
 

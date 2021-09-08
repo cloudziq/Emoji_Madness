@@ -116,17 +116,17 @@ end
 
 
 
-function pause(proxy)
+function pause(proxy, input_restore)
 	if menu_options_visible == false then
 		if defos.is_cursor_clipped() then
 			pause_id = proxy
-			sound.play("main:/main#pause_sfx", {speed = 0.5})
+			sound.play("main:/pause#pause_sfx", {speed = 0.5})
 			defos.set_cursor_clipped(false)
 			defos.set_cursor_visible(true)
 			msg.post(proxy, "set_time_step", {factor = 0 , mode = 1})
-			msg.post("main:/main#pause", "show")
+			msg.post("main:/pause#pause", "show")
 		else
-			sound.play("main:/main#pause_sfx")
+			sound.play("main:/pause#pause_sfx")
 			defos.set_cursor_clipped(true)
 			defos.set_cursor_visible(false)
 			if proxy_speed == 1 then
@@ -134,11 +134,11 @@ function pause(proxy)
 			else
 				msg.post(proxy, "set_time_step", {factor = proxy_speed , mode = 1})
 			end
-			msg.post("main:/main#pause", "hide")
+			msg.post("main:/pause#pause", "hide")
 			pause_id = nil
 		end
 	else
-		msg.post("main:/main#options", "hide")
+		msg.post("main:/options#options", "hide")
 	end
 end
 

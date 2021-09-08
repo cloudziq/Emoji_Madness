@@ -12,7 +12,7 @@ end
 
 
 function on_message(self, message_id, message)
-	local node, pos, col
+	local node, pos, col, percentage, emoji_icon
 	local nodes_to_tweak = {"killed", "killed_count", "escaped", "escaped_count", "bonus_text"}
 	local menu_color = gui.get_color(gui.get_node("WIN"))
 
@@ -39,6 +39,21 @@ function on_message(self, message_id, message)
 		for a = 1, 4 do
 			gui.set_color(gui.get_node("clover"..a), vmath.vector4(1,1,1,0))
 		end
+
+		-- put emoji icon based on how many escaped
+		percentage = (escaped / (emojis - emojis_add)) * 100
+		if percentage == 0 then
+			emoji_icon = "e5"
+		elseif percentage < 100 and percentage >= 70 then
+			emoji_icon = "e6"
+		elseif percentage < 70 and percentage >= 50 then
+			emoji_icon = "e9"
+		elseif percentage < 50 and percentage >= 25 then
+			emoji_icon = "e21"
+		else
+			emoji_icon = "e44"
+		end
+		gui.play_flipbook(gui.get_node("emoji"), emoji_icon)
 
 		if bonus_level_active then
 			--tweak some nodes position if clover collected:

@@ -1532,7 +1532,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "each worth 5 points!"
+  text: "each is worth 10 points!"
   font: "Vellyc"
   id: "text3"
   xanchor: XANCHOR_NONE
@@ -1658,7 +1658,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "and worth 20 points!"
+  text: "and each is worth 40 points!"
   font: "Vellyc"
   id: "text5"
   xanchor: XANCHOR_NONE
@@ -1870,6 +1870,69 @@ nodes {
 }
 nodes {
   position {
+    x: 9.0
+    y: -14.666
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.1
+    y: 0.1
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_SCREEN
+  text: "XX"
+  font: "system"
+  id: "cursor_counter"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.8
+    y: 1.0
+    z: 0.8
+    w: 1.0
+  }
+  shadow {
+    x: 0.8
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "crosshair"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
     x: 640.0
     y: 1330.0
     z: 0.0
@@ -2052,7 +2115,7 @@ nodes {
 }
 nodes {
   position {
-    x: 416.0
+    x: 224.0
     y: -30.0
     z: 0.0
     w: 1.0
@@ -2107,7 +2170,7 @@ nodes {
 }
 nodes {
   position {
-    x: 436.0
+    x: 244.0
     y: -30.0
     z: 0.0
     w: 1.0
@@ -2355,8 +2418,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.0
-    y: 1.0
+    x: 1.06
+    y: 1.06
     z: 1.0
     w: 1.0
   }
@@ -2410,9 +2473,9 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.51
-    y: 0.51
-    z: 0.51
+    x: 0.46
+    y: 0.46
+    z: 1.0
     w: 1.0
   }
   size {
