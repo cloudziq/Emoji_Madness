@@ -104,6 +104,7 @@ function on_message(self, message_id, message, sender)
 
 		if skip_main_intro == false then
 			allow_start_level = false
+			dark_mode = false
 			msg.post("#", "disable")
 			msg.post("#", "acquire_input_focus")
 
@@ -168,7 +169,6 @@ function on_message(self, message_id, message, sender)
 			gui.animate(gui.get_node("GO_text"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, .8, .2)
 		end)
 
-		-- gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 40)
 		gui.animate(gui.get_node("start_info"), "position.y", pos_start.y - 200, gui.EASING_INCIRC, .25)
 
 		-- show dynamic BG
@@ -192,7 +192,6 @@ function on_message(self, message_id, message, sender)
 
 		timer.delay(2.5, false, function ()
 			msg.post("/main#ctrl", "level_start")
-			--msg.post("#", "display_update")
 		end)
 
 
@@ -244,43 +243,43 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("display_update") then
 		local counter, counter_text
 
-		gui.set_text(gui.get_node("score"), "SCORE: "..score)
-		gui.set_text(gui.get_node("health"), tostring(health))
-		gui.set_text(gui.get_node("emojis_left"), tostring(emojis_left))
-		if message.stat == "emoji_left" then
-			gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function()
-				gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .14)
-			end)
-		end
-
-		if level >= level_bonus_unlocked then
-			counter = emojis_left - bonus_requirement
-			if counter > 0 then counter_text = tostring(counter) else counter_text = "" end
-			if counter == 0 and not cursor_blinking then
-				cursor_blinking = true
-				gui.animate(gui.get_node("crosshair"), "color", vmath.vector4(1, .54, .08, 1), go.EASING_LINEAR, .32, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
-			elseif counter < 0 then
-				cursor_blinking = false
-				gui.cancel_animation(gui.get_node("crosshair"), "color")
+		if level_play then
+			gui.set_text(gui.get_node("score"), "SCORE: "..score)
+			gui.set_text(gui.get_node("health"), tostring(health))
+			gui.set_text(gui.get_node("emojis_left"), tostring(emojis_left))
+			if message.stat == "emoji_left" then
+				gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function()
+					gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .14)
+				end)
 			end
-			gui.set_text(gui.get_node("cursor_counter"), counter_text)
-			gui.set_text(gui.get_node("bonus_item_requirement"), tostring(bonus_requirement))
 
-			if not bonus_can_spawn then
-				--gui.animate(gui.get_node("heart_icon"), "position.x", 260, go.EASING_INOUTSINE, 1)
-				gui.set_color(gui.get_node("crosshair"), vmath.vector3(.4, 1, .4))
-				gui.animate(gui.get_node("cursor_counter"), "color.w", 1, go.EASING_INSINE, 1, .54)
-				gui.animate(gui.get_node("clover_icon"), "color.w", 1, go.EASING_INSINE, 1, .76)
-				gui.animate(gui.get_node("clock_icon"), "color.w", 1, go.EASING_INSINE, 1, .76)
-				gui.animate(gui.get_node("bonus_item_requirement"), "color.w", 1, go.EASING_INSINE, 1, .76)
+			if level >= level_bonus_unlocked then
+				counter = emojis_left - bonus_requirement
+				if counter > 0 then counter_text = tostring(counter) else counter_text = "" end
+				if counter == 0 and not cursor_blinking then
+					cursor_blinking = true
+					gui.animate(gui.get_node("crosshair"), "color", vmath.vector4(1, .54, .08, 1), go.EASING_LINEAR, .32, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+				elseif counter < 0 then
+					cursor_blinking = false
+					gui.cancel_animation(gui.get_node("crosshair"), "color")
+				end
+				gui.set_text(gui.get_node("cursor_counter"), counter_text)
+				gui.set_text(gui.get_node("bonus_item_requirement"), tostring(bonus_requirement))
 
-			elseif message.mode == "remove_bonus_info" then
-				--gui.animate(gui.get_node("heart_icon"), "position.x", 464, go.EASING_INOUTSINE, 1, .76)
-				gui.set_color(gui.get_node("crosshair"), vmath.vector4(.8, .8, .8, .6))
-				gui.animate(gui.get_node("cursor_counter"), "color.w", 0, go.EASING_INSINE, 1, .32)
-				gui.animate(gui.get_node("clover_icon"), "color.w", 0, go.EASING_INSINE, 1)
-				gui.animate(gui.get_node("clock_icon"), "color.w", 0, go.EASING_INSINE, 1)
-				gui.animate(gui.get_node("bonus_item_requirement"), "color.w", 0, go.EASING_INSINE, 1)
+				if not bonus_can_spawn then
+					gui.set_color(gui.get_node("crosshair"), vmath.vector3(.4, 1, .4))
+					gui.animate(gui.get_node("cursor_counter"), "color.w", 1, go.EASING_INSINE, 1, .2)
+					gui.animate(gui.get_node("clover_icon"), "color.w", 1, go.EASING_INSINE, 1, .76)
+					gui.animate(gui.get_node("clock_icon"), "color.w", 1, go.EASING_INSINE, 1, .76)
+					gui.animate(gui.get_node("bonus_item_requirement"), "color.w", 1, go.EASING_INSINE, 1, .76)
+
+				elseif message.mode == "remove_bonus_info" then
+					gui.set_color(gui.get_node("crosshair"), vmath.vector4(.8, .8, .8, .6))
+					gui.animate(gui.get_node("cursor_counter"), "color.w", 0, go.EASING_INSINE, 1, .28)
+					gui.animate(gui.get_node("clover_icon"), "color.w", 0, go.EASING_INSINE, 1)
+					gui.animate(gui.get_node("clock_icon"), "color.w", 0, go.EASING_INSINE, 1)
+					gui.animate(gui.get_node("bonus_item_requirement"), "color.w", 0, go.EASING_INSINE, 1)
+				end
 			end
 		end
 

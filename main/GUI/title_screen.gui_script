@@ -4,7 +4,7 @@ local letter_pos, letter_col = {}, {}
 allow_title_clicks = false
 allow_title_emojis = true
 
-local menu_emoji_amount = 80
+local menu_emoji_amount = 64
 
 local emoji_delay
 local title_music_delay
@@ -213,15 +213,19 @@ function title_prepare()
 		gui.set_enabled(gui.get_node(a), false)
 	end
 
+	msg.post("/main#ctrl", "BG fade_in")
+	msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 1})
+
 	if play_intro == false then
 		emoji_delay = 3
-		gui.animate(gui.get_node("BG"), "color", vmath.vector4(1, 1, 1, .8), gui.EASING_LINEAR, 2, 1.6)
+		-- gui.animate(gui.get_node("BG"), "color", vmath.vector4(1, 1, 1, .8), gui.EASING_LINEAR, 2, 1.6)
+		gui.animate(gui.get_node("BG"), "color", vmath.vector4(.8, .8, .8, .54), gui.EASING_LINEAR, 2, 1.6)
 		gui.set_enabled(gui.get_node("dziq"), false)
 		gui.set_enabled(gui.get_node("text_dziq"), false)
 		gui.set_enabled(gui.get_node("text_presents"), false)
 		gui.set_enabled(gui.get_node("DEFOLD LOGO"), false)
 	else
-		gui.animate(gui.get_node("BG"), "color", vmath.vector4(1, 1, 1, .8), gui.EASING_LINEAR, 6, 3.4)
+		gui.animate(gui.get_node("BG"), "color", vmath.vector4(.8, .8, .8, .54), gui.EASING_LINEAR, 6, 3.4)
 		emoji_delay = 11.2
 	end
 
@@ -261,9 +265,11 @@ function intro()
 	end)
 
 	gui.animate(gui.get_node("dziq"), "position.x", dziq_image_pos.x, gui.EASING_OUTSINE, 1, 1, function ()
+		gui.set_color(gui.get_node("eyes"), vmath.vector4(1,1,1,1))
+		gui.play_flipbook(gui.get_node("eyes"), "eyes")
 		gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_pos.z, gui.EASING_LINEAR, .6, .8)
 		gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z + 8, gui.EASING_INSINE, 2, .35)
-		gui.animate(gui.get_node("dziq"), "position.x", 2000, gui.EASING_INQUINT, 2, .45, function ()
+		gui.animate(gui.get_node("dziq"), "position.x", 2000, gui.EASING_INQUINT, 1.8, .25, function ()
 			gui.set_enabled(gui.get_node("dziq"), false)
 		end)
 	end)

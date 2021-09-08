@@ -12,7 +12,6 @@ bonus_requirement = 0
 bonus_can_spawn = false
 bonus_clock_active = false
 bonus_level_active = false
-player_bonus_item = ""  --current bonus for use
 change_music_variant = false
 
 -- adds for level completion:
@@ -28,7 +27,7 @@ total_kills = 0
 
 
 --local variables:
-local level_play, crosshair_light_id = false, false
+crosshair_light_id = false, false
 
 --local functions:
 local level_prepare, bonus_level_prepare
@@ -105,8 +104,6 @@ function update(self, dt)
 
 		if socket.gettime() > bonus_start_delay and not bonus_can_spawn then
 			bonus_can_spawn = true
-			--msg.post("#game_gui", "display_update", {mode = "add_bonus_info"})
-			--pprint("ADD")
 		elseif bonus_can_spawn == true and emojis_left < bonus_requirement then
 			bonus_can_spawn = -1
 			msg.post("#game_gui", "display_update", {mode = "remove_bonus_info"})
@@ -178,7 +175,6 @@ function on_message(self, message_id, message, sender)
 	local id
 
 	if message_id == hash("level_start") then
-		--msg.post(".", "acquire_input_focus")
 		main_menu_visible = false
 		if not bonus_level_active then
 			level_prepare()
@@ -203,9 +199,7 @@ end
 
 
 function on_input(self, action_id, action)
-	if action_id == hash("pause") and action.pressed then
-		pause("main:/main#game_proxy1")
-	end
+	if action_id == hash("pause") and action.pressed then pause("main:/main#game_proxy1") end
 	
 	if pause_id == nil then
 		if dark_mode and crosshair_light_id then
@@ -249,7 +243,6 @@ end
 
 
 function bonus_level_prepare()
-	--if level >= dark_start_level then dark_mode = false end
 	bonus_shots = 20 ; bonus_level_kills = {small = 0, big = 0} ; bonus_score = 0 ; killed = 0
 	blood_table = {}
 	weapon_collide = true

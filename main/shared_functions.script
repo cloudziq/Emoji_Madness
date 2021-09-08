@@ -116,7 +116,7 @@ end
 
 
 
-function pause(proxy, input_restore)
+function pause(proxy)
 	if menu_options_visible == false then
 		if defos.is_cursor_clipped() then
 			pause_id = proxy

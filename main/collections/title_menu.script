@@ -1,5 +1,11 @@
-dark_mode = false
+dark_mode = true
 
+
+
+
+function init()
+	sprite.set_constant("/main_BG#sprite", "tint", vmath.vector4(0,0,0,0))
+end
 
 
 
@@ -12,6 +18,7 @@ function on_message(self, message_id, message, sender)
 		msg.post("/main#title_screen", "hide_gui")
 		go.animate("#title_music_intro", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4)
 		go.animate("#title_music_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4)
+		go.animate("/main_BG#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4)
 
 		-- send message to main loader to start game_proxy
 		msg.post("main:/main#ctrl", "start_game")
@@ -23,5 +30,9 @@ function on_message(self, message_id, message, sender)
 		end)
 		sound.set_gain("#title_music_intro", 0)
 		go.animate("#title_music_intro", "gain", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, 2, message.delay)
+
+
+	elseif message_id == hash("BG fade_in") then
+		go.animate("main_BG#sprite", "tint", go.PLAYBACK_ONCE_FORWARD, vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 3, 2.6)
 	end
 end

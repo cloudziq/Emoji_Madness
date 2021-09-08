@@ -63,7 +63,7 @@ embedded_components {
   type: "sprite"
   data: "tile_set: \"/assets/graphic/sparks_particle.tilesource\"\n"
   "default_animation: \"right_click_anim\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
+  "material: \"/main/render/materials/light_sprite.material\"\n"
   "blend_mode: BLEND_MODE_ADD\n"
   ""
   position {

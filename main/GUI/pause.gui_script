@@ -1,7 +1,7 @@
 
 -- local variables:
 anim_back_node, anim_options_node = false, false
-local input_url
+
 
 
 
