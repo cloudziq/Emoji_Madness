@@ -55,7 +55,9 @@ function on_message(self, message_id, message)
 
 	elseif message_id == hash("fade_in_music") then
 		music_variant = message.mode == "dark" and "_dark" or ""
-		sound.play("main#level_loop"..music_variant)
+		if message.start_new then
+			sound.play("main#level_loop"..music_variant)
+		end
 		sound.set_gain("main#level_loop"..music_variant, 0)
 		go.animate("main#level_loop"..music_variant, "gain", go.PLAYBACK_ONCE_FORWARD, 0.6, go.EASING_LINEAR, message.time)
 
@@ -63,7 +65,9 @@ function on_message(self, message_id, message)
 	elseif message_id == hash("fade_out_music") then
 		music_variant = message.mode == "dark" and "_dark" or ""
 		go.animate("main#level_loop"..music_variant, "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4, 0, function()
-			sound.stop("main#level_loop"..music_variant)
+			if message.disable then
+				sound.stop("main#level_loop"..music_variant)
+			end
 		end)
 
 

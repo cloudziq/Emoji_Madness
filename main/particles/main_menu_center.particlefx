@@ -16,7 +16,7 @@ emitters {
   }
   tile_source: "/assets/graphic/sparks_particle.tilesource"
   animation: "anim"
-  material: "/main/render/materials/light_particle.material"
+  material: "/builtins/materials/particlefx.material"
   blend_mode: BLEND_MODE_ADD
   particle_orientation: PARTICLE_ORIENTATION_ANGULAR_VELOCITY
   inherit_velocity: 0.0

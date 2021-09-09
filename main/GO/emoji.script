@@ -1,6 +1,6 @@
 go.property("speed",  6.44)
 go.property("wait",   3.20)
-go.property("score",  2)
+go.property("score",  1)
 go.property("dest",   vmath.vector3())
 
 
@@ -11,7 +11,7 @@ emojis = 10 ; level = 1  -- dummy values, will be overwriten anyway
 local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
 
 
--- local variables:
+-- local hashes:
 local collide_contact_hash = hash("contact_point_response")
 local collide_weapon_hash  = hash("weapon")
 
@@ -132,7 +132,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 1.44
+			time = (self.speed - (self.speed * (speed / 100))) * 1.62
 			pos_x, pos_y = get_offscreen_pos(100 + dist_add, true, go.get_position())
 		end
 		sprite_flip(pos_x)
@@ -179,7 +179,7 @@ function emoji_waiting(self)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, .44, 0, function()
 				self.waiting = false
 				self.going_away = true
-				sound.play("game_layer1:/main#emoji_going_away", {speed = math.random(80, 120) / 100})
+				sound.play("game_layer1:/main#emoji_going_away", {speed = (math.random(80, 120) / 100) * proxy_speed})
 				get_new_emoji_pos(self, go.EASING_INSINE, go.EASING_LINEAR, .1)
 			end)
 		else
@@ -280,14 +280,14 @@ function on_message(self, message_id, message, sender)
 				score = score + 1
 				emojis_left = emojis_left - 1 ; killed = killed + 1
 				score_calc = self.score
-				if self.waiting == false and self.going_away == false then score_calc = score_calc * 3 end
+				if self.waiting == false and self.going_away == false then score_calc = score_calc * 4 end
 				if self.waiting == true then score_calc = score_calc * 2 end
 				score = score + score_calc
 
 				if self.going_away then sound.stop("game_layer1:/main#emoji_going_away") end
 
 				msg.post("game_layer2:/main#game_gui", "display_update")
-				sound.play("game_layer1:/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
+				sound.play("game_layer1:/main#squeak1", { speed = (math.random(60, 120) / 100) * proxy_speed, gain = math.random(80, 120) / 100 })
 				particlefx.stop(self.particle_url)
 
 				self.active = false
@@ -326,7 +326,7 @@ function on_message(self, message_id, message, sender)
 				end
 
 				if play_sound and socket.gettime() > self.sound_delay then
-					sound.play("game_layer1:/main#emoji_collide", {speed = math.random (14, 24) / 10})
+					sound.play("game_layer1:/main#emoji_collide", {speed = (math.random (14, 24) / 10) * proxy_speed})
 					self.sound_delay = socket.gettime() + 0.08
 				end
 
@@ -354,11 +354,11 @@ function on_message(self, message_id, message, sender)
 				go.set_position(vmath.vector3(pos.x, pos.y, .8))
 
 				if go.get_scale().x == 1 then
-					bonus_score = bonus_score + 5
+					bonus_score = bonus_score + 10
 					bonus_level_kills.small = bonus_level_kills.small + 1
 					make_blood(pos, blood_scale)
 				else
-					bonus_score = bonus_score + 20
+					bonus_score = bonus_score + 40
 					bonus_level_kills.big = bonus_level_kills.big + 1
 					make_blood(pos, blood_scale, 1.6)
 				end

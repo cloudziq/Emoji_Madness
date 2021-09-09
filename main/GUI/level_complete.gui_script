@@ -41,14 +41,14 @@ function on_message(self, message_id, message)
 		end
 
 		-- put emoji icon based on how many escaped
-		percentage = (escaped / (emojis - emojis_add)) * 100
+		percentage = (escaped / (health - health_add)) * 100
 		if percentage == 0 then
 			emoji_icon = "e5"
-		elseif percentage < 100 and percentage >= 70 then
-			emoji_icon = "e6"
-		elseif percentage < 70 and percentage >= 50 then
+		elseif percentage > 0 and percentage <= 25 then
+			emoji_icon = "e41"
+		elseif percentage > 25 and percentage <= 50 then
 			emoji_icon = "e9"
-		elseif percentage < 50 and percentage >= 25 then
+		elseif percentage > 50 and percentage <= 75 then
 			emoji_icon = "e21"
 		else
 			emoji_icon = "e44"

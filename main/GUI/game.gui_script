@@ -104,7 +104,6 @@ function on_message(self, message_id, message, sender)
 
 		if skip_main_intro == false then
 			allow_start_level = false
-			dark_mode = false
 			msg.post("#", "disable")
 			msg.post("#", "acquire_input_focus")
 
@@ -117,6 +116,7 @@ function on_message(self, message_id, message, sender)
 
 
 			if not bonus_level_active then
+				dark_mode = false
 				gui.set_enabled(gui.get_node("display_bonus_level"), false)
 				gui.set_enabled(gui.get_node("bonus_level"), false)
 				gui.set_position(gui.get_node("level_intro"), vmath.vector3(-400, window_h / 2, 1))
@@ -129,9 +129,9 @@ function on_message(self, message_id, message, sender)
 				end)
 
 				if level - 1 < dark_start_level then
-					msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = ""})
+					msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "", disable = false})
 				else
-					msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "dark"})
+					msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "dark", disable = false})
 				end
 				msg.post("game_layer1:/main#ctrl", "fade_in_add_music")
 			end
