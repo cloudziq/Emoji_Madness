@@ -1658,7 +1658,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "and each is worth 40 points!"
+  text: "each is worth 20 points!"
   font: "Vellyc"
   id: "text5"
   xanchor: XANCHOR_NONE
@@ -1721,7 +1721,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "how many you\'ll kill?"
+  text: "how many you\'ll find?"
   font: "Vellyc"
   id: "text6"
   xanchor: XANCHOR_NONE

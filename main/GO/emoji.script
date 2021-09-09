@@ -1,5 +1,5 @@
 go.property("speed",  6.44)
-go.property("wait",   3.20)
+go.property("wait",   3.46)
 go.property("score",  1)
 go.property("dest",   vmath.vector3())
 
@@ -14,6 +14,7 @@ local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
 -- local hashes:
 local collide_contact_hash = hash("contact_point_response")
 local collide_weapon_hash  = hash("weapon")
+local hash_right_click     = hash("menu_right_click")
 
 
 
@@ -36,10 +37,10 @@ function init(self)
 		if main_menu_visible then
 			msg.post("#collide_emoji", "disable")
 			particlefx.play(self.particle_url)
-			sprite.set_constant("#sprite", "tint", vmath.vector4(.62, .76, .92, 1))
+			sprite.set_constant("#sprite", "tint", vmath.vector4(.62, .76, .82, 1))
 			timer.delay(1.84, false, function() msg.post("#collide_emoji", "enable") end)
 			go.set_scale(math.random(36, 360) / 100)
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.1, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.2, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 		else
 			self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
@@ -123,8 +124,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 
 		if bonus_level_active == 1 then self.active = false end
 
-		radius = rnd.range(40, 120)
-		--time = self.speed + rnd.range(-(speed/3), speed/3)
+		radius = rnd.range(40, 160)
 
 		if not self.going_away then
 			time = self.speed - (self.speed * (speed / 100)) + math.random(-2, 4)
@@ -243,9 +243,9 @@ function on_message(self, message_id, message, sender)
 			end
 
 
-			if message.group == hash("menu_right_click") then
-				force = 60
-				distance = rnd.range(40, 68) / 10
+			if message.group == hash_right_click then
+				force = 20
+				distance = rnd.range(10, 36) / 10
 				time = rnd.range(10, 24) / 10
 				--self.collide = 0
 				self.dest = pos + (message.normal * force) * (message.distance * distance)
@@ -312,16 +312,13 @@ function on_message(self, message_id, message, sender)
 
 				other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
 				if self.need_pos_check then play_sound = false else play_sound = true end
-				--play_sound = true
 
 				if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
 					self.dest.x = pos.x
-					--self.need_pos_check = true
 					play_sound = false
 				end
 				if self.dest.y < other_dest.y + 60 and self.dest.y > other_dest.y - 60 then
 					self.dest.y = pos.y
-					--self.need_pos_check = true
 					play_sound = false
 				end
 
@@ -358,7 +355,7 @@ function on_message(self, message_id, message, sender)
 					bonus_level_kills.small = bonus_level_kills.small + 1
 					make_blood(pos, blood_scale)
 				else
-					bonus_score = bonus_score + 40
+					bonus_score = bonus_score + 20
 					bonus_level_kills.big = bonus_level_kills.big + 1
 					make_blood(pos, blood_scale, 1.6)
 				end

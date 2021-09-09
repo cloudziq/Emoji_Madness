@@ -93,11 +93,6 @@ function update(self, dt)
 					msg.post(self.sprite_id, "play_animation", { id = hash("bg"..math.random(1, level_bg_in_atlas)) })
 					go.set_position(vmath.vector3(window_w / 2, window_h / 2 , self.z))
 					if bonus_level_active ~= 1 then self.change = false end
-					if last_id == go.get_id() then
-						pprint("BG CHANGE FRONT")
-					else
-						pprint("BG CHANGE")
-					end
 				end)
 			end
 		end

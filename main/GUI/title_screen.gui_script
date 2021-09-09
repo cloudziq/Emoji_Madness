@@ -4,7 +4,7 @@ local letter_pos, letter_col = {}, {}
 allow_title_clicks = false
 allow_title_emojis = true
 
-local menu_emoji_amount = 64
+local menu_emoji_amount = 44
 
 local emoji_delay
 local title_music_delay
@@ -12,7 +12,7 @@ local title_music_delay
 
 --local variables:
 local text_dziq_pos, text_dziq_rot, dziq_image_pos, dziq_image_rot, presents_pos, start_allow, new_game_pos, hall_of_fame_pos
-local anim_new_game_node, anim_hall_node, anim_info_node = false, false, false
+local anim_new_game_node, anim_hall_node, anim_info_node
 
 --local functions:
 local title_prepare, intro, post_intro, fade_gui
@@ -21,7 +21,7 @@ local title_prepare, intro, post_intro, fade_gui
 
 
 function init(self)
-	msg.post("#", "acquire_input_focus")
+	msg.post(".", "acquire_input_focus")
 	main_menu_visible = true
 	menu_proxy = true
 
@@ -53,6 +53,10 @@ function on_message(self, message_id, message, sender)
 		fade_gui(3)
 		msg.post("#ctrl", "hide_main_menu")
 		sound.play("#game_start")
+
+
+	elseif message_id == hash("reset anim on nodes") then
+		anim_new_game_node, anim_hall_node, anim_info_node = false, false, false
 	end
 end
 
@@ -171,7 +175,7 @@ function defold_logo()
 	gui.animate(logo, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 1, 0, function ()
 		--gui.animate(logo, "position.y", 1180, gui.EASING_LINEAR, 1, 1)
 		--gui.animate(logo, "scale", vmath.vector3(.5, .5, .5), gui.EASING_LINEAR, 1, 1)
-		gui.animate(logo, "color", vmath.vector4(1,1,1,0), gui.EASING_LINEAR, 2, 1.6)
+		gui.animate(logo, "color", vmath.vector4(1,1,1,0), gui.EASING_LINEAR, 2, 1.4)
 	end)
 
 	gui.animate(text, "color", vmath.vector4(.2, .2, .2, .8), gui.EASING_LINEAR, 1.2, 1)
@@ -218,7 +222,6 @@ function title_prepare()
 
 	if play_intro == false then
 		emoji_delay = 3
-		-- gui.animate(gui.get_node("BG"), "color", vmath.vector4(1, 1, 1, .8), gui.EASING_LINEAR, 2, 1.6)
 		gui.animate(gui.get_node("BG"), "color", vmath.vector4(.8, .8, .8, .54), gui.EASING_LINEAR, 2, 1.6)
 		gui.set_enabled(gui.get_node("dziq"), false)
 		gui.set_enabled(gui.get_node("text_dziq"), false)
@@ -264,8 +267,9 @@ function intro()
 		gui.animate(gui.get_node("text_presents"), "position.x", -1000, gui.EASING_INQUINT, 2.2, 2.4)
 	end)
 
+	gui.set_color(gui.get_node("eyes"), vmath.vector4(1,1,1,1))
+	timer.delay(1, false, function() gui.play_flipbook(gui.get_node("eyes"), "eyes_backward") end)
 	gui.animate(gui.get_node("dziq"), "position.x", dziq_image_pos.x, gui.EASING_OUTSINE, 1, 1, function ()
-		gui.set_color(gui.get_node("eyes"), vmath.vector4(1,1,1,1))
 		gui.play_flipbook(gui.get_node("eyes"), "eyes")
 		gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_pos.z, gui.EASING_LINEAR, .6, .8)
 		gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z + 8, gui.EASING_INSINE, 2, .35)
@@ -311,11 +315,7 @@ function post_intro()
 	local color = 1 ; local dir = 1
 
 	gui.play_particlefx(gui.get_node("menu1"))
-	timer.delay(5, false, function ()
-		if start_allow == true then
-			gui.play_particlefx(gui.get_node("menu2"))
-		end
-	end)
+	timer.delay(6, false, function () gui.play_particlefx(gui.get_node("menu2")) end)
 
 	gui.animate(gui.get_node("NEW_GAME"), "position.y", new_game_pos.y, gui.EASING_OUTELASTIC, 1.1, 4.5, function()
 		start_allow = true
@@ -366,7 +366,7 @@ end
 function fade_gui()
 	local a, pos_x, pos_y, node
 
-	msg.post("#", "release_input_focus")
+	msg.post(".", "release_input_focus")
 
 	for a = 1, 8 do
 		node = gui.get_node(a)

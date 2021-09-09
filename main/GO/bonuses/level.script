@@ -16,9 +16,9 @@ function init(self)
 		self.time = 3
 		self.fade_out = 2
 	else
-		self.fade_in =  4
-		self.time = 6
-		self.fade_out = 4
+		self.fade_in =  3
+		self.time = 5
+		self.fade_out = 3
 	end
 	x = rnd.range(80 + 50, window_w - 80 - 50)
 	y = rnd.range(80 + 50, window_h - 80 - 50 - 44)

@@ -1,4 +1,16 @@
+
 local clock_id, level_id
+
+
+
+
+function update()
+	if bonus_can_spawn == true and emojis_left < bonus_requirement and level_play then
+		msg.post("game_layer2:/main#game_gui", "display_update", {mode = "remove_bonus_info"})
+		bonus_can_spawn = -1
+	end
+end
+
 
 
 
@@ -87,5 +99,11 @@ function on_message(self, message_id, message)
 		sound.play("#hall_music")
 		sound.set_gain("#hall_music", 0)
 		go.animate("#hall_music", "gain", go.PLAYBACK_ONCE_FORWARD, .72, go.EASING_LINEAR, 2)
+
+
+	elseif message_id == hash("get bonus_delay_time") then
+		timer.delay(6, false, function()
+			bonus_can_spawn = true
+		end)
 	end
 end

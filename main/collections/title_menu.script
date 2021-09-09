@@ -33,6 +33,6 @@ function on_message(self, message_id, message, sender)
 
 
 	elseif message_id == hash("BG fade_in") then
-		go.animate("main_BG#sprite", "tint", go.PLAYBACK_ONCE_FORWARD, vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 3, 2.6)
+		go.animate("main_BG#sprite", "tint", go.PLAYBACK_ONCE_FORWARD, vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 4, 2.6)
 	end
 end

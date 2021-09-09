@@ -127,7 +127,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_ALPHA
     points {
       x: 0.0
-      y: 0.16
+      y: 0.14
       t_x: 1.0
       t_y: 0.0
     }

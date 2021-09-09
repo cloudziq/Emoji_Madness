@@ -61,7 +61,7 @@ function update(self, dt)
 			if level == dark_start_level - 1 then emojis_add = 2 end
 			if level == dark_start_level then
 				msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2})
-				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, mode = "dark"})
+				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, mode = "dark", start_new = true})
 				msg.post("main#game_gui", "show darkness intro")
 
 			elseif level == level_bonus_unlocked then
@@ -102,23 +102,16 @@ function update(self, dt)
 
 
 
-		if socket.gettime() > bonus_start_delay and not bonus_can_spawn then
-			bonus_can_spawn = true
-		elseif bonus_can_spawn == true and emojis_left < bonus_requirement then
-			bonus_can_spawn = -1
-			msg.post("#game_gui", "display_update", {mode = "remove_bonus_info"})
-		end
-
-		if bonus_can_spawn and level >= level_bonus_unlocked then
+		if bonus_can_spawn and level >= level_bonus_unlocked and not pause_id then
 			--bonus_clock_spawn
-			if math.random(1, 12000) >= 11998 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 14000) >= 13998 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
 			--if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and killed > 1 and emojis_left >= 2 then
 				msg.post("game_layer1:/main#ctrl", "bonus_clock")
 				bonus_clock_visible = true
 			end
 
 			--bonus_level_spawn
-			if math.random(1, 16000) >= 15996 and bonus_level_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 18000) >= 17996 and bonus_level_visible == false and emojis_left >= bonus_requirement then
 			--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and emojis_left >= bonus_requirement then
 				msg.post("game_layer1:/main#ctrl", "bonus_level")
 				bonus_level_visible = true
@@ -227,10 +220,9 @@ function level_prepare()
 	emojis_left = emojis
 	bonus_can_spawn = false
 	bonus_requirement = bonus_requirement + 1
-	bonus_start_delay = socket.gettime() + 6
 	blood_table = {}
-	weapon_collide = true
 	level_play = true
+	msg.post("game_layer1:/main#ctrl", "get bonus_delay_time")
 	msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = emojis, scale = 1})
 	msg.post("/main#game_gui", "display_update")
 
@@ -245,6 +237,5 @@ end
 function bonus_level_prepare()
 	bonus_shots = 20 ; bonus_level_kills = {small = 0, big = 0} ; bonus_score = 0 ; killed = 0
 	blood_table = {}
-	weapon_collide = true
 	-- emoji generation moved to game_gui, so there is more time to arrange them on screen
 end

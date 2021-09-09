@@ -1,43 +1,43 @@
 emitters {
-  id: "white smaller top"
+  id: "center"
   mode: PLAY_MODE_LOOP
   duration: 1.0
-  space: EMISSION_SPACE_WORLD
+  space: EMISSION_SPACE_EMITTER
   position {
     x: 0.0
-    y: 434.0
+    y: 37.0
     z: 0.0
   }
   rotation {
     x: 0.0
     y: 0.0
-    z: 1.0
-    w: 6.123234E-17
+    z: 0.0
+    w: 1.0
   }
-  tile_source: "/builtins/graphics/particle_blob.tilesource"
+  tile_source: "/assets/graphic/sparks_particle.tilesource"
   animation: "anim"
-  material: "/builtins/materials/particlefx.material"
-  blend_mode: BLEND_MODE_ALPHA
-  particle_orientation: PARTICLE_ORIENTATION_DEFAULT
+  material: "/main/render/materials/light_particle.material"
+  blend_mode: BLEND_MODE_ADD
+  particle_orientation: PARTICLE_ORIENTATION_ANGULAR_VELOCITY
   inherit_velocity: 0.0
-  max_particle_count: 32
+  max_particle_count: 16
   type: EMITTER_TYPE_BOX
   start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 5.0
+      y: 10.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 2.0
+    spread: 0.0
   }
   properties {
     key: EMITTER_KEY_SIZE_X
     points {
       x: 0.0
-      y: 400.0
+      y: 89.206
       t_x: 1.0
       t_y: 0.0
     }
@@ -47,7 +47,7 @@ emitters {
     key: EMITTER_KEY_SIZE_Y
     points {
       x: 0.0
-      y: 12.0
+      y: 15.513
       t_x: 1.0
       t_y: 0.0
     }
@@ -67,37 +67,37 @@ emitters {
     key: EMITTER_KEY_PARTICLE_LIFE_TIME
     points {
       x: 0.0
-      y: 6.0
+      y: 2.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 0.22
   }
   properties {
     key: EMITTER_KEY_PARTICLE_SPEED
     points {
       x: 0.0
-      y: 40.0
+      y: 12.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 2.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_SIZE
     points {
       x: 0.0
-      y: 40.0
+      y: 8.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 24.0
+    spread: 4.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_RED
     points {
       x: 0.0
-      y: 1.0
+      y: 0.22
       t_x: 1.0
       t_y: 0.0
     }
@@ -107,7 +107,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_GREEN
     points {
       x: 0.0
-      y: 1.0
+      y: 0.32
       t_x: 1.0
       t_y: 0.0
     }
@@ -117,7 +117,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_BLUE
     points {
       x: 0.0
-      y: 1.0
+      y: 0.48
       t_x: 1.0
       t_y: 0.0
     }
@@ -127,7 +127,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_ALPHA
     points {
       x: 0.0
-      y: 0.04
+      y: 0.26
       t_x: 1.0
       t_y: 0.0
     }
@@ -141,37 +141,37 @@ emitters {
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 90.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_STRETCH_FACTOR_X
     points {
       x: 0.0
-      y: 0.0
+      y: 28.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 14.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_STRETCH_FACTOR_Y
     points {
       x: 0.0
-      y: 0.0
+      y: 28.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 14.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_ANGULAR_VELOCITY
     points {
       x: 0.0
-      y: 0.0
+      y: 40.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 20.0
   }
   particle_properties {
     key: PARTICLE_KEY_SCALE
@@ -279,81 +279,11 @@ emitters {
   start_offset: 0.0
 }
 modifiers {
-  type: MODIFIER_TYPE_VORTEX
+  type: MODIFIER_TYPE_RADIAL
   use_direction: 0
   position {
-    x: -107.0
-    y: 111.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 1.0
-    z: 0.0
-    w: 6.123234E-17
-  }
-  properties {
-    key: MODIFIER_KEY_MAGNITUDE
-    points {
-      x: 0.0
-      y: 20.0
-      t_x: 1.0
-      t_y: 0.0
-    }
-    spread: 40.0
-  }
-  properties {
-    key: MODIFIER_KEY_MAX_DISTANCE
-    points {
-      x: 0.0
-      y: 120.0
-      t_x: 1.0
-      t_y: 0.0
-    }
-    spread: 0.0
-  }
-}
-modifiers {
-  type: MODIFIER_TYPE_VORTEX
-  use_direction: 0
-  position {
-    x: 102.0
-    y: 111.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.70710677
-    w: 0.70710677
-  }
-  properties {
-    key: MODIFIER_KEY_MAGNITUDE
-    points {
-      x: 0.0
-      y: 20.0
-      t_x: 1.0
-      t_y: 0.0
-    }
-    spread: 40.0
-  }
-  properties {
-    key: MODIFIER_KEY_MAX_DISTANCE
-    points {
-      x: 0.0
-      y: 120.0
-      t_x: 1.0
-      t_y: 0.0
-    }
-    spread: 0.0
-  }
-}
-modifiers {
-  type: MODIFIER_TYPE_VORTEX
-  use_direction: 0
-  position {
-    x: -112.0
-    y: 294.0
+    x: -28.0
+    y: 37.0
     z: 0.0
   }
   rotation {
@@ -366,17 +296,17 @@ modifiers {
     key: MODIFIER_KEY_MAGNITUDE
     points {
       x: 0.0
-      y: 20.0
+      y: 400.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 40.0
+    spread: 0.0
   }
   properties {
     key: MODIFIER_KEY_MAX_DISTANCE
     points {
       x: 0.0
-      y: 120.0
+      y: 22.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -384,34 +314,69 @@ modifiers {
   }
 }
 modifiers {
-  type: MODIFIER_TYPE_VORTEX
+  type: MODIFIER_TYPE_RADIAL
   use_direction: 0
   position {
-    x: 106.0
-    y: 300.0
+    x: 30.0
+    y: 37.0
     z: 0.0
   }
   rotation {
     x: 0.0
-    y: 1.0
+    y: 0.0
     z: 0.0
-    w: 6.123234E-17
+    w: 1.0
   }
   properties {
     key: MODIFIER_KEY_MAGNITUDE
     points {
       x: 0.0
-      y: 20.0
+      y: 400.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 40.0
+    spread: 0.0
   }
   properties {
     key: MODIFIER_KEY_MAX_DISTANCE
     points {
       x: 0.0
-      y: 120.0
+      y: 22.0
+      t_x: 1.0
+      t_y: 0.0
+    }
+    spread: 0.0
+  }
+}
+modifiers {
+  type: MODIFIER_TYPE_RADIAL
+  use_direction: 0
+  position {
+    x: 0.0
+    y: 37.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  properties {
+    key: MODIFIER_KEY_MAGNITUDE
+    points {
+      x: 0.0
+      y: 600.0
+      t_x: 1.0
+      t_y: 0.0
+    }
+    spread: 0.0
+  }
+  properties {
+    key: MODIFIER_KEY_MAX_DISTANCE
+    points {
+      x: 0.0
+      y: 20.0
       t_x: 1.0
       t_y: 0.0
     }

@@ -1,6 +1,6 @@
 
 -- local variables:
-anim_back_node, anim_options_node = false, false
+local anim_back_node, anim_resume_node, anim_options_node
 
 
 
@@ -14,6 +14,8 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("show") then
+		anim_back_node, anim_resume_node, anim_options_node = false, false, false
+
 		gui.set_render_order(1)
 		gui.reset_nodes()
 		if pause_id == "main:/main#title_menu_proxy" then gui.set_enabled(gui.get_node("BACK"), false) end

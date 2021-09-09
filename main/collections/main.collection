@@ -21,7 +21,7 @@ embedded_instances {
   "}\n"
   "components {\n"
   "  id: \"shared_functions\"\n"
-  "  component: \"/main/shared_functions.script\"\n"
+  "  component: \"/main/global_stuff.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

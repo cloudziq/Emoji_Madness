@@ -85,6 +85,7 @@ function on_message(self, message_id, message, sender)
 		gui.set_enabled(gui.get_node("display_bonus_level"), true)
 		gui.set_color(gui.get_node("display_bonus_level"), vmath.vector4(0,0,0,0))
 		gui.set_position(gui.get_node("bonus_level"), vmath.vector3(640, 690, 0))
+		gui.set_text(gui.get_node("score1"), "BONUS SCORE: 0")
 
 		for i = 1, 7 do
 			node = gui.get_node("text"..i) ; a = gui.get_color(node)
@@ -140,7 +141,7 @@ function on_message(self, message_id, message, sender)
 			gui.animate(gui.get_node("start_info"), "position.y", pos_start.y, gui.EASING_OUTCIRC, .6, 1, function()
 				allow_start_level = true
 				if not bonus_level_active then
-					msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 1})
+					msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 1, start_new = true})
 				end
 			end)
 
@@ -190,9 +191,8 @@ function on_message(self, message_id, message, sender)
 			gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 44)
 		end
 
-		timer.delay(2.5, false, function ()
-			msg.post("/main#ctrl", "level_start")
-		end)
+		timer.delay(1.44, false, function() weapon_collide = true end)
+		timer.delay(2.2, false, function() msg.post("/main#ctrl", "level_start") end)
 
 
 
