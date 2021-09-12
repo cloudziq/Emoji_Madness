@@ -15,3 +15,7 @@ materials {
   name: "tile_particle"
   material: "/main/render/materials/particlefx_tile.material"
 }
+materials {
+  name: "light_label"
+  material: "/main/render/materials/light_label.material"
+}

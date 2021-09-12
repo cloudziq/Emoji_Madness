@@ -95,7 +95,7 @@ embedded_instances {
   "}\n"
   "components {\n"
   "  id: \"ctrl\"\n"
-  "  component: \"/main/collections/title_menu.script\"\n"
+  "  component: \"/main/COLLECTIONS/title_menu.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

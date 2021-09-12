@@ -34,15 +34,16 @@ end
 
 
 function init(self)
-    self.tile_pred = render.predicate({"tile"})
-    self.gui_pred = render.predicate({"gui"})
-    self.text_pred = render.predicate({"text"})
+    self.tile_pred     = render.predicate({"tile"})
+    self.gui_pred      = render.predicate({"gui"})
+    self.text_pred     = render.predicate({"text"})
     self.particle_pred = render.predicate({"particle"})
 
-    -- custom shit:
-    self.quad_pred = render.predicate({"quad"})
-    self.light_sprite_pred = render.predicate({"light_sprite"})
+    -- custom:
+    self.quad_pred           = render.predicate({"quad"})
+    self.light_sprite_pred   = render.predicate({"light_sprite"})
     self.light_particle_pred = render.predicate({"light_particle"})
+    self.light_label_pred    = render.predicate({"light_label"})
 
     self.clear_color = vmath.vector4(0, 0, 0, 0)
     self.ambient_color = vmath.vector4(.01, .02, .04, 1)
@@ -73,8 +74,9 @@ function init(self)
         u_wrap = render.WRAP_CLAMP_TO_EDGE,
         v_wrap = render.WRAP_CLAMP_TO_EDGE
     }
-    self.target_1 = render.render_target("normal", {[render.BUFFER_COLOR_BIT] = color_params })
-    self.target_2 = render.render_target("lights", {[render.BUFFER_COLOR_BIT] = color_params })
+    self.target_1 = render.render_target("normal", {[render.BUFFER_COLOR_BIT] = color_params})
+    self.target_2 = render.render_target("lights", {[render.BUFFER_COLOR_BIT] = color_params})
+    self.target_3 = render.render_target("count" , {[render.BUFFER_COLOR_BIT] = color_params})
 end
 
 
@@ -88,51 +90,58 @@ function update(self)
     render.set_depth_mask(true)
     render.set_stencil_mask(0xff)
     render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1, [render.BUFFER_STENCIL_BIT] = 0})
-
     render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
     render.set_view(self.view)
-
     render.set_depth_mask(false)
     render.disable_state(render.STATE_DEPTH_TEST)
     render.disable_state(render.STATE_STENCIL_TEST)
     render.enable_state(render.STATE_BLEND)
     render.set_blend_func(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)
     render.disable_state(render.STATE_CULL_FACE)
-
     render.set_projection(get_projection(self))
 
     render.draw(self.tile_pred)
     render.draw(self.particle_pred)
 
-    if dark_mode == true then
+    if dark_mode then
         render.disable_render_target(self.target_1)
 
         -- lights:
         render.enable_render_target(self.target_2)
         render.clear({[render.BUFFER_COLOR_BIT] = self.ambient_color})
-
         render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
         render.set_view(self.view)
         render.set_projection(get_projection(self))
 
         render.draw(self.light_particle_pred)
         render.draw(self.light_sprite_pred)
-
         render.disable_render_target(self.target_2)
 
 
-        -- direct framebuffer:
+        -- multi_counter:
+        render.enable_render_target(self.target_3)
+        render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color})
+        render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
+        render.set_view(self.view)
+        render.set_projection(get_projection(self))
+
+        render.draw(self.light_label_pred)
+        render.disable_render_target(self.target_3)
+
+
+        -- render_quad:
         render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color})
         render.set_viewport(0, 0, window_w, window_h)
         render.set_view(self.view)
         render.set_projection(self.view)
-
-
+        
         render.enable_texture(0, self.target_1, render.BUFFER_COLOR_BIT)
         render.enable_texture(1, self.target_2, render.BUFFER_COLOR_BIT)
+        render.enable_texture(2, self.target_3, render.BUFFER_COLOR_BIT)
         render.draw(self.quad_pred)
-        render.disable_texture(0, self.target_1)
-        render.disable_texture(1, self.target_2)
+        render.disable_texture(0)
+        render.disable_texture(1)
+        render.disable_texture(2)
 
         render.set_projection(vmath.matrix4_orthographic(0, window_w, 0, window_h, -1, 1))
     else
@@ -177,5 +186,6 @@ function on_message(self, message_id, message)
     elseif message_id == hash("refresh_window_size") then
         render.set_render_target_size(self.target_1, window_w, window_h)
         render.set_render_target_size(self.target_2, window_w, window_h)
+        render.set_render_target_size(self.target_3, window_w, window_h)
     end
 end

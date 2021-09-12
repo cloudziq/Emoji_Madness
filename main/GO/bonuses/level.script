@@ -65,10 +65,12 @@ function on_message(self, message_id, message, sender)
 
 
 	elseif message_id == hash("delete clover") then
-		go.cancel_animations(".", "scale")
-		go.animate("#sprite", "tint.w", playback, 0, easing, self.fade_out, 0)
-		go.animate(".", "scale", playback, 0, easing, self.fade_out, 0, function()
-			go.delete(".")
-		end)
+		if self.active then
+			go.cancel_animations(".", "scale")
+			go.animate("#sprite", "tint.w", playback, 0, easing, self.fade_out, 0)
+			go.animate(".", "scale", playback, 0, easing, self.fade_out, 0, function()
+				go.delete(".")
+			end)
+		end
 	end
 end

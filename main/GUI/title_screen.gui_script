@@ -315,7 +315,7 @@ function post_intro()
 	local color = 1 ; local dir = 1
 
 	gui.play_particlefx(gui.get_node("menu1"))
-	timer.delay(6, false, function () gui.play_particlefx(gui.get_node("menu2")) end)
+	timer.delay(4, false, function() gui.play_particlefx(gui.get_node("menu2")) end)
 
 	gui.animate(gui.get_node("NEW_GAME"), "position.y", new_game_pos.y, gui.EASING_OUTELASTIC, 1.1, 4.5, function()
 		start_allow = true

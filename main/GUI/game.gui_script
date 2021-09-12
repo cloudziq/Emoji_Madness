@@ -319,8 +319,9 @@ end
 
 
 function on_input(self, action_id, action)
-	local pos
-	if action.y > 1320 - 46 then action.y = 1320 - 46 end
+	if action.y > 1320 - 46 then
+		cursor_y = 1320 - 46 ; action.y = cursor_y
+	end
 
 	if pause_id == nil then
 		if action_id == nil then

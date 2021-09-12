@@ -1,0 +1,46 @@
+
+go.property("mat1", resource.material("/builtins/fonts/label.material"))
+go.property("mat2", resource.material("/main/render/materials/light_label.material"))
+
+
+
+
+function init(self)
+	local ax, ay = 60, 46
+	if cursor_x + ax + 72 >= window_w then ax = -ax + (window_w - cursor_x) - 48 end
+	if cursor_y + ay + 72 >= window_h - 72 then ay = -ay - 16 end
+
+	if not dark_mode then
+		go.set("#x", "material", self.mat1)
+		go.set("#count", "material", self.mat1)
+	else
+		go.set("#x", "material", self.mat2)
+		go.set("#count", "material", self.mat2)
+	end
+
+	go.set_scale(0.01)
+	go.set_position(vmath.vector3(cursor_x, cursor_y, 1))
+	go.set("#x", "color.w", 0) ; go.set("#count", "color.w", 0)
+
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, .76, go.EASING_LINEAR, .5)
+	go.animate("#x", "color.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, .5)
+	go.animate("#count", "color.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, .6)
+	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, cursor_x + ax, go.EASING_OUTSINE, 1)
+	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, cursor_y + ay, go.EASING_OUTSINE, 1, 0, function()
+		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0.01, go.EASING_LINEAR, .44, 1)
+		go.animate("#x", "color.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INSINE, .44, 1)
+		go.animate("#count", "color.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INSINE, .44, 1, function()
+			go.delete()
+		end)
+	end)
+end
+
+
+
+
+function on_message(self, message_id, message)
+	if message_id == hash("set multi_counter text") then
+		label.set_text("#count", message.amount)
+		score = score + message.score * message.amount
+	end
+end

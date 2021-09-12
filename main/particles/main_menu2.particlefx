@@ -1,7 +1,7 @@
 emitters {
   id: "white smaller top"
   mode: PLAY_MODE_LOOP
-  duration: 1.0
+  duration: 2.0
   space: EMISSION_SPACE_WORLD
   position {
     x: 0.0

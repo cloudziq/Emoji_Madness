@@ -283,6 +283,7 @@ function on_message(self, message_id, message, sender)
 				if self.waiting == false and self.going_away == false then score_calc = score_calc * 4 end
 				if self.waiting == true then score_calc = score_calc * 2 end
 				score = score + score_calc
+				msg.post(weapon_id, "count multi_kill", {score = score_calc})
 
 				if self.going_away then sound.stop("game_layer1:/main#emoji_going_away") end
 

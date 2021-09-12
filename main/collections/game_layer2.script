@@ -27,7 +27,8 @@ total_kills = 0
 
 
 --local variables:
-crosshair_light_id = false, false
+local crosshair_light_id = false
+local multi_counter_id
 
 --local functions:
 local level_prepare, bonus_level_prepare
@@ -176,6 +177,8 @@ function on_message(self, message_id, message, sender)
 		end
 
 
+
+
 	-- light particles behind bonus_level_complete, when dark_mode is on
 	elseif message_id == hash("light_particle") then
 		if message.enabled then
@@ -185,11 +188,22 @@ function on_message(self, message_id, message, sender)
 		end
 
 
+
+
 	elseif message_id == hash("spawn_blood") then
 		id = factory.create("game_layer2:/main#blood_factory", vmath.vector3(message.x, message.y, message.z), nil, nil,
 		rnd.range(message.scale - message.scale / 3 , message.scale + message.scale / 3) / 100)
 		if message.a <= 2 then msg.post(id, "animate_blood_scale", {multiplier = message.multiplier}) end
 		table.insert(blood_table, id) ; blood_go_id = id
+
+
+
+
+	elseif message_id == hash("show multi count") then
+		multi_counter_id = factory.create("/main#multi_counter_factory")
+		msg.post(multi_counter_id, "set multi_counter text", {amount = message.amount, score = message.score})
+
+
 
 
 	elseif message_id == hash("reset anim") then

@@ -40,7 +40,7 @@ embedded_components {
   "    index: 0\n"
   "    count: 1\n"
   "  }\n"
-  "  data: 25.0\n"
+  "  data: 27.0\n"
   "}\n"
   "linear_damping: 0.0\n"
   "angular_damping: 0.0\n"
@@ -59,7 +59,7 @@ embedded_components {
   }
 }
 embedded_components {
-  id: "collide_clock"
+  id: "collide_bonus"
   type: "collisionobject"
   data: "collision_shape: \"\"\n"
   "type: COLLISION_OBJECT_TYPE_KINEMATIC\n"
@@ -67,7 +67,7 @@ embedded_components {
   "friction: 0.1\n"
   "restitution: 0.5\n"
   "group: \"weapon\"\n"
-  "mask: \"bonus_clock\"\n"
+  "mask: \"bonus_item\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"
   "    shape_type: TYPE_SPHERE\n"

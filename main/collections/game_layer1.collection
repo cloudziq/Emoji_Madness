@@ -140,7 +140,7 @@ embedded_instances {
   "}\n"
   "components {\n"
   "  id: \"ctrl\"\n"
-  "  component: \"/main/collections/game_layer1.script\"\n"
+  "  component: \"/main/COLLECTIONS/game_layer1.script\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"

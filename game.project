@@ -1,5 +1,5 @@
 [bootstrap]
-main_collection = /main/collections/main.collectionc
+main_collection = /main/COLLECTIONS/main.collectionc
 render = /main/render/custom.renderc
 
 [script]
@@ -60,7 +60,7 @@ max_count = 4
 max_count = 16
 
 [label]
-max_count = 16
+max_count = 32
 
 [collectionfactory]
 max_count = 4

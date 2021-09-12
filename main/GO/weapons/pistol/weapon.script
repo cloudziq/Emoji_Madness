@@ -1,9 +1,23 @@
+
+local multi_kill_count, multi_kill_score
+
+
+
+
 function init(self)
+	multi_kill_count, multi_kill_score = 0, 0
+
 	if score > 0 and level_play == true then
 		score = score - 1
 	end
-	timer.delay(0.04, false, function ()
+
+	timer.delay(0.04, false, function()
 		msg.post("game_layer2:/main#game_gui", "display_update")
+		if multi_kill_count > 1 then
+			msg.post("game_layer2:/main#ctrl", "show multi count", {amount = multi_kill_count, score = multi_kill_score})
+		end
+
+		multi_kill_count, multi_kill_score = 0, 0
 		go.delete()
 	end)
 end
@@ -14,9 +28,19 @@ end
 function update(self, dt)
 	if weapon_collide == true then
 		msg.post("#pistol", "enable")
-		msg.post("#collide_clock", "enable")
+		msg.post("#collide_bonus", "enable")
 	else
 		msg.post("#pistol", "disable")
-		msg.post("#collide_clock", "disable")
+		msg.post("#collide_bonus", "disable")
+	end
+end
+
+
+
+
+function on_message(self, message_id, message)
+	if message_id == hash("count multi_kill") then
+		multi_kill_count = multi_kill_count + 1
+		multi_kill_score = multi_kill_score + message.score
 	end
 end
