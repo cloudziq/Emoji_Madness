@@ -1,7 +1,7 @@
 emitters {
   id: "center"
   mode: PLAY_MODE_LOOP
-  duration: 1.0
+  duration: 3.0
   space: EMISSION_SPACE_EMITTER
   position {
     x: 0.0
@@ -37,7 +37,7 @@ emitters {
     key: EMITTER_KEY_SIZE_X
     points {
       x: 0.0
-      y: 89.206
+      y: 90.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -47,7 +47,7 @@ emitters {
     key: EMITTER_KEY_SIZE_Y
     points {
       x: 0.0
-      y: 15.513
+      y: 16.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -71,23 +71,23 @@ emitters {
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.22
+    spread: 0.25
   }
   properties {
     key: EMITTER_KEY_PARTICLE_SPEED
     points {
       x: 0.0
-      y: 12.0
+      y: 0.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 2.0
+    spread: 10.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_SIZE
     points {
       x: 0.0
-      y: 8.0
+      y: 48.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -97,7 +97,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_RED
     points {
       x: 0.0
-      y: 0.22
+      y: 0.8
       t_x: 1.0
       t_y: 0.0
     }
@@ -107,7 +107,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_GREEN
     points {
       x: 0.0
-      y: 0.32
+      y: 0.84
       t_x: 1.0
       t_y: 0.0
     }
@@ -117,7 +117,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_BLUE
     points {
       x: 0.0
-      y: 0.48
+      y: 0.88
       t_x: 1.0
       t_y: 0.0
     }
@@ -127,7 +127,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_ALPHA
     points {
       x: 0.0
-      y: 0.26
+      y: 0.6
       t_x: 1.0
       t_y: 0.0
     }
@@ -224,16 +224,16 @@ emitters {
       t_y: 0.10768964
     }
     points {
-      x: 0.7112546
-      y: 0.555656
-      t_x: 0.5694311
-      t_y: -0.82203907
+      x: 0.75258476
+      y: 0.10145102
+      t_x: 0.63511974
+      t_y: -0.7724137
     }
     points {
       x: 1.0
       y: 0.0072254334
-      t_x: 0.4737472
-      t_y: -0.8806609
+      t_x: 0.9979349
+      t_y: -0.06423365
     }
   }
   particle_properties {
@@ -306,7 +306,7 @@ modifiers {
     key: MODIFIER_KEY_MAX_DISTANCE
     points {
       x: 0.0
-      y: 22.0
+      y: 80.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -341,7 +341,7 @@ modifiers {
     key: MODIFIER_KEY_MAX_DISTANCE
     points {
       x: 0.0
-      y: 22.0
+      y: 80.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -366,17 +366,17 @@ modifiers {
     key: MODIFIER_KEY_MAGNITUDE
     points {
       x: 0.0
-      y: 600.0
+      y: 100.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 200.0
   }
   properties {
     key: MODIFIER_KEY_MAX_DISTANCE
     points {
       x: 0.0
-      y: 20.0
+      y: 65.0
       t_x: 1.0
       t_y: 0.0
     }

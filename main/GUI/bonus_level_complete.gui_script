@@ -97,7 +97,8 @@ function prepare_gui()
 		gui.animate(gui.get_node("clover"..a), "color.w", 1, gui.EASING_LINEAR, 1)
 	end
 
-	gui.play_particlefx(gui.get_node("menu_center"))
+	--if dark_mode then gui.play_particlefx(gui.get_node("menu_center")) end
+	msg.post("/main#ctrl", "light_particle", {enabled = true})
 	timer.delay(1, false, function() gui.play_particlefx(gui.get_node("particlefx")) end)
 	msg.post("#", "enable")
 end
@@ -203,7 +204,7 @@ function hide_gui()
 	end
 
 	gui.stop_particlefx(gui.get_node("particlefx"))
-	gui.stop_particlefx(gui.get_node("menu_center"))
+	timer.delay(.6, false, function() msg.post("/main#ctrl", "light_particle", {enabled = false}) end)
 	gui.set_enabled(gui.get_node("crosshair"), false)
 	msg.post("game_layer1:/main#ctrl", "clean_emojis", {continue = true})
 	if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end

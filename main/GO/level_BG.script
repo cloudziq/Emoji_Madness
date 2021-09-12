@@ -24,7 +24,7 @@ function init(self)
 	msg.post(self.sprite_id, "play_animation", { id = hash("bg"..math.random(1, level_bg_in_atlas)) })
 
 	go.set(self.sprite_id, "tint", vmath.vector4(.12, .18, .24, 0))
-	go.animate(self.sprite_id, "tint.w", go.PLAYBACK_ONCE_FORWARD, math.random(16, 64) / 100, go.EASING_INOUTSINE, math.random(8, 22))
+	go.animate(self.sprite_id, "tint.w", go.PLAYBACK_ONCE_FORWARD, math.random(22, 68) / 100, go.EASING_INOUTSINE, math.random(8, 22))
 end
 
 
@@ -49,7 +49,7 @@ function update(self, dt)
 		if self.rotate == false then
 			self.rotate = true
 			if bonus_level_active == 1 then
-				time = math.random(10, 100) / 100 ; delay = 0 ; easing = go.EASING_LINEAR
+				time = math.random(6, 20) / 100 ; delay = 0 ; easing = go.EASING_LINEAR
 			else
 				time = math.random(64, 88) ; delay = .24 ; easing = go.EASING_INOUTSINE
 			end
@@ -62,7 +62,7 @@ function update(self, dt)
 		elseif self.color == false and self.change == false then
 			self.color = true
 			if bonus_level_active == 1 then
-				time = math.random(10, 100) / 100 ; delay = 0 ; easing = go.EASING_LINEAR
+				time = math.random(20, 60) / 100 ; delay = 0 ; easing = go.EASING_LINEAR
 			else
 				time = math.random(18, 32) ; delay = 4 ; easing = go.EASING_INOUTSINE
 			end
@@ -76,7 +76,7 @@ function update(self, dt)
 		elseif self.scale == false then
 			self.scale = true
 			if bonus_level_active == 1 then
-				time = math.random(10, 100) / 100 ; delay = 0 ; easing = go.EASING_LINEAR
+				time = math.random(30, 80) / 100 ; delay = 0 ; easing = go.EASING_LINEAR
 			else
 				time = math.random(10, 26) ; delay = 6 ; easing = go.EASING_INOUTSINE
 			end

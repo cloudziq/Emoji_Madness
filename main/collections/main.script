@@ -26,7 +26,7 @@ function init(self)
 	screen_w = display[1].bounds.width
 	screen_h = display[1].bounds.height - 36
 
-	screen_w = 1650 ; screen_h = 875  -- smaller window
+	--screen_w = 1650 ; screen_h = 875  -- smaller window
 	--screen_w = 1650 ; screen_h = 600   -- for recording
 
 	window_w = 1280 * 4 ; window_h = 1320 * 4
@@ -40,19 +40,12 @@ function init(self)
 
 	defos.set_view_size((screen_w - window_w) / 2, ((screen_h - 36) - window_h) / 2, window_w, window_h)
 	window_w = 1280 ; window_h = 1320
+
+	debug_profiling()
 	msg.post("@render:", "refresh_window_size")
 
 	msg.post("#title_menu_proxy", "load")
-
-	--timer.delay(1, false, debug_profiling)
 end
-
-
-
-
--- function update()
--- 
--- end
 
 
 
@@ -116,7 +109,6 @@ function on_message(self, message_id, message, sender)
 		if menu_proxy == false then
 			msg.post("#title_menu_proxy", "async_load")
 		else
-			--msg.post("title:/main#title_screen", "show")
 			msg.post("#title_menu_proxy", "unload")
 			msg.post("#title_menu_proxy", "async_load")
 		end

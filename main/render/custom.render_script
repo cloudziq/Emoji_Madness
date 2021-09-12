@@ -81,7 +81,7 @@ end
 
 
 function update(self)
-    if dark_mode == true then
+    if dark_mode then
         render.enable_render_target(self.target_1)
     end
     
@@ -101,10 +101,6 @@ function update(self)
 
     render.set_projection(get_projection(self))
 
-    -- if not dark_mode then
-    --     render.draw(self.light_particle_pred)
-    --     render.draw(self.light_sprite_pred)
-    -- end
     render.draw(self.tile_pred)
     render.draw(self.particle_pred)
 
@@ -143,10 +139,9 @@ function update(self)
         render.set_projection(vmath.matrix4_orthographic(0, render.get_window_width(), 0, render.get_window_height(), -1, 1))
     end
 
-    -- GUI:
-    render.set_view(vmath.matrix4())
-    --render.set_projection(vmath.matrix4_orthographic(0, window_w, 0, window_h, -1, 1))
 
+    -- GUI:
+    --render.set_view(vmath.matrix4())
     render.enable_state(render.STATE_STENCIL_TEST)
     render.draw(self.gui_pred)
     render.draw(self.text_pred)

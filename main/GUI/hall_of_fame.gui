@@ -195,7 +195,7 @@ nodes {
 nodes {
   position {
     x: 0.0
-    y: 326.063
+    y: 1.266
     z: 0.0
     w: 1.0
   }
@@ -206,9 +206,339 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.406
-    y: 0.406
-    z: 0.406
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "lines"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "FAME"
+  layer: ""
+  inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.0
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 0.0
+    y: 196.633
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 736.0
+    y: 4.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "line_horizontal"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "lines"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.1
+  template_node_child: false
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: 0.0
+    y: -199.367
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 736.0
+    y: 4.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "line_horizontal1"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "lines"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.1
+  template_node_child: false
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: 21.122
+    y: -1.367
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 4.0
+    y: 392.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "line_vertical"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "lines"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.1
+  template_node_child: false
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: 160.641
+    y: -1.367
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 4.0
+    y: 392.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "line_vertical1"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "lines"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.1
+  template_node_child: false
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: 254.148
+    y: -1.367
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 4.0
+    y: 392.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "line_vertical2"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "lines"
+  layer: ""
+  inherit_alpha: false
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.1
+  template_node_child: false
+  size_mode: SIZE_MODE_MANUAL
+}
+nodes {
+  position {
+    x: 0.0
+    y: 320.367
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 0.593
+    y: 0.593
+    z: 0.593
     w: 1.0
   }
   size {
@@ -375,7 +705,7 @@ nodes {
 }
 nodes {
   position {
-    x: 200.631
+    x: 196.201
     y: 0.0
     z: 0.0
     w: 1.0
@@ -438,7 +768,7 @@ nodes {
 }
 nodes {
   position {
-    x: 63.924
+    x: 60.759
     y: 0.0
     z: 0.0
     w: 1.0
@@ -501,7 +831,7 @@ nodes {
 }
 nodes {
   position {
-    x: 267.09
+    x: 262.66
     y: 0.0
     z: 0.0
     w: 1.0
@@ -863,7 +1193,7 @@ nodes {
 }
 nodes {
   position {
-    x: 32.278
+    x: 27.848
     y: 0.0
     z: 0.0
     w: 1.0
@@ -926,7 +1256,7 @@ nodes {
 }
 nodes {
   position {
-    x: 170.252
+    x: 165.822
     y: 0.0
     z: 0.0
     w: 1.0
@@ -989,7 +1319,7 @@ nodes {
 }
 nodes {
   position {
-    x: 265.823
+    x: 261.393
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1352,7 +1682,7 @@ nodes {
 }
 nodes {
   position {
-    x: 32.278
+    x: 27.848
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1415,7 +1745,7 @@ nodes {
 }
 nodes {
   position {
-    x: 170.252
+    x: 165.822
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1446,7 +1776,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "442"
+  text: "99"
   font: "Vellyc"
   id: "level2"
   xanchor: XANCHOR_NONE
@@ -1478,7 +1808,7 @@ nodes {
 }
 nodes {
   position {
-    x: 265.823
+    x: 261.393
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1840,7 +2170,7 @@ nodes {
 }
 nodes {
   position {
-    x: 32.278
+    x: 27.848
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1903,7 +2233,7 @@ nodes {
 }
 nodes {
   position {
-    x: 170.252
+    x: 165.822
     y: 0.0
     z: 0.0
     w: 1.0
@@ -1966,7 +2296,7 @@ nodes {
 }
 nodes {
   position {
-    x: 265.823
+    x: 261.393
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2328,7 +2658,7 @@ nodes {
 }
 nodes {
   position {
-    x: 32.278
+    x: 27.848
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2391,7 +2721,7 @@ nodes {
 }
 nodes {
   position {
-    x: 170.252
+    x: 165.822
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2454,7 +2784,7 @@ nodes {
 }
 nodes {
   position {
-    x: 265.823
+    x: 261.393
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2816,7 +3146,7 @@ nodes {
 }
 nodes {
   position {
-    x: 32.278
+    x: 27.848
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2879,7 +3209,7 @@ nodes {
 }
 nodes {
   position {
-    x: 170.252
+    x: 165.822
     y: 0.0
     z: 0.0
     w: 1.0
@@ -2942,7 +3272,7 @@ nodes {
 }
 nodes {
   position {
-    x: 265.823
+    x: 261.393
     y: 0.0
     z: 0.0
     w: 1.0
