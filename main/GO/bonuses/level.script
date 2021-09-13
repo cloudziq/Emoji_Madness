@@ -13,7 +13,7 @@ function init(self)
 	self.active = true
 	if not dark_mode then
 		self.fade_in =  2
-		self.time = 3
+		self.time = 2.2
 		self.fade_out = 2
 	else
 		self.fade_in =  3

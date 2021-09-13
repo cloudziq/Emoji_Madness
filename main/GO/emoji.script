@@ -1,6 +1,6 @@
-go.property("speed",  5.64)
+go.property("speed",  5.84)
 go.property("wait",   3.46)
-go.property("score",  1)
+go.property("score",  4)
 go.property("dest",   vmath.vector3())
 
 
@@ -132,7 +132,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 1.76
+			time = (self.speed - (self.speed * (speed / 100))) * 1.82
 			pos_x, pos_y = get_offscreen_pos(100 + dist_add, true, go.get_position())
 		end
 		sprite_flip(pos_x)
@@ -165,6 +165,7 @@ function emoji_waiting(self)
 		if self.wait_timeout == 0 then
 			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + math.random(1, 4) + socket.gettime()
 			self.waiting = true
+			self.score = self.score / 2
 			particlefx.play(self.particle_url)
 			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
 			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.52, .56, .78, .84))
@@ -179,6 +180,7 @@ function emoji_waiting(self)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, .44, 0, function()
 				self.waiting = false
 				self.going_away = true
+				self.score = self.score / 2
 				sound.play("game_layer1:/main#emoji_going_away", {speed = (math.random(80, 120) / 100) * proxy_speed})
 				get_new_emoji_pos(self, go.EASING_INSINE, go.EASING_LINEAR, .1)
 			end)
@@ -205,7 +207,7 @@ end
 
 
 function on_message(self, message_id, message, sender)
-	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc, play_sound, multiplier, combo_big
+	local a, z, id, pos, pos_x, pos_y, force, distance, time, play_sound, multiplier, combo_charged
 	local blood_scale = {20, 15, 60, 45}
 
 
@@ -280,18 +282,18 @@ function on_message(self, message_id, message, sender)
 				if score > 0 then score = score + bullet_miss end
 				emojis_left = emojis_left - 1
 				killed = killed + 1
-				score_calc = self.score
+				--score_calc = self.score
 				combo_charged = false
 
-				if self.waiting == false and self.going_away == false then score_calc = score_calc * 4 end
-				if self.waiting == true then score_calc = score_calc * 2 end
-				score = score + score_calc
+				-- if self.waiting == false and self.going_away == false then score_calc = score_calc * 4 end
+				-- if self.waiting == true then score_calc = score_calc * 2 end
+				score = score + self.score
 
 				if self.going_away then
 					sound.stop("game_layer1:/main#emoji_going_away")
 					combo_charged = true
 				end
-				msg.post(weapon_id, "count charged_kill", {score = score_calc, charged = combo_charged})
+				msg.post(weapon_id, "count charged_kill", {score = self.score, charged = combo_charged})
 
 				msg.post("game_layer2:/main#game_gui", "display_update")
 				sound.play("game_layer1:/main#squeak1", { speed = (math.random(60, 120) / 100) * proxy_speed, gain = math.random(80, 120) / 100 })

@@ -23,25 +23,25 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("show bullet_miss info") then
 		delay = 0 ; weapon_collide = false
 
-		for i = 1, 6 do
+		for i = 1, 5 do
 			node = gui.get_node("bullet_text"..i) ; a = gui.get_color(node)
 			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
 			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
-			if i == 5 then
+			if i == 4 then
 				gui.set_text(node, tostring(message.amount))
 			end
-			delay = delay + .88
+			delay = delay + .76
 		end
-		timer.delay(5.6, false, function()
+		timer.delay(4.2, false, function()
 			delay = 1
-			for i = 1, 6 do
+			for i = 1, 5 do
 				node = gui.get_node("bullet_text"..i)
 				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.1, delay)
-				delay = delay + .44
+				delay = delay + .32
 			end
 		end)
 		gui.set_enabled(gui.get_node("BULLET_MISS_INFO"), true)
-		timer.delay(8, false, function()
+		timer.delay(6, false, function()
 			msg.post("#", "show_level_intro")
 		end)
 
@@ -83,9 +83,9 @@ function on_message(self, message_id, message, sender)
 			node = gui.get_node("tt"..i) ; a = gui.get_color(node)
 			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
 			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
-			delay = delay + .62
+			delay = delay + .52
 		end
-		timer.delay(3, false, function()
+		timer.delay(3.2, false, function()
 			delay = 1
 			for i = 1, 4 do
 				node = gui.get_node("tt"..i)

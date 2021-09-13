@@ -10,6 +10,7 @@ function init(self)
 	if level_play then allow_display = true end
 
 	if score > 0 and level_play == true then
+		if score < 0 then score = 0 end
 		score = score - bullet_miss
 	end
 

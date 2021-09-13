@@ -184,7 +184,7 @@ function hide_gui()
 	gui.animate(node, "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
 
 	node = gui.get_node("complete_bonus_points")
-	gui.set_text(node, "+ "..(level - 1).." points")
+	gui.set_text(node, "+ "..((level - 1) *4).." points")
 	gui.animate(node, "color.w", 1, gui.EASING_INSINE, .1, 0, function()
 		gui.animate(node, "color.w", 0, gui.EASING_INSINE, 3.2, 1)
 	end)
