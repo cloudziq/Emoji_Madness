@@ -1,6 +1,6 @@
 components {
   id: "multi_counter"
-  component: "/main/GO/weapons/pistol/multi_counter.script"
+  component: "/main/GO/multi_counter.script"
   position {
     x: 0.0
     y: 0.0
@@ -14,7 +14,7 @@ components {
   }
 }
 embedded_components {
-  id: "x"
+  id: "+"
   type: "label"
   data: "size {\n"
   "  x: 16.0\n"
@@ -23,8 +23,8 @@ embedded_components {
   "  w: 0.0\n"
   "}\n"
   "scale {\n"
-  "  x: 1.0\n"
-  "  y: 1.0\n"
+  "  x: 1.2\n"
+  "  y: 1.2\n"
   "  z: 1.0\n"
   "  w: 0.0\n"
   "}\n"
@@ -51,7 +51,7 @@ embedded_components {
   "pivot: PIVOT_CENTER\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   "line_break: false\n"
-  "text: \"x\"\n"
+  "text: \"+\"\n"
   "font: \"/assets/font/system.font\"\n"
   "material: \"/builtins/fonts/label.material\"\n"
   ""
@@ -102,15 +102,15 @@ embedded_components {
   "}\n"
   "leading: 1.0\n"
   "tracking: 0.0\n"
-  "pivot: PIVOT_CENTER\n"
+  "pivot: PIVOT_W\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   "line_break: false\n"
-  "text: \"4\"\n"
+  "text: \"997\"\n"
   "font: \"/assets/font/Vellyc.font\"\n"
   "material: \"/builtins/fonts/label.material\"\n"
   ""
   position {
-    x: 46.0
+    x: 20.0
     y: -4.0
     z: 0.0
   }

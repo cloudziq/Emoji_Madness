@@ -422,9 +422,9 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.406
-    y: 0.406
-    z: 0.406
+    x: 0.38
+    y: 0.46
+    z: 1.0
     w: 1.0
   }
   size {
@@ -441,9 +441,9 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "WELL DONE!"
+  text: "almost end"
   font: "leaking"
-  id: "well_done"
+  id: "complete_text"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -469,7 +469,7 @@ nodes {
   shadow_alpha: 1.0
   template_node_child: false
   text_leading: 1.0
-  text_tracking: 0.06
+  text_tracking: 0.1
 }
 nodes {
   position {

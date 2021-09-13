@@ -3,11 +3,13 @@
 level  = 1
 score  = 0
 health = 5
-emojis = 8
+emojis = 15
 speed  = 0   -- (self.speed minus this value as percentage)
-dark_start_level = 16
-level_bonus_unlocked = 5
+dark_start_level = 15
+level_bonus_unlocked = 4
 bonus_requirement = 0
+bullet_miss = 1
+bullet_miss_level = 6
 
 bonus_can_spawn = false
 bonus_clock_active = false
@@ -16,7 +18,7 @@ change_music_variant = false
 
 -- adds for level completion:
 emojis_add     = 3
-speed_add      = 2.86
+speed_add      = 3.04
 health_add     = 1
 health_perfect = 1
 
@@ -66,9 +68,16 @@ function update(self, dt)
 				msg.post("main#game_gui", "show darkness intro")
 
 			elseif level == level_bonus_unlocked then
-				bonus_requirement = 5 - 1
+				bonus_requirement = 4 - 1
 				timer.delay(1.4, false, function()
 					msg.post("#game_gui", "show_bonus_available_info")
+				end)
+
+			elseif level == bullet_miss_level then
+				if bullet_miss == 1 then bullet_miss = 10 else bullet_miss = bullet_miss * 2 end
+				bullet_miss_level = bullet_miss_level + 5
+				timer.delay(1.4, false, function()
+					msg.post("#game_gui", "show bullet_miss info", {amount = bullet_miss})
 				end)
 
 			else
@@ -90,7 +99,7 @@ function update(self, dt)
 
 		elseif emojis_left == 0 then
 			level_play = false
-			score = score + level
+			score = score + (level * 4)
 			level = level + 1
 			health = health + health_add
 			emojis = emojis + emojis_add
@@ -105,14 +114,14 @@ function update(self, dt)
 
 		if bonus_can_spawn and level >= level_bonus_unlocked and not pause_id then
 			--bonus_clock_spawn
-			if rnd.range(1, 14000) >= 13998 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 14000) >= 13997 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
 			--if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and killed > 1 and emojis_left >= 2 then
 				msg.post("game_layer1:/main#ctrl", "bonus_clock")
 				bonus_clock_visible = true
 			end
 
 			--bonus_level_spawn
-			if rnd.range(1, 18000) >= 17996 and bonus_level_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 18000) >= 17997 and bonus_level_visible == false and emojis_left >= bonus_requirement then
 			--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and emojis_left >= bonus_requirement then
 				msg.post("game_layer1:/main#ctrl", "bonus_level")
 				bonus_level_visible = true
@@ -199,9 +208,9 @@ function on_message(self, message_id, message, sender)
 
 
 
-	elseif message_id == hash("show multi count") then
+	elseif message_id == hash("show charged_combo display") then
 		multi_counter_id = factory.create("/main#multi_counter_factory")
-		msg.post(multi_counter_id, "set multi_counter text", {amount = message.amount, score = message.score})
+		msg.post(multi_counter_id, "charged_combo text -final", {amount = message.amount, score = message.score, charged = message.charged})
 
 
 

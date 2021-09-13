@@ -17,6 +17,8 @@ function on_message(self, message_id, message)
 	local menu_color = gui.get_color(gui.get_node("WIN"))
 
 	if message_id == hash("show") then
+		local text
+
 		-- prepare GUI:
 		allow_continue = false
 		gui.set_color(gui.get_node("WIN"), vmath.vector4(1,1,1,0))
@@ -44,16 +46,22 @@ function on_message(self, message_id, message)
 		percentage = (escaped / (health - health_add)) * 100
 		if percentage == 0 then
 			emoji_icon = "e5"
+			text = "excellent!"
 		elseif percentage > 0 and percentage <= 25 then
 			emoji_icon = "e41"
+			text = "well done!"
 		elseif percentage > 25 and percentage <= 50 then
 			emoji_icon = "e9"
+			text = "not so bad"
 		elseif percentage > 50 and percentage <= 75 then
 			emoji_icon = "e21"
+			text = "try harder"
 		else
 			emoji_icon = "e44"
+			text = "almost end"
 		end
 		gui.play_flipbook(gui.get_node("emoji"), emoji_icon)
+		gui.set_text(gui.get_node("complete_text"), text)
 
 		if bonus_level_active then
 			--tweak some nodes position if clover collected:
@@ -128,11 +136,11 @@ function on_message(self, message_id, message)
 			gui.animate(node, "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
 
 			node = gui.get_node("complete_bonus_points")
-			if level - 1 == 1 then
-				gui.set_text(node, "+ "..(level - 1).." point")
-			else
-				gui.set_text(node, "+ "..(level - 1).." points")
-			end
+			-- if level - 1 == 1 then
+			-- 	gui.set_text(node, "+ "..(level - 1).." point")
+			-- else
+				gui.set_text(node, "+ "..((level - 1) * 4).." points")
+			-- end
 			gui.animate(node, "color.w", 1, gui.EASING_INSINE, .1, 0, function()
 				gui.animate(node, "color.w", 0, gui.EASING_INSINE, 2.6, 1)
 			end)

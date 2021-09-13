@@ -13,8 +13,6 @@ proxy_speed = 1    --for game_layer1 speed control
 
 
 function init(self)
-	local x, y
-
 	msg.post("#", "acquire_input_focus")
 	math.randomseed(socket.gettime() * 1000)
 

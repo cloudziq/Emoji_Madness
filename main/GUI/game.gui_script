@@ -20,7 +20,35 @@ function on_message(self, message_id, message, sender)
 	local node, col, a, i, delay, id, scale, shots, cursor_blinking
 
 
-	if message_id == hash("show darkness intro") then
+	if message_id == hash("show bullet_miss info") then
+		delay = 0 ; weapon_collide = false
+
+		for i = 1, 6 do
+			node = gui.get_node("bullet_text"..i) ; a = gui.get_color(node)
+			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
+			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
+			if i == 5 then
+				gui.set_text(node, tostring(message.amount))
+			end
+			delay = delay + .88
+		end
+		timer.delay(5.6, false, function()
+			delay = 1
+			for i = 1, 6 do
+				node = gui.get_node("bullet_text"..i)
+				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.1, delay)
+				delay = delay + .44
+			end
+		end)
+		gui.set_enabled(gui.get_node("BULLET_MISS_INFO"), true)
+		timer.delay(8, false, function()
+			msg.post("#", "show_level_intro")
+		end)
+
+
+
+
+	elseif message_id == hash("show darkness intro") then
 		delay = 0 ; weapon_collide = false
 
 		dark_mode = true
@@ -111,6 +139,7 @@ function on_message(self, message_id, message, sender)
 			gui.set_color(gui.get_node("display"), vmath.vector4(0,0,0,0))
 			gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
 			gui.animate(gui.get_node("BG"), "color", vmath.vector4(.22, .26, .32, .52), gui.EASING_LINEAR, 1.2)
+			gui.set_enabled(gui.get_node("BULLET_MISS_INFO"), false)
 			gui.set_enabled(gui.get_node("DARKNESS"), false)
 			gui.set_enabled(gui.get_node("BONUS_AVAILABLE"), false)
 			gui.set_enabled(gui.get_node("cursor_counter"), false)

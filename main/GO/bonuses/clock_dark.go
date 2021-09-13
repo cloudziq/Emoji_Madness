@@ -56,7 +56,7 @@ embedded_components {
   "mass: 0.0\n"
   "friction: 0.1\n"
   "restitution: 0.5\n"
-  "group: \"bonus_clock\"\n"
+  "group: \"bonus_item\"\n"
   "mask: \"weapon\"\n"
   "embedded_collision_shape {\n"
   "  shapes {\n"

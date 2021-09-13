@@ -1,4 +1,4 @@
-go.property("speed",  6.44)
+go.property("speed",  5.64)
 go.property("wait",   3.46)
 go.property("score",  1)
 go.property("dest",   vmath.vector3())
@@ -21,7 +21,7 @@ local hash_right_click     = hash("menu_right_click")
 
 function init(self)
 	self.active         = true
-	self.delay          = rnd.range(2, (emojis / 3) - (level / 3.8))
+	self.delay          = rnd.range(2, (emojis / 3) - (level / 4.4))
 	self.wait_timeout   = 0
 	self.waiting        = false
 	self.going_away     = false
@@ -132,7 +132,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 1.62
+			time = (self.speed - (self.speed * (speed / 100))) * 1.76
 			pos_x, pos_y = get_offscreen_pos(100 + dist_add, true, go.get_position())
 		end
 		sprite_flip(pos_x)
@@ -163,7 +163,7 @@ end
 function emoji_waiting(self)
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + socket.gettime()
+			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + math.random(1, 4) + socket.gettime()
 			self.waiting = true
 			particlefx.play(self.particle_url)
 			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
@@ -205,7 +205,7 @@ end
 
 
 function on_message(self, message_id, message, sender)
-	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc, play_sound, multiplier
+	local a, z, id, pos, pos_x, pos_y, force, distance, time, score_calc, play_sound, multiplier, combo_big
 	local blood_scale = {20, 15, 60, 45}
 
 
@@ -277,15 +277,21 @@ function on_message(self, message_id, message, sender)
 		if bonus_level_active ~= 1 then
 			if message.group == collide_weapon_hash and self.active == true then
 
-				score = score + 1
-				emojis_left = emojis_left - 1 ; killed = killed + 1
+				if score > 0 then score = score + bullet_miss end
+				emojis_left = emojis_left - 1
+				killed = killed + 1
 				score_calc = self.score
+				combo_charged = false
+
 				if self.waiting == false and self.going_away == false then score_calc = score_calc * 4 end
 				if self.waiting == true then score_calc = score_calc * 2 end
 				score = score + score_calc
-				msg.post(weapon_id, "count multi_kill", {score = score_calc})
 
-				if self.going_away then sound.stop("game_layer1:/main#emoji_going_away") end
+				if self.going_away then
+					sound.stop("game_layer1:/main#emoji_going_away")
+					combo_charged = true
+				end
+				msg.post(weapon_id, "count charged_kill", {score = score_calc, charged = combo_charged})
 
 				msg.post("game_layer2:/main#game_gui", "display_update")
 				sound.play("game_layer1:/main#squeak1", { speed = (math.random(60, 120) / 100) * proxy_speed, gain = math.random(80, 120) / 100 })
@@ -417,11 +423,24 @@ function make_blood(pos, blood_scale, multiplier)
 	
 	for a = 1, 4 do
 		-- blood 1 and 2 is under sprite
-		-- blood 4 is under cursor
+		-- blood 4 is between cursor and emoji
 		if a <= 2 then z = .4 else z = .9 end
 		if a == 4 then
-			pos_x = cursor_x
-			pos_y = cursor_y
+			if cursor_x > pos.x then
+				pos_x = cursor_x - (cursor_x - pos.x) / 2
+			elseif cursor_x < pos.x then
+				pos_x = cursor_x + (pos.x - cursor_x) / 2
+			else
+				pos_x = pos.x
+			end
+
+			if cursor_y > pos.y then
+				pos_y = cursor_y - (cursor_y - pos.y) / 2
+			elseif cursor_y < pos.y then
+				pos_y = cursor_y + (pos.y - cursor_y) / 2
+			else
+				pos_y = pos.y
+			end
 		else
 			pos_x = pos.x + math.random(-8, 8)
 			pos_y = pos.y + math.random(-8, 8)

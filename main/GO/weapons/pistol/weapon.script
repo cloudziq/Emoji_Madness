@@ -1,23 +1,28 @@
 
-local multi_kill_count, multi_kill_score
+local charged_combo_count, charged_combo_score, charged_emoji_count
 
 
 
 
 function init(self)
-	multi_kill_count, multi_kill_score = 0, 0
+	charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
+	local allow_display = false
+	if level_play then allow_display = true end
 
 	if score > 0 and level_play == true then
-		score = score - 1
+		score = score - bullet_miss
 	end
 
 	timer.delay(0.04, false, function()
 		msg.post("game_layer2:/main#game_gui", "display_update")
-		if multi_kill_count > 1 then
-			msg.post("game_layer2:/main#ctrl", "show multi count", {amount = multi_kill_count, score = multi_kill_score})
+		--if charged_combo_count > 1 and charged_emoji_count > 0 then
+		if allow_display then
+			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count})
 		end
+			--msg.post("game_layer2:/main#ctrl", "show charged_combo display_debug")
+		--nd
 
-		multi_kill_count, multi_kill_score = 0, 0
+		charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
 		go.delete()
 	end)
 end
@@ -39,8 +44,9 @@ end
 
 
 function on_message(self, message_id, message)
-	if message_id == hash("count multi_kill") then
-		multi_kill_count = multi_kill_count + 1
-		multi_kill_score = multi_kill_score + message.score
+	if message_id == hash("count charged_kill") then
+		charged_combo_count = charged_combo_count + 1
+		if message.charged then charged_emoji_count = charged_emoji_count + 1 end
+		charged_combo_score = charged_combo_score + message.score
 	end
 end
