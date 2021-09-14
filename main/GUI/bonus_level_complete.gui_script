@@ -97,8 +97,7 @@ function prepare_gui()
 		gui.animate(gui.get_node("clover"..a), "color.w", 1, gui.EASING_LINEAR, 1)
 	end
 
-	--if dark_mode then gui.play_particlefx(gui.get_node("menu_center")) end
-	msg.post("/main#ctrl", "light_particle", {enabled = true})
+	if dark_mode then msg.post("/main#ctrl", "light_particle", {enabled = true}) end
 	timer.delay(1, false, function() gui.play_particlefx(gui.get_node("particlefx")) end)
 	msg.post("#", "enable")
 end
@@ -129,7 +128,7 @@ function start_counting(node, multiplier, stop)
 						gui.animate(gui.get_node(node.."_x"), "color.w", 0, gui.EASING_LINEAR, .2, .2)
 						gui.animate(gui.get_node(node.."_="), "position.y", 7, gui.EASING_OUTELASTIC, .8, .2, function()
 							if not stop then
-								start_counting("big", 20, true)
+								start_counting("big", 50, true)
 							else
 								total_points()
 							end
@@ -137,7 +136,7 @@ function start_counting(node, multiplier, stop)
 					end)
 				elseif a == count and a == 0 then
 					if not stop then
-						start_counting("big", 20, true)
+						start_counting("big", 50, true)
 					else
 						total_points()
 					end
@@ -184,7 +183,7 @@ function hide_gui()
 	gui.animate(node, "scale", vmath.vector3(2.4, 2.4, 1), gui.EASING_INSINE, 1.5)
 
 	node = gui.get_node("complete_bonus_points")
-	gui.set_text(node, "+ "..((level - 1) *4).." points")
+	gui.set_text(node, "+ "..((level - 1) * 10).." points")
 	gui.animate(node, "color.w", 1, gui.EASING_INSINE, .1, 0, function()
 		gui.animate(node, "color.w", 0, gui.EASING_INSINE, 3.2, 1)
 	end)

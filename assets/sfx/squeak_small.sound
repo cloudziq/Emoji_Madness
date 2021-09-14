@@ -1,4 +1,4 @@
-sound: "/assets/sfx/squeak1.wav"
+sound: "/assets/sfx/squeak_small.wav"
 looping: 0
 group: "sound"
 gain: 2.4

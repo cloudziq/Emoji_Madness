@@ -1,7 +1,7 @@
 emitters {
   id: "center"
   mode: PLAY_MODE_LOOP
-  duration: 3.0
+  duration: 6.0
   space: EMISSION_SPACE_EMITTER
   position {
     x: 0.0

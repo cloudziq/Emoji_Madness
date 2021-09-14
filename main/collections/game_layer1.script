@@ -78,7 +78,7 @@ function on_message(self, message_id, message)
 			sound.play("main#level_loop"..music_variant)
 		end
 		sound.set_gain("main#level_loop"..music_variant, 0)
-		go.animate("main#level_loop"..music_variant, "gain", go.PLAYBACK_ONCE_FORWARD, 0.6, go.EASING_LINEAR, message.time)
+		go.animate("main#level_loop"..music_variant, "gain", go.PLAYBACK_ONCE_FORWARD, 0.6, go.EASING_LINEAR, message.time, message.delay)
 
 
 	elseif message_id == hash("fade_out_music") then
@@ -97,7 +97,7 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("fade_out_add_music") then
-		go.animate("main#level_loop_add", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 2, 0, function()
+		go.animate("main#level_loop_add", "gain", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, message.time, 0, function()
 			sound.stop("main#level_loop_add")
 		end)
 

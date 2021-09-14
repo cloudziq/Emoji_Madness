@@ -21,7 +21,7 @@ local hash_right_click     = hash("menu_right_click")
 
 function init(self)
 	self.active         = true
-	self.delay          = rnd.range(2, (emojis / 3) - (level / 4.4))
+	self.delay          = rnd.range(2, (emojis / 3) - (level / 2.8))
 	self.wait_timeout   = 0
 	self.waiting        = false
 	self.going_away     = false
@@ -277,26 +277,33 @@ function on_message(self, message_id, message, sender)
 	-- for levels
 	else
 		if bonus_level_active ~= 1 then
+			local sound_type, sound_speed
+
 			if message.group == collide_weapon_hash and self.active == true then
 
 				if score > 0 then score = score + bullet_miss end
 				emojis_left = emojis_left - 1
 				killed = killed + 1
-				--score_calc = self.score
 				combo_charged = false
-
-				-- if self.waiting == false and self.going_away == false then score_calc = score_calc * 4 end
-				-- if self.waiting == true then score_calc = score_calc * 2 end
 				score = score + self.score
+
+				if emojis_left > 0 then
+					sound_speed = (math.random(60, 120) / 100)
+				else
+					sound_speed = (math.random(16, 24) / 100)
+				end
 
 				if self.going_away then
 					sound.stop("game_layer1:/main#emoji_going_away")
+					sound_type = "game_layer1:/main#squeak_big"
 					combo_charged = true
+				else
+					sound_type = "game_layer1:/main#squeak_small"
 				end
 				msg.post(weapon_id, "count charged_kill", {score = self.score, charged = combo_charged})
 
+				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				msg.post("game_layer2:/main#game_gui", "display_update")
-				sound.play("game_layer1:/main#squeak1", { speed = (math.random(60, 120) / 100) * proxy_speed, gain = math.random(80, 120) / 100 })
 				particlefx.stop(self.particle_url)
 
 				self.active = false
@@ -354,6 +361,8 @@ function on_message(self, message_id, message, sender)
 		-- bonus level handling:
 		else
 			if message.group == collide_weapon_hash and self.active == true then
+				local sound_type, sound_speed
+
 				self.active = false
 				go.set(self.sprite_url, "tint.w", 1)
 				pos = go.get_position()
@@ -363,15 +372,19 @@ function on_message(self, message_id, message, sender)
 					bonus_score = bonus_score + 10
 					bonus_level_kills.small = bonus_level_kills.small + 1
 					make_blood(pos, blood_scale)
+					sound_type = "game_layer1:/main#squeak_small"
+					sound_speed = (math.random(60, 120) / 100)
 				else
-					bonus_score = bonus_score + 20
+					bonus_score = bonus_score + 50
 					bonus_level_kills.big = bonus_level_kills.big + 1
 					make_blood(pos, blood_scale, 1.6)
+					sound_type = "game_layer1:/main#squeak_big"
+					sound_speed = (math.random(20, 35) / 100)
 				end
 
+				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				msg.post("game_layer2:/main#ctrl", "reset anim", {visible = true})
 				msg.post("game_layer2:/main#game_gui", "bonus_display_update")
-				sound.play("game_layer1:/main#squeak1", { speed = math.random(60, 120) / 100, gain = math.random(80, 120) / 100 })
 
 
 			elseif message_id == hash("collision_response") and self.active == true then

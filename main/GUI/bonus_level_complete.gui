@@ -1114,7 +1114,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "20"
+  text: "50"
   font: "Vellyc"
   id: "small_mult1"
   xanchor: XANCHOR_NONE
@@ -1571,7 +1571,7 @@ nodes {
 }
 nodes {
   position {
-    x: -40.506
+    x: -43.038
     y: -27.216
     z: 0.0
     w: 1.0
@@ -1634,7 +1634,7 @@ nodes {
 }
 nodes {
   position {
-    x: 311.39
+    x: 318.836
     y: 5.934
     z: 0.0
     w: 1.0

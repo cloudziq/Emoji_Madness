@@ -41,7 +41,7 @@ function on_message(self, message_id, message)
 		tex_len = #text
 		x, y = ax * scale, ay * scale
 		label.set_text("#count", text)
-		pprint("charged_emojis: "..message.charged.."    combo_amount: "..message.amount.."    score_result:"..text)
+		--pprint("charged_emojis: "..message.charged.."    combo_amount: "..message.amount.."    score_result:"..text)
 
 
 
