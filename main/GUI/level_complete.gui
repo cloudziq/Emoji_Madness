@@ -441,7 +441,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "almost end"
+  text: "zajebiscie"
   font: "leaking"
   id: "complete_text"
   xanchor: XANCHOR_NONE
@@ -536,8 +536,8 @@ nodes {
 }
 nodes {
   position {
-    x: 65.19
-    y: 60.76
+    x: 65.0
+    y: 60.0
     z: 0.0
     w: 1.0
   }
@@ -662,8 +662,8 @@ nodes {
 }
 nodes {
   position {
-    x: 65.19
-    y: 24.051
+    x: 65.0
+    y: 24.0
     z: 0.0
     w: 1.0
   }

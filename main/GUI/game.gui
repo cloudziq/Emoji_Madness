@@ -2657,7 +2657,7 @@ nodes {
 }
 nodes {
   position {
-    x: 456.0
+    x: 438.0
     y: -30.0
     z: 0.0
     w: 1.0
@@ -2775,7 +2775,7 @@ nodes {
 }
 nodes {
   position {
-    x: 591.0
+    x: 572.0
     y: -30.0
     z: 0.0
     w: 1.0
@@ -2830,7 +2830,7 @@ nodes {
 }
 nodes {
   position {
-    x: 7.683
+    x: 8.0
     y: -1.0
     z: 0.0
     w: 1.0
@@ -2861,7 +2861,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "XX"
+  text: "XXX"
   font: "system"
   id: "emojis_left"
   xanchor: XANCHOR_NONE

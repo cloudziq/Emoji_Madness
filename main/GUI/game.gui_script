@@ -248,7 +248,6 @@ function on_message(self, message_id, message, sender)
 			gui.set_color(node, vmath.vector4(col.x, col.y, col.z, 0))
 			gui.set_enabled(node, true)
 		else
-			--gui.set_enabled(gui.get_node("cursor_counter"), false)
 			gui.set_enabled(gui.get_node("clover_icon"), false)
 			gui.set_enabled(gui.get_node("clock_icon"), false)
 			gui.set_enabled(gui.get_node("bonus_item_requirement"), false)
@@ -272,9 +271,22 @@ function on_message(self, message_id, message, sender)
 
 
 	elseif message_id == hash("display_update") then
-		local counter, counter_text
+		local counter, counter_text, node1, node2, pos1, pos2
 
 		if level_play then
+
+			-- reposition emoji counter a bit if emojis > 99
+			node1 = gui.get_node("emoji_icon") ; pos1 = gui.get_position(node)
+			node2 = gui.get_node("heart_icon") ; pos2 = gui.get_position(node)
+
+			if emojis_left < 100 then
+				gui.set_position(node1, vmath.vector3(590, pos1.y, 0))
+				gui.set_position(node2, vmath.vector3(456, pos2.y, 0))
+			else
+				gui.set_position(node1, vmath.vector3(572, pos1.y, 0))
+				gui.set_position(node2, vmath.vector3(438, pos2.y, 0))
+			end
+
 			gui.set_text(gui.get_node("score"), "SCORE: "..score)
 			gui.set_text(gui.get_node("health"), tostring(health))
 			gui.set_text(gui.get_node("emojis_left"), tostring(emojis_left))

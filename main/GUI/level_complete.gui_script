@@ -61,7 +61,7 @@ function on_message(self, message_id, message)
 			text = "try harder"
 		else
 			emoji_icon = "e44"
-			text = "almost end"
+			text = "that hurts"
 		end
 		gui.play_flipbook(gui.get_node("emoji"), emoji_icon)
 		gui.set_text(gui.get_node("complete_text"), text)
@@ -78,9 +78,23 @@ function on_message(self, message_id, message)
 			gui.set_text(gui.get_node("next"), "NEXT LEVEL")
 		end
 
-		-- set updated text on nodes:
-		gui.set_text(gui.get_node("killed_count"), message.killed)
-		gui.set_text(gui.get_node("escaped_count"), message.escaped)
+
+		--> set updated text on nodes:
+		node = gui.get_node("killed_count") ; pos = gui.get_position(node)
+		gui.set_text(node, message.killed)
+		if message.killed > 99 then
+			gui.set_pivot(node, gui.PIVOT_W)
+			gui.set_position(node, vmath.vector3(36, pos.y, 0))
+		end
+		--
+		node = gui.get_node("escaped_count") ; pos = gui.get_position(node)
+		gui.set_text(node, message.escaped)
+		if message.escaped > 99 then
+			gui.set_pivot(node, gui.PIVOT_W)
+			gui.set_position(node, vmath.vector3(36, pos.y, 0))
+		end
+		--<
+
 
 		gui.animate(gui.get_node("killed"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function()
 			sound.play("game_layer1:/main#win_count")

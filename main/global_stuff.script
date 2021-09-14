@@ -123,16 +123,16 @@ function pause(proxy)
 			sound.play("main:/pause#pause_sfx", {speed = 0.5})
 			defos.set_cursor_clipped(false)
 			defos.set_cursor_visible(true)
-			msg.post(proxy, "set_time_step", {factor = 0 , mode = 1})
+			msg.post(proxy, "set_time_step", {factor = 0 , mode = 0})
 			msg.post("main:/pause#pause", "show")
 		else
 			sound.play("main:/pause#pause_sfx")
 			defos.set_cursor_clipped(true)
 			defos.set_cursor_visible(false)
 			if proxy_speed == 1 then
-				msg.post(proxy, "set_time_step", {factor = 1 , mode = 1})
+				msg.post(proxy, "set_time_step", {factor = 1 , mode = 0})
 			else
-				msg.post(proxy, "set_time_step", {factor = proxy_speed , mode = 1})
+				msg.post(proxy, "set_time_step", {factor = proxy_speed , mode = 0})
 			end
 			msg.post("main:/pause#pause", "hide")
 			pause_id = nil

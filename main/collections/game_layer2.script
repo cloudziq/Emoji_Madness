@@ -2,8 +2,8 @@
 -- starting values:
 level  = 1
 score  = 0
-health = 5
-emojis = 15
+health = 500
+emojis = 120
 speed  = 0   -- (self.speed minus this value as percentage)
 dark_start_level = 2
 level_bonus_unlocked = 4
@@ -61,7 +61,7 @@ function update(self, dt)
 		wait_for_clean = true
 		post_clean_start = false
 		if bonus_level_active == false then
-			if level == dark_start_level + 1 then emojis_add = 2 end
+			if level == dark_start_level + 2 then emojis_add = 2 end
 			if level == dark_start_level then
 				msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2})
 				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 0, mode = "dark", start_new = true})

@@ -1,4 +1,4 @@
-go.property("speed",  5.84)
+go.property("speed",  5.88)
 go.property("wait",   3.46)
 go.property("score",  4)
 go.property("dest",   vmath.vector3())
@@ -163,7 +163,7 @@ end
 function emoji_waiting(self)
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + math.random(1, 4) + socket.gettime()
+			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + math.random(-1, 8) + socket.gettime()
 			self.waiting = true
 			self.score = self.score / 2
 			particlefx.play(self.particle_url)
