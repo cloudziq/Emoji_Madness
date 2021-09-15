@@ -232,7 +232,7 @@ function on_message(self, message_id, message, sender)
 
 			if self.collide_type == 1 then
 				force = rnd.range(44, 88) / 10
-				distance = rnd.range(8, 26)
+				distance = rnd.range(8, 32)
 				time = rnd.range(18, 40) / 10
 				self.dest = pos + (message.normal * force) * (message.distance * distance)
 				self.collide = -1
@@ -247,7 +247,7 @@ function on_message(self, message_id, message, sender)
 
 			if message.group == hash_right_click then
 				force = 20
-				distance = rnd.range(10, 36) / 10
+				distance = rnd.range(28, 62) / 10
 				time = rnd.range(10, 24) / 10
 				--self.collide = 0
 				self.dest = pos + (message.normal * force) * (message.distance * distance)

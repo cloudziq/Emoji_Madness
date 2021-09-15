@@ -92,11 +92,11 @@ function on_message(self, message_id, message, sender)
 			for i = 1, 4 do
 				node = gui.get_node("tt"..i)
 				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.25, delay)
-				delay = delay + .32
+				delay = delay + .1
 			end
 		end)
 		gui.set_enabled(gui.get_node("BONUS_AVAILABLE"), true)
-		timer.delay(4.8, false, function()
+		timer.delay(4.6, false, function()
 			msg.post("#", "show_level_intro")
 		end)
 
@@ -274,10 +274,10 @@ function on_message(self, message_id, message, sender)
 
 		if level_play then
 
-			-- reposition emoji counter a bit if emojis > 99
+			--> reposition emoji counter a bit if emojis > 99
 			node1 = gui.get_node("emoji_icon") ; pos1 = gui.get_position(node1)
 			node2 = gui.get_node("heart_icon") ; pos2 = gui.get_position(node2)
-
+			--
 			if emojis_left < 100 then
 				gui.set_position(node1, vmath.vector3(590, pos1.y, 0))
 				gui.set_position(node2, vmath.vector3(456, pos2.y, 0))
@@ -285,6 +285,7 @@ function on_message(self, message_id, message, sender)
 				gui.set_position(node1, vmath.vector3(572, pos1.y, 0))
 				gui.set_position(node2, vmath.vector3(438, pos2.y, 0))
 			end
+			--<
 
 			gui.set_text(gui.get_node("score"), "SCORE: "..score)
 			gui.set_text(gui.get_node("health"), tostring(health))

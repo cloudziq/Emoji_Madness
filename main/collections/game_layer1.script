@@ -59,7 +59,7 @@ function on_message(self, message_id, message)
 
 
 
-		-- bonuses:
+	-- bonuses:
 	elseif message_id == hash("bonus_clock") then
 		type = dark_mode and "_dark" or ""
 		clock_id = factory.create("bonus#clock"..type)

@@ -68,8 +68,10 @@ function on_message(self, message_id, message, sender)
 
 			self.active = false
 			proxy_speed_changing = true
-			bonus_clock_active = true
 			proxy_speed = 1 ; speed_change(-1)
+			bonus_clock_active = true
+			allow_combo_counter = false
+			score = score + bullet_miss
 		end
 
 

@@ -6,22 +6,19 @@ local charged_combo_count, charged_combo_score, charged_emoji_count
 
 function init(self)
 	charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
-	local allow_display = false
-	if level_play then allow_display = true end
+	allow_combo_counter = false
+	if level_play then allow_combo_counter = true end
 
 	if score > 0 and level_play == true then
-		if score < 0 then score = 0 end
 		score = score - bullet_miss
+		if score < 0 then score = 0 end
 	end
 
 	timer.delay(0.04, false, function()
 		msg.post("game_layer2:/main#game_gui", "display_update")
-		--if charged_combo_count > 1 and charged_emoji_count > 0 then
-		if allow_display then
+		if allow_combo_counter then
 			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count})
 		end
-			--msg.post("game_layer2:/main#ctrl", "show charged_combo display_debug")
-		--nd
 
 		charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
 		go.delete()

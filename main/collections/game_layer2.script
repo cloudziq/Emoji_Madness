@@ -61,7 +61,7 @@ function update(self, dt)
 		wait_for_clean = true
 		post_clean_start = false
 		if bonus_level_active == false then
-			--if level == dark_start_level then emojis_add = 2 end
+			if level == 20 then emojis_add = 2 end
 			if level == dark_start_level then
 				msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2})
 				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 0, mode = "dark", start_new = true})
@@ -123,7 +123,7 @@ function update(self, dt)
 			end
 
 			--bonus_level_spawn
-			if rnd.range(1, 24000) >= 23997 and bonus_level_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 24000) >= 23993 and bonus_level_visible == false and emojis_left >= bonus_requirement then
 			--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and killed > 1 then
 				msg.post("game_layer1:/main#ctrl", "bonus_level")
 				bonus_level_visible = true
@@ -239,7 +239,6 @@ function on_input(self, action_id, action)
 
 		if action_id == hash("click1") and action.pressed == true then
 			msg.post("game_layer1:/main#ctrl", "spawn_weapon", {x = action.x, y = action.y})
-			--cursor_x = action.x ; cursor_y = action.y
 			msg.post("#game_gui", "animate cursor")
 			if bonus_level_active == 1 and weapon_collide then
 				bonus_shots = bonus_shots - 1
@@ -276,9 +275,4 @@ function bonus_level_prepare()
 	bonus_shots = 20 ; bonus_level_kills = {small = 0, big = 0} ; bonus_score = 0 ; killed = 0
 	blood_table = {}
 	-- emoji generation moved to game_gui, so there is more time to arrange them on screen
-end
-
-
-function on_reload()
-	particlefx.play("#light_particle")
 end

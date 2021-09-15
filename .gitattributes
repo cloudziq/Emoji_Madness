@@ -1,3 +1,4 @@
 
 *.script linguist-language=lua
 *.gui_script linguist-language=lua
+*.vp linguist-language=GLSL
