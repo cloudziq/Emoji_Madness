@@ -2,10 +2,10 @@
 -- starting values:
 level  = 1
 score  = 0
-health = 500
-emojis = 120
+health = 5
+emojis = 8
 speed  = 0   -- (self.speed minus this value as percentage)
-dark_start_level = 2
+dark_start_level = 16
 level_bonus_unlocked = 4
 bonus_requirement = 0
 bullet_miss = 1
@@ -18,7 +18,7 @@ change_music_variant = false
 
 -- adds for level completion:
 emojis_add     = 3
-speed_add      = 3.2
+speed_add      = 3.54
 health_add     = 1
 health_perfect = 1
 
@@ -61,14 +61,14 @@ function update(self, dt)
 		wait_for_clean = true
 		post_clean_start = false
 		if bonus_level_active == false then
-			if level == dark_start_level + 2 then emojis_add = 2 end
+			--if level == dark_start_level then emojis_add = 2 end
 			if level == dark_start_level then
 				msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2})
 				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 0, mode = "dark", start_new = true})
 				msg.post("main#game_gui", "show darkness intro")
 
 			elseif level == level_bonus_unlocked then
-				bonus_requirement = 4 - 1
+				bonus_requirement = 5 - 1
 				timer.delay(1.4, false, function()
 					msg.post("#game_gui", "show_bonus_available_info")
 				end)
@@ -102,7 +102,7 @@ function update(self, dt)
 			score = score + (level * 10)
 			level = level + 1
 			health = health + health_add
-			emojis = emojis + emojis_add
+			emojis = emojis + emojis_add ; if emojis > 126 then emojis = 126 end
 			speed = speed + speed_add - (level / 8)
 
 			msg.post("#game_gui", "hide_after_level")
@@ -116,15 +116,15 @@ function update(self, dt)
 
 		if bonus_can_spawn and level >= level_bonus_unlocked and not pause_id then
 			--bonus_clock_spawn
-			if rnd.range(1, 14000) >= 13997 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 15000) >= 14997 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
 			--if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and killed > 1 and emojis_left >= 2 then
 				msg.post("game_layer1:/main#ctrl", "bonus_clock")
 				bonus_clock_visible = true
 			end
 
 			--bonus_level_spawn
-			if rnd.range(1, 18000) >= 17997 and bonus_level_visible == false and emojis_left >= bonus_requirement then
-			--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 24000) >= 23997 and bonus_level_visible == false and emojis_left >= bonus_requirement then
+			--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and killed > 1 then
 				msg.post("game_layer1:/main#ctrl", "bonus_level")
 				bonus_level_visible = true
 			end
@@ -160,14 +160,14 @@ function update(self, dt)
 			score = score + bonus_score
 			total_kills = total_kills + bonus_level_kills.small + bonus_level_kills.big
 			msg.post("game_layer2:/main#game_gui", "hide_after_level")
-			msg.post("game_layer1:/main#ctrl", "fade_out_add_music", {time = 6})
+			msg.post("game_layer1:/main#ctrl", "fade_out_add_music", {time = 8})
 			msg.post("game_layer1:/main#ctrl", "bonus level emoji at end")
 			timer.delay(4, false, function() msg.post("#bonus_level_complete", "show") end)
 			if level - 1 < dark_start_level then
-				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 4, mode = "", start_new = false})
+				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 6, mode = "", start_new = false})
 			else
 				msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 1})
-				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 4, mode = "dark", start_new = false})
+				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 6, mode = "dark", start_new = false})
 			end
 		end)
 	end

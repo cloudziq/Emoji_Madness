@@ -2027,7 +2027,7 @@ nodes {
   }
   type: TYPE_TEXT
   blend_mode: BLEND_MODE_ALPHA
-  text: "each is worth 20 points!"
+  text: "each is worth 50 points!"
   font: "Vellyc"
   id: "text5"
   xanchor: XANCHOR_NONE
@@ -2657,7 +2657,7 @@ nodes {
 }
 nodes {
   position {
-    x: 438.0
+    x: 456.0
     y: -30.0
     z: 0.0
     w: 1.0
@@ -2775,7 +2775,7 @@ nodes {
 }
 nodes {
   position {
-    x: 572.0
+    x: 590.0
     y: -30.0
     z: 0.0
     w: 1.0

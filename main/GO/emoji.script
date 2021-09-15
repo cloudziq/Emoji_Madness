@@ -21,7 +21,7 @@ local hash_right_click     = hash("menu_right_click")
 
 function init(self)
 	self.active         = true
-	self.delay          = rnd.range(2, (emojis / 3) - (level / 2.8))
+	self.delay          = rnd.range(2, 2 + (emojis / 14) + (level / 6))
 	self.wait_timeout   = 0
 	self.waiting        = false
 	self.going_away     = false
@@ -124,16 +124,16 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 
 		if bonus_level_active == 1 then self.active = false end
 
-		radius = rnd.range(40, 160)
-
 		if not self.going_away then
 			time = self.speed - (self.speed * (speed / 100)) + math.random(-2, 4)
 			pos_x = rnd.range(80 + 50, window_w - 80 - 50)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
+			radius = rnd.range(40, 160)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 1.82
+			time = (self.speed - (self.speed * (speed / 100))) * 2.2
 			pos_x, pos_y = get_offscreen_pos(100 + dist_add, true, go.get_position())
+			radius = rnd.range(4, 16)
 		end
 		sprite_flip(pos_x)
 
@@ -163,7 +163,7 @@ end
 function emoji_waiting(self)
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = (self.wait - (self.wait * speed / 100)) + math.random(-1, 8) + socket.gettime()
+			self.wait_timeout = self.wait - (self.wait * speed / 100) + math.random(-2, 4 + (level / 8)) + socket.gettime()
 			self.waiting = true
 			self.score = self.score / 2
 			particlefx.play(self.particle_url)

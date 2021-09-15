@@ -10,8 +10,9 @@ local proxy_speed_changing, clock_bonus_timeout
 
 function init(self)
 	local x1,y1, x2,y2, x3,y3
-	local radius = 222
-	local time = math.random(2, 4)
+	local radius = math.random (100, 260)
+	local time = math.random(18, 32) / 10
+	local stop = math.random(16, 40) / 100
 	local easing1, easing2 = go.EASING_INSINE, go.EASING_OUTINSINE
 
 	self.active = true
@@ -22,14 +23,14 @@ function init(self)
 	x3, y3 = get_offscreen_pos(200, true, {x = x2, y = y2})
 
 	go.set_position(vmath.vector3(x1,y1,0))
-	go.set("#halo", "tint", vmath.vector4(.1, .2, .1, 0))
+	go.set("#halo", "tint", vmath.vector4(.16, .34, .18, 0))
 
-	go.animate("#halo", "tint.w", go.PLAYBACK_LOOP_PINGPONG, 1, go.EASING_INOUTSINE, 0.96)
+	go.animate("#halo", "tint.w", go.PLAYBACK_LOOP_PINGPONG, 1, go.EASING_INOUTSINE, 0.8)
 	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, y2, easing1, time)
 	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x2 - radius, easing2, time * 0.5, 0, function()
 		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x2, easing2, time * 0.5, 0, function()
-			go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, y3, easing1, time, 1)
-			go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x3 - radius, easing2, time * 0.5, 1, function()
+			go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, y3, easing1, time, stop)
+			go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x3 - radius, easing2, time * 0.5, stop, function()
 				go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x3, easing2, time * 0.5, 0, function()
 					go.delete(".")
 				end)
@@ -59,7 +60,8 @@ function on_message(self, message_id, message, sender)
 		if message.group == hash("weapon") and bonus_clock_active == false and self.active == true then
 			go.cancel_animations(".", "position")
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 2.5, go.EASING_OUTSINE, 2)
-			go.animate(msg.url(nil, go.get_id(), "sprite"), "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTSINE, 2)
+			--go.animate(msg.url(nil, go.get_id(), "sprite"), "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTSINE, 2)
+			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTSINE, 2)
 
 			particlefx.play("#particles")
 			sound.play("/main#health_bonus")
@@ -86,7 +88,7 @@ function speed_change(dir)
 		if proxy_speed > min then
 			proxy_speed = proxy_speed - speed
 		else
-			clock_bonus_timeout = socket.gettime() + 10
+			clock_bonus_timeout = socket.gettime() + 8
 			proxy_speed_changing = false
 		end
 	else

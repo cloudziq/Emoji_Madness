@@ -1,4 +1,4 @@
-local right_click_delay, right_click_timeout, click_pos_x, click_pos_y = 0, 0, 0,0
+local right_click_delay, right_click_timeout, click_pos_x, click_pos_y = 0, 0, 0, 0
 local letter_pos, letter_col = {}, {}
 
 allow_title_clicks = false

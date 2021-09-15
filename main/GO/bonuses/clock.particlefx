@@ -1,7 +1,7 @@
 emitters {
   id: "emitter"
   mode: PLAY_MODE_ONCE
-  duration: 2.0
+  duration: 1.84
   space: EMISSION_SPACE_WORLD
   position {
     x: 0.0
@@ -243,9 +243,15 @@ emitters {
     key: PARTICLE_KEY_ALPHA
     points {
       x: 0.0
-      y: 0.9305194
-      t_x: 0.2649732
-      t_y: -0.96425575
+      y: 0.9999193
+      t_x: 0.9679567
+      t_y: -0.25111702
+    }
+    points {
+      x: 0.75114757
+      y: 0.42405573
+      t_x: 0.74830747
+      t_y: -0.6633521
     }
     points {
       x: 1.0

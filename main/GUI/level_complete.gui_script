@@ -13,7 +13,7 @@ end
 
 
 function on_message(self, message_id, message)
-	local node, pos, col, percentage, emoji_icon
+	local node, node2, pos, pos2, col, percentage, emoji_icon
 	local nodes_to_tweak = {"killed", "killed_count", "escaped", "escaped_count", "bonus_text"}
 	local menu_color = gui.get_color(gui.get_node("WIN"))
 
@@ -80,19 +80,17 @@ function on_message(self, message_id, message)
 
 
 		--> set updated text on nodes:
-		node = gui.get_node("killed_count") ; pos = gui.get_position(node)
-		gui.set_text(node, message.killed)
-		if message.killed > 99 then
-			gui.set_pivot(node, gui.PIVOT_W)
-			gui.set_position(node, vmath.vector3(36, pos.y, 0))
+		node  = gui.get_node("killed_count") ;  pos  = gui.get_position(node)
+		node2 = gui.get_node("escaped_count") ; pos2 = gui.get_position(node2)
+		--
+		if message.killed > 99 or message.escaped > 99 then
+			gui.set_position(node,  vmath.vector3(36, pos.y, 0))
+			gui.set_position(node2, vmath.vector3(76, pos2.y, 0))
+			gui.set_pivot(node,  gui.PIVOT_W)
 		end
 		--
-		node = gui.get_node("escaped_count") ; pos = gui.get_position(node)
-		gui.set_text(node, message.escaped)
-		if message.escaped > 99 then
-			gui.set_pivot(node, gui.PIVOT_W)
-			gui.set_position(node, vmath.vector3(36, pos.y, 0))
-		end
+		gui.set_text(node,  message.killed)
+		gui.set_text(node2, message.escaped)
 		--<
 
 
