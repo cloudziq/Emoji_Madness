@@ -36,6 +36,7 @@ function init(self)
 		go.animate("#halo", "tint.w", playback2, 1, easing, self.fade_out / 1.8)
 		go.animate(".", "scale", playback, 0, easing, self.fade_out, self.time, function()
 			go.delete(".")
+			level_url = nil
 		end)
 	end)
 end
@@ -47,7 +48,7 @@ function on_message(self, message_id, message, sender)
 	local pos
 	
 	if message_id == hash("collision_response") then
-		if message.group == hash("weapon") and bonus_level_visible == true and self.active == true then
+		if message.group == hash("weapon") and self.active == true then
 			self.active = false
 			bonus_level_active = true
 			allow_combo_counter = false
@@ -56,6 +57,7 @@ function on_message(self, message_id, message, sender)
 			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
 			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 2, 0, function()
 				go.delete(".")
+				level_url = nil
 			end)
 
 			local type = dark_mode and "_dark" or ""

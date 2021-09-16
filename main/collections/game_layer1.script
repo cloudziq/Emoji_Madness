@@ -26,8 +26,16 @@ function on_message(self, message_id, message)
 
 
 
-	elseif message_id == hash("clean_emojis") then
-		msg.post(emoji_go_id, "clean_emojis", {continue = message.continue})
+	elseif message_id == hash("generate_bombs") then
+		timer.delay(0.1, false, function()
+			generate_bombs(message.amount, message.scale)
+		end)
+
+
+
+
+	-- elseif message_id == hash("clean_emojis") then
+	-- 	msg.post(emoji_go_id, "clean_emojis", {continue = message.continue})
 
 
 

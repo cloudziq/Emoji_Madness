@@ -1,0 +1,6 @@
+
+function init(self)
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(10,10,1), go.EASING_OUTSINE, .4, 0, function()
+		go.delete()
+	end)
+end

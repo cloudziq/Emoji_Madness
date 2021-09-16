@@ -205,7 +205,8 @@ function hide_gui()
 	gui.stop_particlefx(gui.get_node("particlefx"))
 	timer.delay(.6, false, function() msg.post("/main#ctrl", "light_particle", {enabled = false}) end)
 	gui.set_enabled(gui.get_node("crosshair"), false)
-	msg.post("game_layer1:/main#ctrl", "clean_emojis", {continue = true})
+	msg.post(emoji_url, "clean_emojis", {continue = true})
+	msg.post(bomb_url,  "clean_bombs")
 	if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end
 
 	bonus_level_active = false

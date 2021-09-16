@@ -1,8 +1,12 @@
 
-
 function init(self)
-	self.active = true
-	
+	self.active    = true
+	self.sprite    = msg.url(nil, go.get_id(), "sprite")
+	self.particle  = msg.url(nil, go.get_id(), "explosion")
+	self.collision = msg.url(nil, go.get_id(), "collide_emoji")
+	self.blast     = msg.url(nil, go.get_id(), "blast")
+
+	msg.post(self.blast, "disable")
 end
 
 
@@ -10,9 +14,32 @@ end
 
 function on_message(self, message_id, message)
 	if message_id == hash("collision_response") and self.active then
+		local pos = go.get_position()
+
 		if message.group == hash("weapon") then
 			self.active = false
-			pprint("BOOM!")
+
+			msg.post(self.collision, "disable")
+			go.set(self.sprite, "tint.w", 0)
+			go.set_scale(2, self.particle)
+
+			msg.post(self.blast, "enable")
+			timer.delay(0.1, false, function()
+				msg.post(self.blast, "disable")
+				factory.create("/bomb#wavepush_factory")
+			end)
+
+			go.set_position(vmath.vector3(pos.x, pos.y, 0.9), self.particle)
+			sound.play("/bomb#explode", {speed = proxy_speed})
+			particlefx.play(self.particle)
+		end
+
+
+
+
+	elseif message_id == hash("clean_bombs") then
+		for _,a in ipairs(bomb_table) do
+			go.delete(a)
 		end
 	end
 end

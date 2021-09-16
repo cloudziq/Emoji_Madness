@@ -73,7 +73,7 @@ function generate_emojis(num, url, scale, clear)
 		id = factory.create(url, vmath.vector3(x, y, 1), nil, nil, scale)
 		table.insert(emoji_table, id)
 	end
-	emoji_go_id = id  -- required for clean_emojis table
+	emoji_url = msg.url(nil, id, nil)
 end
 
 
@@ -84,8 +84,9 @@ function generate_bombs(amount, scale)
 
 	for a = 1, amount do
 		x, y = get_onscreen_pos(80, 1)
-		id = factory.create("/bomb#bomb_factory", vmath.vector3(x, y, .9), nil, nil, scale)
+		id = factory.create("/bomb#bomb_factory", vmath.vector3(x, y, 1), nil, nil, scale)
 		table.insert(bomb_table, id)
+		bomb_url = msg.url(nil, id, nil)
 	end
 end
 

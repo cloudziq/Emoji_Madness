@@ -37,7 +37,7 @@ emitters {
     key: EMITTER_KEY_SIZE_X
     points {
       x: 0.0
-      y: 8.0
+      y: 1.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -47,7 +47,7 @@ emitters {
     key: EMITTER_KEY_SIZE_Y
     points {
       x: 0.0
-      y: 8.0
+      y: 1.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -329,7 +329,7 @@ emitters {
   start_delay_spread: 0.0
   duration_spread: 0.0
   stretch_with_velocity: false
-  start_offset: 0.0
+  start_offset: 1.0
 }
 emitters {
   id: "fire"
@@ -370,7 +370,7 @@ emitters {
     key: EMITTER_KEY_SIZE_X
     points {
       x: 0.0
-      y: 3.888
+      y: 1.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -380,7 +380,7 @@ emitters {
     key: EMITTER_KEY_SIZE_Y
     points {
       x: 0.0
-      y: 1.471
+      y: 1.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -552,5 +552,5 @@ emitters {
   start_delay_spread: 0.0
   duration_spread: 0.0
   stretch_with_velocity: false
-  start_offset: 0.0
+  start_offset: 1.0
 }
