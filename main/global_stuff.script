@@ -79,6 +79,19 @@ end
 
 
 
+function generate_bombs(amount, scale)
+	local x, y, id
+
+	for a = 1, amount do
+		x, y = get_onscreen_pos(80, 1)
+		id = factory.create("/bomb#bomb_factory", vmath.vector3(x, y, .9), nil, nil, scale)
+		table.insert(bomb_table, id)
+	end
+end
+
+
+
+
 function slider(container, pointer, left, right, action)
 	local pos_center, pos_pointer, pos
 

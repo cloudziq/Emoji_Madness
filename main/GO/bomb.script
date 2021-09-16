@@ -1,0 +1,18 @@
+
+
+function init(self)
+	self.active = true
+	
+end
+
+
+
+
+function on_message(self, message_id, message)
+	if message_id == hash("collision_response") and self.active then
+		if message.group == hash("weapon") then
+			self.active = false
+			pprint("BOOM!")
+		end
+	end
+end

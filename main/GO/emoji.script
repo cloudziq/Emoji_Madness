@@ -118,7 +118,7 @@ end
 
 function get_new_emoji_pos(self, easing1, easing2, delay)
 	if self.active == true then
-		local pos_x, pos_y
+		local pos_x, pos_y, time
 		local radius, x, y
 		local dist_add = bonus_level_active == 1 and 50 or 0
 
@@ -326,33 +326,45 @@ function on_message(self, message_id, message, sender)
 				pos = go.get_position() + message.normal * (message.distance * 1.22)
 				go.set_position(pos)
 
-				other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
-				if self.need_pos_check then play_sound = false else play_sound = true end
+				-- collide with other emojis
+				if message.group == hash("emoji") then
 
-				if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
-					self.dest.x = pos.x
-					play_sound = false
-				end
-				if self.dest.y < other_dest.y + 60 and self.dest.y > other_dest.y - 60 then
-					self.dest.y = pos.y
-					play_sound = false
-				end
+					other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
+					if self.need_pos_check then play_sound = false else play_sound = true end
 
-				if play_sound and socket.gettime() > self.sound_delay then
-					sound.play("game_layer1:/main#emoji_collide", {speed = (math.random (14, 24) / 10) * proxy_speed})
-					self.sound_delay = socket.gettime() + 0.08
-				end
-
-				go.cancel_animations(".", "position")
-				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
-					if self.need_pos_check == true then
-						self.wait_timeout = 0
-						--go.cancel_animations(".", "position")
-						get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
-					else
-						emoji_waiting(self)
+					if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
+						self.dest.x = pos.x
+						play_sound = false
 					end
-				end)
+					if self.dest.y < other_dest.y + 60 and self.dest.y > other_dest.y - 60 then
+						self.dest.y = pos.y
+						play_sound = false
+					end
+
+					if play_sound and socket.gettime() > self.sound_delay then
+						sound.play("game_layer1:/main#emoji_collide", {speed = (math.random (14, 24) / 10) * proxy_speed})
+						self.sound_delay = socket.gettime() + 0.08
+					end
+
+
+				-- collide with bombs
+				elseif message.group == hash("bomb") then
+					get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
+				end
+
+
+				if not self.going_away then
+					go.cancel_animations(".", "position")
+					go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
+						if self.need_pos_check == true then
+							self.wait_timeout = 0
+							--go.cancel_animations(".", "position")
+							get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
+						else
+							emoji_waiting(self)
+						end
+					end)
+				end
 			end
 
 
