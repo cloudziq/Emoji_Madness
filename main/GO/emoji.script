@@ -26,6 +26,7 @@ function init(self)
 	self.waiting        = false
 	self.going_away     = false
 	self.need_pos_check = false
+	self.pushed         = false
 	self.sound_delay    = 0
 	self.collide_type   = 0
 	self.particle_url   = msg.url(nil, go.get_id(), "particle")
@@ -364,15 +365,26 @@ function on_message(self, message_id, message, sender)
 					go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)))
 					make_blood(pos, blood_scale, 1.4)
 
+					msg.post(bomb_url, "count charged_kill", {score = self.score, charged = false})
+
 
 				elseif message.group == hash("wavepush") then
-					-- it's needed?
+					self.pushed = true
+					pos = go.get_position() + message.normal * (message.distance * math.random(2, 6))
+					go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, 1, 0, function()
+						--if not self.going_away then
+							self.pushed = false
+							get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
+						--else
+							--go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, 1)
+						--end
+					end)
 				end
 
 
 
 
-				if not self.going_away and self.active then
+				if not self.going_away and self.active and not self.pushed then
 					time = rnd.range(26, 44) / 10
 					time = time + (time * speed / 100)
 

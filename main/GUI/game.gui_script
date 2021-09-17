@@ -54,7 +54,7 @@ function on_message(self, message_id, message, sender)
 		delay = 0 ; weapon_collide = false
 
 		dark_mode = true
-		msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 1})
+		fade_dark(6, 1)
 
 		for i = 1, 3 do
 			node = gui.get_node("dark_text"..i) ; a = gui.get_color(node)
@@ -107,7 +107,7 @@ function on_message(self, message_id, message, sender)
 		delay = 0 ; weapon_collide = false
 
 		if dark_mode then
-			msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 0})
+			fade_dark(6, 1)
 		end
 
 		gui.set_enabled(gui.get_node("crosshair"), true)
@@ -148,7 +148,8 @@ function on_message(self, message_id, message, sender)
 
 
 			if not bonus_level_active then
-				dark_mode = false
+				--dark_mode = false
+				fade_dark(6, 0)
 				gui.set_enabled(gui.get_node("display_bonus_level"), false)
 				gui.set_enabled(gui.get_node("bonus_level"), false)
 				gui.set_position(gui.get_node("level_intro"), vmath.vector3(-400, window_h / 2, 1))

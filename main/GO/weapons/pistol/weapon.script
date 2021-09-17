@@ -20,7 +20,7 @@ function init(self)
 			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count})
 		end
 
-		charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
+		--charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
 		go.delete()
 	end)
 end

@@ -15,7 +15,22 @@ components {
 }
 components {
   id: "explosion"
-  component: "/main/particles/explosion.particlefx"
+  component: "/assets/graphic/explosive/explosion.particlefx"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+components {
+  id: "explosion_dark"
+  component: "/assets/graphic/explosive/explosion_dark.particlefx"
   position {
     x: 0.0
     y: 0.0

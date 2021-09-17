@@ -3,9 +3,9 @@
 level  = 1
 score  = 0
 health = 50
-emojis = 40
+emojis = 80
 speed  = 0   -- (self.speed minus this value as percentage)
-dark_start_level = 16
+dark_start_level = 3
 level_bonus_unlocked = 4
 bonus_requirement = 0
 bullet_miss = 1
@@ -166,7 +166,7 @@ function update(self, dt)
 			if level - 1 < dark_start_level then
 				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 6, mode = "", start_new = false})
 			else
-				msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 1})
+				fade_dark(6, 1)
 				msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 6, mode = "dark", start_new = false})
 			end
 		end)
@@ -202,6 +202,10 @@ function on_message(self, message_id, message, sender)
 			end
 		end)
 
+
+
+	elseif message_id == hash("set quad brightness") then
+		go.set("/render_target#quad", "mult", vmath.vector4(message.mult))
 
 
 
@@ -262,7 +266,7 @@ function level_prepare()
 	level_play = true
 	msg.post("game_layer1:/main#ctrl", "get bonus_delay_time")
 	msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = emojis, scale = 1})
-	msg.post("game_layer1:/main#ctrl", "generate_bombs", {amount = 4, scale = 0.5})
+	msg.post("game_layer1:/main#ctrl", "generate_bombs", {amount = 12, scale = 0.5})
 	msg.post("/main#game_gui", "display_update")
 
 	if dark_mode then

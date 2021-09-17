@@ -6,12 +6,11 @@ go.property("mat2", resource.material("/main/render/materials/light_label.materi
 
 
 function on_message(self, message_id, message)
-	local old_score, multiplier, text, tex_len
+	local old_score, multiplier, text, tex_len, charged
 	local ax, ay, x, y = 60, 46    -- default position for text to appear
 	local scale, attack, sustain, release
 
 	if message_id == hash("charged_combo text -final") then
-
 		if message.amount == 1 and message.charged == 1 or message.charged == 0 and message.amount > 0 then
 			text = tostring(message.score)
 			scale, attack, sustain, release = .52, .4, .2, .16
@@ -20,6 +19,7 @@ function on_message(self, message_id, message)
 			go.set("#count", "color", vmath.vector4(.1, 1, .44, 1))
 			go.set("#+",     "outline", vmath.vector4(0,0,0,1))
 			go.set("#count", "outline", vmath.vector4(0,0,0,1))
+
 			old_score = score
 			multiplier = (message.amount - message.charged) + (2 * message.charged)
 			score = score + (message.score * multiplier)
@@ -49,13 +49,13 @@ function on_message(self, message_id, message)
 		if shot_x + x + (72 * scale * tex_len) >= window_w then x = -x + (window_w - cursor_x) - (48 * scale * tex_len) end
 		if shot_y + y + 72 * scale >= window_h - 72 * scale then y = -y - 22 * scale end
 
-		if not dark_mode then
-			go.set("#+", "material", self.mat1)
-			go.set("#count", "material", self.mat1)
-		else
-			go.set("#+", "material", self.mat2)
-			go.set("#count", "material", self.mat2)
-		end
+		-- if not dark_mode then
+		-- 	go.set("#+", "material", self.mat1)
+		-- 	go.set("#count", "material", self.mat1)
+		-- else
+		-- 	go.set("#+", "material", self.mat2)
+		-- 	go.set("#count", "material", self.mat2)
+		-- end
 
 		go.set_scale(0.01)
 		go.set_position(vmath.vector3(shot_x, shot_y, 1))

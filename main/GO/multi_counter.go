@@ -53,7 +53,7 @@ embedded_components {
   "line_break: false\n"
   "text: \"+\"\n"
   "font: \"/assets/font/system.font\"\n"
-  "material: \"/builtins/fonts/label.material\"\n"
+  "material: \"/main/render/materials/light_label.material\"\n"
   ""
   position {
     x: 0.0
@@ -107,7 +107,7 @@ embedded_components {
   "line_break: false\n"
   "text: \"997\"\n"
   "font: \"/assets/font/Vellyc.font\"\n"
-  "material: \"/builtins/fonts/label.material\"\n"
+  "material: \"/main/render/materials/light_label.material\"\n"
   ""
   position {
     x: 20.0

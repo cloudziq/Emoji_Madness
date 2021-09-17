@@ -1,4 +1,4 @@
-sound: "/assets/sfx/explode.ogg"
+sound: "/assets/sfx/explode/explode2.ogg"
 looping: 0
 group: "sound"
 gain: 1.1

@@ -86,8 +86,8 @@ function generate_bombs(amount, scale)
 		x, y = get_onscreen_pos(80, 1)
 		id = factory.create("/bomb#bomb_factory", vmath.vector3(x, y, 1), nil, nil, scale)
 		table.insert(bomb_table, id)
-		bomb_url = msg.url(nil, id, nil)
 	end
+	bomb_url = msg.url(nil, id, nil)
 end
 
 
@@ -125,6 +125,30 @@ function animate_node(node, scale, range, param)
 		end)
 	end)
 
+end
+
+
+
+
+function fade_dark(time, multiplier)
+	local dark_fade_timer
+	local value = multiplier
+	local is_break = false
+
+	--if dark_fade_timer then timer.cancel(dark_fade_timer) ; pprint("canceled") end
+	dark_fade_delay = time / (time * 60 * 6)
+
+	dark_fade_timer = timer.delay(dark_fade_delay, true, function()
+		if value < 0 then value = 0 ; is_break = true end
+		if value > 1 then value = 1 ; is_break = true end
+
+		msg.post("main:/main#ctrl", "set quad brightness", {mult = value})
+		value = multiplier == 0 and value + dark_fade_delay or value - dark_fade_delay
+
+		if is_break then
+			timer.cancel(dark_fade_timer)
+		end
+	end)
 end
 
 

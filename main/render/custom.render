@@ -19,3 +19,7 @@ materials {
   name: "light_label"
   material: "/main/render/materials/light_label.material"
 }
+materials {
+  name: "explosion"
+  material: "/main/render/materials/explosion.material"
+}

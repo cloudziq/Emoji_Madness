@@ -218,7 +218,7 @@ function title_prepare()
 	end
 
 	msg.post("/main#ctrl", "BG fade_in")
-	msg.post("main:/main#ctrl", "fade dark", {time = 6, multiplier = 1})
+	fade_dark(6, 1)
 
 	if play_intro == false then
 		emoji_delay = 3

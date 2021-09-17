@@ -28,8 +28,8 @@ function init(self)
 	--screen_w = 1680
 	--screen_h = 1050
 
-	screen_w = 1650 ; screen_h = 875  -- smaller window
-	--screen_w = 1650 ; screen_h = 600   -- for recording
+	screen_w = 1650 ; screen_h = 874  -- smaller window
+	screen_w = 1650 ; screen_h = 600   -- for recording
 
 	window_w = 1280 * 4 ; window_h = 1320 * 4
 
@@ -78,27 +78,6 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("start_game") then
 		msg.post("#game_proxy1", "async_load")
 		msg.post("#game_proxy2", "async_load")
-
-
-
-
-	elseif message_id == hash("fade dark") then
-		local dark_fade_timer
-		local multiplier = message.multiplier
-		local dark_fade_delay = message.time / (message.time * 60 * 6)
-		local is_break = false
-
-		dark_fade_timer = timer.delay(dark_fade_delay, true, function()
-			if multiplier < 0 then multiplier = 0 ; is_break = true end
-			if multiplier > 1 then multiplier = 1 ; is_break = true end
-
-			go.set("/render_target#quad", "mult", vmath.vector4(multiplier))
-			multiplier = message.multiplier == 0 and multiplier + dark_fade_delay or multiplier - dark_fade_delay
-
-			if is_break then
-				timer.cancel(dark_fade_timer)
-			end
-		end)
 
 
 
