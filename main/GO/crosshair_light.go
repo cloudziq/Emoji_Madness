@@ -16,8 +16,8 @@ components {
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "tile_set: \"/assets/graphic/lights.atlas\"\n"
-  "default_animation: \"emoji_light_small\"\n"
+  data: "tile_set: \"/assets/graphic/weapon.atlas\"\n"
+  "default_animation: \"emoji_light\"\n"
   "material: \"/main/render/materials/light_sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""

@@ -14,7 +14,7 @@ update_frequency = 60
 input_method = HiddenInputField
 
 [project]
-title = SQUISHED
+title = Emoji Madness
 developer = Dziq
 write_log = 0
 version = 0.98  (pre-release)
@@ -22,9 +22,13 @@ publisher = JOPS INTERACTIVE CO LTD
 dependencies#0 = https://github.com/subsoap/defos/archive/v2.5.0.zip
 dependencies#1 = https://github.com/selimanac/defold-random/archive/master.zip
 dependencies#2 = https://github.com/subsoap/chip-sounds/archive/master.zip
+dependencies#3 = https://github.com/subsoap/discordrich/archive/v1.0.3.zip
 
 [windows]
 app_icon = /icon.ico
+
+[discordrich]
+lib_path = discordrich/res
 
 [sprite]
 max_count = 512
@@ -34,6 +38,8 @@ gravity_y = 0.0
 gravity_z = 0.0
 debug = 0
 debug_alpha = 0.65
+max_collisions = 64
+ray_cast_limit_2d = 128
 
 [graphics]
 texture_profiles = /main/render/custom.texture_profiles

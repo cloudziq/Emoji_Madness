@@ -29,7 +29,7 @@ function init(self)
 	--screen_h = 1050
 
 	screen_w = 1650 ; screen_h = 874  -- smaller window
-	screen_w = 1650 ; screen_h = 600   -- for recording
+	--screen_w = 1650 ; screen_h = 600   -- for recording
 
 	window_w = 1280 * 4 ; window_h = 1320 * 4
 
@@ -43,10 +43,23 @@ function init(self)
 	defos.set_view_size((screen_w - window_w) / 2, ((screen_h - 36) - window_h) / 2, window_w, window_h)
 	window_w = 1280 ; window_h = 1320
 
-	--debug_profiling()
 	msg.post("@render:", "refresh_window_size")
 
 	msg.post("#title_menu_proxy", "load")
+	--discord_presence()
+	--debug_profiling()
+end
+
+
+
+
+function discord_presence()
+	discordrich.initialize("888560155027988561")
+	
+	discordrich.update_presence({
+		status = "testing",
+		details = "bug hunting",
+	})
 end
 
 
@@ -54,7 +67,8 @@ end
 
 function debug_profiling()
 	profiler.enable_ui(true)
-	profiler.set_ui_view_mode(profiler.VIEW_MODE_MINIMIZED)
+	--profiler.set_ui_view_mode(profiler.VIEW_MODE_MINIMIZED)
+	profiler.set_ui_view_mode(0)
 	--profiler.view_recorded_frame()
 end
 
@@ -78,6 +92,12 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("start_game") then
 		msg.post("#game_proxy1", "async_load")
 		msg.post("#game_proxy2", "async_load")
+
+
+
+
+	elseif message_id == hash("set dark render") then
+		go.set("/render_target#quad", "mult", vmath.vector4(1 - darkness_level))
 
 
 

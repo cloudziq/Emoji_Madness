@@ -81,9 +81,9 @@ embedded_components {
 embedded_components {
   id: "halo"
   type: "sprite"
-  data: "tile_set: \"/assets/graphic/lights.atlas\"\n"
-  "default_animation: \"emoji_light_big\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
+  data: "tile_set: \"/assets/graphic/weapon.atlas\"\n"
+  "default_animation: \"emoji_light\"\n"
+  "material: \"/main/render/materials/light_sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
   position {

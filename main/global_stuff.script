@@ -130,20 +130,23 @@ end
 
 
 
-function fade_dark(time, multiplier)
+function fade_darkness(time, target)
 	local dark_fade_timer
-	local value = multiplier
 	local is_break = false
-
-	--if dark_fade_timer then timer.cancel(dark_fade_timer) ; pprint("canceled") end
-	dark_fade_delay = time / (time * 60 * 6)
+	dark_fade_delay = 1 / (time * 1000) * 16
 
 	dark_fade_timer = timer.delay(dark_fade_delay, true, function()
-		if value < 0 then value = 0 ; is_break = true end
-		if value > 1 then value = 1 ; is_break = true end
+		if target > darkness_level then
+			darkness_level = darkness_level + dark_fade_delay
+			if darkness_level > target then darkness_level = target ; is_break = true end
+		elseif target < darkness_level then
+			darkness_level = darkness_level - dark_fade_delay
+			if darkness_level < target then darkness_level = target ; is_break = true end
+		else
+			is_break = true
+		end
 
-		msg.post("main:/main#ctrl", "set quad brightness", {mult = value})
-		value = multiplier == 0 and value + dark_fade_delay or value - dark_fade_delay
+		msg.post("main:/main#ctrl", "set dark render")
 
 		if is_break then
 			timer.cancel(dark_fade_timer)
@@ -151,6 +154,16 @@ function fade_dark(time, multiplier)
 	end)
 end
 
+
+
+
+function change_darkness(amount)
+	local val = darkness_level
+	val = val + (amount / 1000)
+	if val < 0 then val = 0 end
+	if val > 1 then val = 1 end
+	darkness_level = val
+end
 
 
 

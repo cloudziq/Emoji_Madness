@@ -8,32 +8,26 @@ local easing = go.EASING_LINEAR
 
 
 function init(self)
-	local x, y
+	local x, y, tint
 
 	self.active = true
-	if not dark_mode then
-		self.fade_in = 2
-		self.time = 2.2
-		self.fade_out = 2
-	else
-		self.fade_in = 2.64
-		self.time = 3.4
-		self.fade_out = 2.64
-	end
+	self.fade_in = 2.64
+	self.time = 3.4
+	self.fade_out = 2.64
+
 	x = rnd.range(80 + 50, window_w - 80 - 50)
 	y = rnd.range(80 + 50, window_h - 80 - 50 - 44)
 
-	--go.set("#halo", "material", /builtins/materials/sprite.material)
-
 	go.set_scale(0.001)
 	go.set("#sprite", "tint.w", 0)
-	go.set("#halo", "tint", vmath.vector4(.1, .2, .1, 0))
+	tint = vmath.vector4(.36, .54, .42, .62) * darkness_level
+	go.set("#halo", "tint", tint)
 	go.set_position(vmath.vector3(x, y, 0))
 
 	go.animate("#sprite", "tint.w", playback, 1, easing, self.fade_in)
 	go.animate(".", "scale", playback, 1.2, easing, self.fade_in, 0, function()
 		go.animate("#sprite", "tint.w", playback, 0, easing, self.fade_out, self.time)
-		go.animate("#halo", "tint.w", playback2, 1, easing, self.fade_out / 1.8)
+		go.animate("#halo", "tint.w", playback2, 1 * darkness_level, easing, self.fade_out / 1.8)
 		go.animate(".", "scale", playback, 0, easing, self.fade_out, self.time, function()
 			go.delete(".")
 			level_url = nil
@@ -60,10 +54,11 @@ function on_message(self, message_id, message, sender)
 				level_url = nil
 			end)
 
-			local type = dark_mode and "_dark" or ""
 			pos = go.get_position()
-			go.set_position(vmath.vector3(pos.x, pos.y, 0), "/bonus#level_bonus_particles"..type)
-			particlefx.play("/bonus#level_bonus_particles"..type)
+			go.set_position(vmath.vector3(pos.x, pos.y, 0.9), "/bonus#level_bonus_particles")
+			go.set_scale(1.4, "/bonus#level_bonus_particles")
+			particlefx.play("/bonus#level_particles")
+			particlefx.set_constant("/bonus#level_particles", "emitter", "tint", vmath.vector4(1,1,1,1))
 			sound.play("/main#health_bonus")
 		end
 

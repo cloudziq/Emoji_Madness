@@ -32,6 +32,8 @@ function on_message(self, message_id, message, sender)
 		gui.set_text(gui.get_node("killed_count"), message.killed)
 		gui.set_text(gui.get_node("escaped_count"), message.escaped)
 
+		msg.post("/main#ctrl", "light_particle", {enabled = true})
+
 		gui.animate(gui.get_node("killed"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0, function()
 			sound.play("game_layer1:/main#win_count")
 			gui.animate(gui.get_node("killed_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1)
@@ -39,18 +41,17 @@ function on_message(self, message_id, message, sender)
 
 		gui.animate(gui.get_node("escaped"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 1.2, function()
 			sound.play("game_layer1:/main#win_count", {speed = .5})
-			--gui.set_enabled(gui.get_node("box1"), true)
 			allow_continue = true
 			gui.animate(gui.get_node("escaped_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 0)
 		end)
 
 		gui.animate(gui.get_node("box1"), "scale", vmath.vector3(1, 1, 1), gui.EASING_INSINE, 1.2, 1.1)
 
-		if level < dark_start_level then
+		-- if level < dark_start_level then
 			msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = ""})
-		else
-			msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "dark"})
-		end
+		-- else
+		-- 	msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "dark"})
+		-- end
 
 		weapon_collide = false
 		msg.post("#", "enable")
@@ -65,9 +66,10 @@ function on_message(self, message_id, message, sender)
 		gui.animate(gui.get_node("BG"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.1)
 		gui.set_enabled(gui.get_node("crosshair"), false)
 
-		timer.delay(.4, false, function()
+		timer.delay(.6, false, function()
 			post_game = true
 			msg.post("main:/main#title_menu_proxy", "async_load")
+			msg.post("/main#ctrl", "light_particle", {enabled = false})
 		end)
 
 		msg.post("game_layer1:/main#ctrl", "play_hall_music")

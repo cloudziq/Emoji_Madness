@@ -94,9 +94,9 @@ end
 
 
 function update(self)
-    if dark_mode then
+    -- if dark_mode then
         render.enable_render_target(self.target_1)
-    end
+    -- end
     
     render.set_depth_mask(true)
     render.set_stencil_mask(0xff)
@@ -114,7 +114,7 @@ function update(self)
     render.draw(self.tile_pred)
     render.draw(self.particle_pred)
 
-    if dark_mode then
+    -- if dark_mode then
         render.disable_render_target(self.target_1)
 
         -- lights:
@@ -155,23 +155,23 @@ function update(self)
         render.disable_state(render.STATE_STENCIL_TEST)
 
         render.draw_debug3d()
-    else
-        -- normal mode
-        -- multi_counter and bomb explosion:
-        render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
-        render.set_projection(vmath.matrix4_orthographic(0, window_w, 0, window_h, -1, 1))
-        render.draw(self.explosion_pred)
-        render.draw(self.light_label_pred)
-
-        -- GUI:
-        render.set_viewport(0, 0, window_w, window_h)
-        render.enable_state(render.STATE_STENCIL_TEST)
-        render.draw(self.gui_pred)
-        render.draw(self.text_pred)
-        render.disable_state(render.STATE_STENCIL_TEST)
-
-        render.draw_debug3d()
-    end
+--     else
+--         -- normal mode
+--         -- multi_counter and bomb explosion:
+--         render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
+--         render.set_projection(vmath.matrix4_orthographic(0, window_w, 0, window_h, -1, 1))
+--         render.draw(self.explosion_pred)
+--         render.draw(self.light_label_pred)
+-- 
+--         -- GUI:
+--         render.set_viewport(0, 0, window_w, window_h)
+--         render.enable_state(render.STATE_STENCIL_TEST)
+--         render.draw(self.gui_pred)
+--         render.draw(self.text_pred)
+--         render.disable_state(render.STATE_STENCIL_TEST)
+-- 
+--         render.draw_debug3d()
+--     end
 end
 
 

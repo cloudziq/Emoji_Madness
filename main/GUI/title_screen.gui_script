@@ -1,5 +1,7 @@
 local right_click_delay, right_click_timeout, click_pos_x, click_pos_y = 0, 0, 0, 0
 local letter_pos, letter_col = {}, {}
+for a = 1, 2 do letter_pos[a] = {} end
+for a = 1, 2 do letter_col[a] = {} end
 
 allow_title_clicks = false
 allow_title_emojis = true
@@ -8,6 +10,7 @@ local menu_emoji_amount = 44
 
 local emoji_delay
 local title_music_delay
+local title_lenght = {5, 7}
 
 
 --local variables:
@@ -186,6 +189,8 @@ end
 
 
 function title_prepare()
+	local node
+
 	if play_intro == true then title_music_delay = 7 else title_music_delay = 0 end
 
 	msg.post("/main#ctrl", "start_menu_music", {delay = title_music_delay})
@@ -212,13 +217,16 @@ function title_prepare()
 	gui.set_position(gui.get_node("HALL_OF_FAME"), vmath.vector3(hall_of_fame_pos.x, hall_of_fame_pos.y - 500, 1))
 	gui.set_position(gui.get_node("INFO"), vmath.vector3(info_pos.x, info_pos.y - 400, 1))
 
-	for a = 1,8 do
-		letter_pos[a] = gui.get_position(gui.get_node(a))
-		gui.set_enabled(gui.get_node(a), false)
+	for a = 1, 2 do
+		for b = 1, title_lenght[a] do
+			node = gui.get_node(a.."-"..b)
+			letter_pos[a][b] = gui.get_position(node)
+			gui.set_enabled(node, false)
+		end
 	end
 
 	msg.post("/main#ctrl", "BG fade_in")
-	fade_dark(6, 1)
+	fade_darkness(2, 1)
 
 	if play_intro == false then
 		emoji_delay = 3
@@ -296,13 +304,13 @@ end
 
 local function title_colors(self, node, col, dir)
 	if dir == 1 then
-		col= col + 0.02
+		col= col + 0.04
 		if col > 1 then col = 1 ; dir = 0 end
 	else
-		col = col - 0.02
+		col = col - 0.04
 		if col < .74 then col = .74 ; dir = 1 end
 	end
-	gui.animate(node, "color", vmath.vector4(col - .26, col - .18, col, 1), gui.EASING_LINEAR, .2, 0, function()
+	gui.animate(node, "color", vmath.vector4(col - .26, col - .18, col, 1), gui.EASING_LINEAR, .3, 0, function()
 		title_colors(self, node, col, dir)
 	end)
 	gui.animate(node, "outline", vmath.vector4((col - .52) / 3.2, (col - .36) / 2.4, col / 1.64, 1), gui.EASING_LINEAR, .2, 0)
@@ -332,31 +340,33 @@ function post_intro()
 
 	gui.animate(gui.get_node("stars"), "color", vmath.vector4(.1, .14, .18, 0.1), gui.EASING_LINEAR, 8, 1.2)
 
-	for a = 1,8 do
-		local node = gui.get_node(a)
-		local pos = letter_pos[a]
-		letter_pos[a] = color ; local col = letter_pos[a]
+	for a = 1, 2 do
+		for b = 1, title_lenght[a] do
+			local node = gui.get_node(a.."-"..b)
+			local pos = letter_pos[a][b]
+			letter_pos[a][b] = color ; local col = letter_pos[a][b]
 
-		gui.set_enabled(node, true)
-		gui.set_color(node, vmath.vector4(color - .12, color - .08, color, 1)) ; color = color - 0.06
+			gui.set_enabled(node, true)
+			gui.set_color(node, vmath.vector4(color - .6, color - .08, color, 1)) ; color = color - 0.04
 
-		pos_x, pos_y = get_offscreen_pos(200)
+			pos_x, pos_y = get_offscreen_pos(200)
 
-		-- set new letter position outside of screen and animate it to original position
-		gui.set_position(node, vmath.vector3(pos_x, pos_y, 0))
-		gui.set_shadow(node, vmath.vector4(.1, .14, .18, 0))
-		local random = rnd.range(3, 6)
-		gui.animate(node, "shadow.w", 1, gui.EASING_LINEAR, random, 1)
+			-- set new letter position outside of screen and animate it to original position
+			gui.set_position(node, vmath.vector3(pos_x, pos_y, 0))
+			gui.set_shadow(node, vmath.vector4(.1, .14, .18, 0))
+			local random = rnd.range(3, 6)
+			gui.animate(node, "shadow.w", 1, gui.EASING_LINEAR, random, 1)
 
-		gui.animate(node, "position", pos, gui.EASING_OUTELASTIC, random, 1, function ()
-			title_animate(self, node, pos)
-		end)
+			gui.animate(node, "position", pos, gui.EASING_OUTELASTIC, random, 1, function()
+				title_animate(self, node, pos)
+			end)
 
-		gui.animate(node, "color", vmath.vector4(col - .12, col - .04, col, 1), gui.EASING_LINEAR, .4, 0, function ()
-			title_colors(self, node, col, dir)
-		end)
+			gui.animate(node, "color", vmath.vector4(col - .12, col - .04, col, 1), gui.EASING_LINEAR, .4, 0, function()
+				title_colors(self, node, col, dir)
+			end)
 
-		gui.animate(node, "outline", vmath.vector4((col - .12) /2, (col - .04) /2, col/ 2, 1), gui.EASING_LINEAR, .4, 0)
+			gui.animate(node, "outline", vmath.vector4((col - .12) /2, (col - .04) /2, col/ 2, 1), gui.EASING_LINEAR, .4, 0)
+		end
 	end
 end
 
@@ -368,10 +378,12 @@ function fade_gui()
 
 	msg.post(".", "release_input_focus")
 
-	for a = 1, 8 do
-		node = gui.get_node(a)
-		pos_x, pos_y = get_offscreen_pos(400)
-		gui.animate(node, "position", vmath.vector3(pos_x, pos_y, 1), gui.EASING_INEXPO, 3)
+	for a = 1, 2 do
+		for b = 1, title_lenght[a] do
+			node = gui.get_node(a.."-"..b)
+			pos_x, pos_y = get_offscreen_pos(400)
+			gui.animate(node, "position", vmath.vector3(pos_x, pos_y, 1), gui.EASING_INEXPO, 3)
+		end
 	end
 
 	node = gui.get_node("NEW_GAME")

@@ -18,13 +18,13 @@ embedded_components {
   type: "sprite"
   data: "tile_set: \"/assets/graphic/explosive/bomb/bomb.atlas\"\n"
   "default_animation: \"wavepush\"\n"
-  "material: \"/main/render/materials/light_sprite.material\"\n"
+  "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
   position {
     x: 0.0
     y: 0.0
-    z: 0.0
+    z: 0.1
   }
   rotation {
     x: 0.0

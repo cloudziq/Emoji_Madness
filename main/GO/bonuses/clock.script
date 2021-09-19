@@ -9,7 +9,7 @@ local proxy_speed_changing, clock_bonus_timeout
 
 
 function init(self)
-	local x1,y1, x2,y2, x3,y3
+	local x1,y1, x2,y2, x3,y3, tint
 	local radius = math.random (100, 260)
 	local time = math.random(18, 32) / 10
 	local stop = math.random(16, 40) / 100
@@ -22,10 +22,11 @@ function init(self)
 	y2 = rnd.range(80 + 50, window_h - 120 - 50)
 	x3, y3 = get_offscreen_pos(200, true, {x = x2, y = y2})
 
+	tint = vmath.vector4(.16, .34, .18, .6) * darkness_level
 	go.set_position(vmath.vector3(x1,y1,0))
-	go.set("#halo", "tint", vmath.vector4(.16, .34, .18, 0))
+	go.set("#halo", "tint", tint)
 
-	go.animate("#halo", "tint.w", go.PLAYBACK_LOOP_PINGPONG, 1, go.EASING_INOUTSINE, 0.8)
+	go.animate("#halo", "tint.w", go.PLAYBACK_LOOP_PINGPONG, 1 * darkness_level, go.EASING_INOUTSINE, 0.8)
 	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, y2, easing1, time)
 	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x2 - radius, easing2, time * 0.5, 0, function()
 		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, x2, easing2, time * 0.5, 0, function()
@@ -56,14 +57,18 @@ end
 
 
 function on_message(self, message_id, message, sender)
+	local pos
+
 	if message_id == hash("collision_response") then
 		if message.group == hash("weapon") and bonus_clock_active == false and self.active == true then
 			go.cancel_animations(".", "position")
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 2.5, go.EASING_OUTSINE, 2)
-			--go.animate(msg.url(nil, go.get_id(), "sprite"), "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTSINE, 2)
 			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTSINE, 2)
 
-			particlefx.play("#particles")
+			pos = go.get_position()
+			go.set_position(vmath.vector3(pos.x, pos.y, 0.9), "/bonus#clock_particles")
+			particlefx.play("/bonus#clock_particles")
+			particlefx.set_constant("/bonus#clock_particles", "emitter", "tint", vmath.vector4(1,1,1,1))
 			sound.play("/main#health_bonus")
 
 			self.active = false

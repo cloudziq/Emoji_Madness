@@ -317,20 +317,20 @@ emitters {
     z: 0.0
     w: 1.0
   }
-  tile_source: "/assets/graphic/lights.atlas"
-  animation: "emoji_light_small"
+  tile_source: "/assets/graphic/weapon.atlas"
+  animation: "emoji_light"
   material: "/main/render/materials/light_particle.material"
   blend_mode: BLEND_MODE_ALPHA
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   inherit_velocity: -0.4
-  max_particle_count: 3
+  max_particle_count: 2
   type: EMITTER_TYPE_CIRCLE
   start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 12.0
+      y: 10.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -394,7 +394,7 @@ emitters {
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 4.0
+    spread: 6.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_RED
@@ -614,5 +614,5 @@ emitters {
   start_delay_spread: 0.0
   duration_spread: 0.0
   stretch_with_velocity: false
-  start_offset: 1.0
+  start_offset: 0.0
 }

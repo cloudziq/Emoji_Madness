@@ -99,7 +99,8 @@ function on_message(self, message_id, message)
 			gui.animate(gui.get_node("killed_count"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1)
 		end)
 
-		if dark_mode then msg.post("/main#ctrl", "light_particle", {enabled = true, delay = 0.34}) end
+		-- if dark_mode then msg.post("/main#ctrl", "light_particle", {enabled = true, delay = 0.34}) end
+		msg.post("/main#ctrl", "light_particle", {enabled = true, delay = 0.34})
 
 		gui.animate(gui.get_node("escaped"), "scale", vmath.vector3(.5, .5, 1), gui.EASING_OUTELASTIC, 1, 1.2, function()
 			sound.play("game_layer1:/main#win_count", {speed = .5})

@@ -15,9 +15,11 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("clean_blood") then
-		--go.delete_all(blood_table)
 		for _, id in ipairs(blood_table) do
-			go.animate(id, "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(0,0,0), go.EASING_INSINE, 2, 0, function () go.delete(id) end)
+			go.animate(msg.url(nil, id, "sprite"), "scale", go.PLAYBACK_ONCE_FORWARD, 4, go.EASING_INSINE, 2)
+			go.animate(msg.url(nil, id, "sprite"), "tint", go.PLAYBACK_ONCE_FORWARD, vmath.vector4(0,0,0,0), go.EASING_INSINE, 2.2, 0, function()
+				go.delete(id)
+			end)
 		end
 	end
 end

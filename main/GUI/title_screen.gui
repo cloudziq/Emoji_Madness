@@ -276,9 +276,9 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 0.994
-    y: 0.994
-    z: 0.994
+    x: 1.0
+    y: 1.0
+    z: 1.0
     w: 1.0
   }
   size {
@@ -318,8 +318,8 @@ nodes {
 }
 nodes {
   position {
-    x: 198.792
-    y: 833.889
+    x: 0.0
+    y: 0.0
     z: 0.0
     w: 1.0
   }
@@ -330,9 +330,9 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 1.613
-    y: 1.613
-    z: 1.613
+    x: 1.0
+    y: 1.0
+    z: 1.0
     w: 1.0
   }
   size {
@@ -342,364 +342,39 @@ nodes {
     w: 1.0
   }
   color {
-    x: 0.8
-    y: 0.9019608
+    x: 1.0
+    y: 1.0
     z: 1.0
     w: 1.0
   }
-  type: TYPE_TEXT
+  type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  text: "S"
-  font: "leaking"
-  id: "1"
+  texture: ""
+  id: "EMOJI"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
-  outline {
-    x: 0.2
-    y: 0.101960786
-    z: 0.5019608
-    w: 1.0
-  }
-  shadow {
-    x: 0.2
-    y: 0.2
-    z: 0.2
-    w: 1.0
-  }
   adjust_mode: ADJUST_MODE_FIT
-  line_break: false
   parent: "GAME_TITLE"
   layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.06
-}
-nodes {
-  position {
-    x: 328.878
-    y: 839.668
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
+  inherit_alpha: true
+  slice9 {
     x: 0.0
     y: 0.0
     z: 0.0
-    w: 1.0
+    w: 0.0
   }
-  scale {
-    x: 1.613
-    y: 1.613
-    z: 1.613
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "Q\n"
-  ""
-  font: "leaking"
-  id: "2"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 0.2
-    y: 0.101960786
-    z: 0.5019608
-    w: 1.0
-  }
-  shadow {
-    x: 0.2
-    y: 0.2
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "GAME_TITLE"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.0
   template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.06
+  size_mode: SIZE_MODE_AUTO
 }
 nodes {
   position {
-    x: 477.299
-    y: 841.863
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.613
-    y: 1.613
-    z: 1.613
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "U"
-  font: "leaking"
-  id: "3"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 0.2
-    y: 0.101960786
-    z: 0.5019608
-    w: 1.0
-  }
-  shadow {
-    x: 0.2
-    y: 0.2
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "GAME_TITLE"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.06
-}
-nodes {
-  position {
-    x: 580.765
-    y: 844.668
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.613
-    y: 1.613
-    z: 1.613
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "I"
-  font: "leaking"
-  id: "4"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 0.2
-    y: 0.101960786
-    z: 0.5019608
-    w: 1.0
-  }
-  shadow {
-    x: 0.2
-    y: 0.2
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "GAME_TITLE"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.06
-}
-nodes {
-  position {
-    x: 683.037
-    y: 842.694
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.613
-    y: 1.613
-    z: 1.613
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "S"
-  font: "leaking"
-  id: "5"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 0.2
-    y: 0.101960786
-    z: 0.5019608
-    w: 1.0
-  }
-  shadow {
-    x: 0.2
-    y: 0.2
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "GAME_TITLE"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.06
-}
-nodes {
-  position {
-    x: 808.787
-    y: 845.278
-    z: 0.0
-    w: 1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale {
-    x: 1.613
-    y: 1.613
-    z: 1.613
-    w: 1.0
-  }
-  size {
-    x: 200.0
-    y: 100.0
-    z: 0.0
-    w: 1.0
-  }
-  color {
-    x: 0.8
-    y: 0.9019608
-    z: 1.0
-    w: 1.0
-  }
-  type: TYPE_TEXT
-  blend_mode: BLEND_MODE_ALPHA
-  text: "H\n"
-  ""
-  font: "leaking"
-  id: "6"
-  xanchor: XANCHOR_NONE
-  yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
-  outline {
-    x: 0.2
-    y: 0.101960786
-    z: 0.5019608
-    w: 1.0
-  }
-  shadow {
-    x: 0.2
-    y: 0.2
-    z: 0.2
-    w: 1.0
-  }
-  adjust_mode: ADJUST_MODE_FIT
-  line_break: false
-  parent: "GAME_TITLE"
-  layer: ""
-  inherit_alpha: false
-  alpha: 1.0
-  outline_alpha: 1.0
-  shadow_alpha: 1.0
-  template_node_child: false
-  text_leading: 1.0
-  text_tracking: 0.06
-}
-nodes {
-  position {
-    x: 942.288
-    y: 843.889
+    x: 398.792
+    y: 986.889
     z: 0.0
     w: 1.0
   }
@@ -731,7 +406,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "E"
   font: "leaking"
-  id: "7"
+  id: "1-1"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -749,7 +424,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "GAME_TITLE"
+  parent: "EMOJI"
   layer: ""
   inherit_alpha: false
   alpha: 1.0
@@ -757,12 +432,446 @@ nodes {
   shadow_alpha: 1.0
   template_node_child: false
   text_leading: 1.0
-  text_tracking: 0.06
+  text_tracking: 0.0
 }
 nodes {
   position {
-    x: 1082.347
-    y: 847.278
+    x: 541.878
+    y: 992.668
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "M\n"
+  ""
+  font: "leaking"
+  id: "1-2"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "EMOJI"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 685.299
+    y: 994.863
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "O"
+  font: "leaking"
+  id: "1-3"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "EMOJI"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 799.765
+    y: 989.668
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "J"
+  font: "leaking"
+  id: "1-4"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "EMOJI"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 889.037
+    y: 995.694
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "I"
+  font: "leaking"
+  id: "1-5"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "EMOJI"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_BOX
+  blend_mode: BLEND_MODE_ALPHA
+  texture: ""
+  id: "MADNESS"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  adjust_mode: ADJUST_MODE_FIT
+  parent: "GAME_TITLE"
+  layer: ""
+  inherit_alpha: true
+  slice9 {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 0.0
+  }
+  clipping_mode: CLIPPING_MODE_NONE
+  clipping_visible: true
+  clipping_inverted: false
+  alpha: 0.0
+  template_node_child: false
+  size_mode: SIZE_MODE_AUTO
+}
+nodes {
+  position {
+    x: 237.792
+    y: 796.889
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "M"
+  font: "leaking"
+  id: "2-1"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "MADNESS"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 393.878
+    y: 802.668
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "A"
+  font: "leaking"
+  id: "2-2"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "MADNESS"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 516.299
+    y: 804.863
     z: 0.0
     w: 1.0
   }
@@ -794,7 +903,7 @@ nodes {
   blend_mode: BLEND_MODE_ALPHA
   text: "D"
   font: "leaking"
-  id: "8"
+  id: "2-3"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
   pivot: PIVOT_CENTER
@@ -812,7 +921,7 @@ nodes {
   }
   adjust_mode: ADJUST_MODE_FIT
   line_break: false
-  parent: "GAME_TITLE"
+  parent: "MADNESS"
   layer: ""
   inherit_alpha: false
   alpha: 1.0
@@ -820,7 +929,260 @@ nodes {
   shadow_alpha: 1.0
   template_node_child: false
   text_leading: 1.0
-  text_tracking: 0.06
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 653.765
+    y: 807.668
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "N"
+  font: "leaking"
+  id: "2-4"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "MADNESS"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 784.037
+    y: 805.694
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "E"
+  font: "leaking"
+  id: "2-5"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "MADNESS"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 915.787
+    y: 808.278
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "S\n"
+  ""
+  font: "leaking"
+  id: "2-6"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "MADNESS"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
+}
+nodes {
+  position {
+    x: 1042.288
+    y: 806.889
+    z: 0.0
+    w: 1.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale {
+    x: 1.613
+    y: 1.613
+    z: 1.613
+    w: 1.0
+  }
+  size {
+    x: 200.0
+    y: 100.0
+    z: 0.0
+    w: 1.0
+  }
+  color {
+    x: 0.8
+    y: 0.9019608
+    z: 1.0
+    w: 1.0
+  }
+  type: TYPE_TEXT
+  blend_mode: BLEND_MODE_ALPHA
+  text: "S"
+  font: "leaking"
+  id: "2-7"
+  xanchor: XANCHOR_NONE
+  yanchor: YANCHOR_NONE
+  pivot: PIVOT_CENTER
+  outline {
+    x: 0.2
+    y: 0.101960786
+    z: 0.5019608
+    w: 1.0
+  }
+  shadow {
+    x: 0.2
+    y: 0.2
+    z: 0.2
+    w: 1.0
+  }
+  adjust_mode: ADJUST_MODE_FIT
+  line_break: false
+  parent: "MADNESS"
+  layer: ""
+  inherit_alpha: false
+  alpha: 1.0
+  outline_alpha: 1.0
+  shadow_alpha: 1.0
+  template_node_child: false
+  text_leading: 1.0
+  text_tracking: 0.0
 }
 nodes {
   position {
@@ -929,8 +1291,8 @@ nodes {
 }
 nodes {
   position {
-    x: 1131.0
-    y: 244.0
+    x: 1143.0
+    y: 237.0
     z: 0.0
     w: 1.0
   }

@@ -1,3 +1,8 @@
+
+-- local variables:
+local score_default = 4
+
+
 go.property("speed",  5.88)
 go.property("wait",   3.46)
 go.property("score",  4)
@@ -12,21 +17,25 @@ local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
 
 
 -- local hashes:
-local collide_contact_hash = hash("contact_point_response")
-local collide_weapon_hash  = hash("weapon")
-local hash_right_click     = hash("menu_right_click")
+local hash_collision       = hash("collision_response")
+local hash_contact         = hash("contact_point_response")
+local hash_group_weapon    = hash("weapon")
+local hash_group_emoji     = hash("emoji")
+local hash_group_menuclick = hash("menu_right_click")
+local hash_group_bomb      = hash("bomb")
+local hash_group_blast     = hash("blast")
+local hash_group_wave      = hash("wavepush")
 
 
 
 
 function init(self)
 	self.active         = true
-	self.delay          = rnd.range(2, 2 + (emojis / 14) + (level / 6))
+	self.delay          = rnd.range(2, 2 + (emojis / 14) + (level / 6)) - darkness_level
 	self.wait_timeout   = 0
 	self.waiting        = false
 	self.going_away     = false
 	self.need_pos_check = false
-	self.pushed         = false
 	self.sound_delay    = 0
 	self.collide_type   = 0
 	self.particle_url   = msg.url(nil, go.get_id(), "particle")
@@ -82,10 +91,10 @@ function update(self, dt)
 
 			if pos.x > 50 and pos.x < window_w - 50 and pos.y > 50 and pos.y < window_h -50 - 44 and self.active == true and self.going_away == false then
 				self.need_pos_check = false
-				--msg.post(self.collide_url, "enable")
+				msg.post(self.collide_url, "enable")
 			else
 				self.need_pos_check = true
-				--msg.post(self.collide_url, "disable")
+				msg.post(self.collide_url, "disable")
 			end
 		end
 	end
@@ -126,13 +135,13 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 		if bonus_level_active == 1 then self.active = false end
 
 		if not self.going_away then
-			time = self.speed - (self.speed * (speed / 100)) + math.random(-2, 4)
+			time = (self.speed - (self.speed * (speed / 100)) + math.random(-2, 4)) - darkness_level
 			pos_x = rnd.range(80 + 50, window_w - 80 - 50)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 			radius = rnd.range(40, 160)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = (self.speed - (self.speed * (speed / 100))) * 2.2
+			time = ((self.speed - (self.speed * (speed / 100))) * 2.2) - darkness_level
 			pos_x, pos_y = get_offscreen_pos(100 + dist_add, true, go.get_position())
 			radius = rnd.range(4, 16)
 		end
@@ -146,10 +155,13 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 					emoji_waiting(self)
 				else
 					if health > 0 and bonus_level_active ~= 1 and self.active then
+						self.active = false
 						sound.play("game_layer1:/main#energy_loss", {speed = math.random(80, 120) / 100})
 						emojis_left = emojis_left - 1 ; escaped = escaped + 1
 						health = health - 1
+						change_darkness(10)
 						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "emoji_left"})
+						msg.post("game_layer1:/main#ctrl", "update_music")
 					end
 					particlefx.stop(self.particle_url)
 				end
@@ -162,26 +174,30 @@ end
 
 
 function emoji_waiting(self)
+	local tint
+
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (self.wait * speed / 100) + math.random(-2, 4 + (level / 8)) + socket.gettime()
+			self.wait_timeout = self.wait - (self.wait * speed / 100) + math.random(-2, 4 + (level / 8)) + socket.gettime() - darkness_level
 			self.waiting = true
-			self.score = self.score / 2
+			self.score = score_default / 2
 			particlefx.play(self.particle_url)
-			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.28, .32, .62, .6))
-			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.52, .56, .78, .84))
+			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.38, .42, .72, .64))
+			tint = vmath.vector4(.62, .66, .88, .86) * darkness_level
+			particlefx.set_constant(self.particle_url, "emitter_light", "tint", tint)
 		end
 
 		if socket.gettime() >= self.wait_timeout and self.going_away == false then
 			if bonus_level_active == 1 then particlefx.play(self.particle_url) end
 			msg.post(self.collide_url, "disable")
-			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .68))
-			particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .96))
+			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .76))
+			tint = vmath.vector4(1, .74, .44, 1) * darkness_level
+			particlefx.set_constant(self.particle_url, "emitter_light", "tint", tint)
 
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, .44, 0, function()
 				self.waiting = false
 				self.going_away = true
-				self.score = self.score / 2
+				self.score = score_default / 4
 				sound.play("game_layer1:/main#emoji_going_away", {speed = (math.random(80, 120) / 100) * proxy_speed})
 				get_new_emoji_pos(self, go.EASING_INSINE, go.EASING_LINEAR, .1)
 			end)
@@ -216,18 +232,18 @@ function on_message(self, message_id, message, sender)
 	if main_menu_visible == true then
 
 
-		if message_id == collide_contact_hash and self.active == true then
+		if message_id == hash_contact and self.active == true then
 			pos = go.get_position()
 
 			if self.collide_type == 0 then
 				if math.random(1, 400) <= 360 then
 					self.collide_type = 1
 					particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.52, .56, .78, .84))
-					particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.52, .56, .78, .84))
+					particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.52, .56, .78, .84 * darkness_level))
 				else
 					self.collide_type = 2
 					particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .68))
-					particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .96))
+					particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .96 * darkness_level))
 				end
 			end
 
@@ -250,11 +266,10 @@ function on_message(self, message_id, message, sender)
 				force = 20
 				distance = rnd.range(28, 62) / 10
 				time = rnd.range(10, 24) / 10
-				--self.collide = 0
 				self.dest = pos + (message.normal * force) * (message.distance * distance)
 
 
-			elseif message.group == hash("emoji") then
+			elseif message.group == hash_group_emoji then
 				other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
 
 				if self.dest.x < other_dest.x + 60 and self.dest.x > other_dest.x - 60 then
@@ -280,13 +295,14 @@ function on_message(self, message_id, message, sender)
 		if bonus_level_active ~= 1 then
 			local sound_type, sound_speed
 
-			if message.group == collide_weapon_hash and self.active == true then
+			if message.group == hash_group_weapon and self.active == true then
 
 				if score > 0 then score = score + bullet_miss end
 				emojis_left = emojis_left - 1
 				killed = killed + 1
 				combo_charged = false
 				score = score + self.score
+				change_darkness(1)
 
 				if emojis_left > 0 then
 					sound_speed = (math.random(60, 120) / 100)
@@ -298,13 +314,16 @@ function on_message(self, message_id, message, sender)
 					sound.stop("game_layer1:/main#emoji_going_away")
 					sound_type = "game_layer1:/main#squeak_big"
 					combo_charged = true
+					--change_darkness(-5)
 				else
 					sound_type = "game_layer1:/main#squeak_small"
+					--change_darkness(1)
 				end
 				msg.post(weapon_id, "count charged_kill", {score = self.score, charged = combo_charged})
 
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				msg.post("game_layer2:/main#game_gui", "display_update")
+				msg.post("game_layer1:/main#ctrl", "update_music")
 				particlefx.stop(self.particle_url)
 
 				self.active = false
@@ -320,11 +339,11 @@ function on_message(self, message_id, message, sender)
 
 
 
-			elseif message_id == collide_contact_hash and self.active == true then
+			elseif message_id == hash_contact and self.active == true then
 				pos = go.get_position() + message.normal * (message.distance * 1.22)
 
 				-- collide with other emojis
-				if message.group == hash("emoji") then
+				if message.group == hash_group_emoji then
 
 					other_dest = go.get(msg.url(nil, message.other_id, "emoji"), "dest")
 					if self.need_pos_check then play_sound = false else play_sound = true end
@@ -343,18 +362,44 @@ function on_message(self, message_id, message, sender)
 						self.sound_delay = socket.gettime() + 0.08
 					end
 
+					if self.active then
+						time = rnd.range(26, 44) / 10
+						time = time + (time * speed / 100)
+
+						go.set_position(pos)
+						go.cancel_animations(".", "position")
+						go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
+							if self.need_pos_check == true then
+								--self.wait_timeout = 0
+								get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
+							else
+								emoji_waiting(self)
+							end
+						end)
+					end
+
 
 				-- collide with bombs
-				elseif message.group == hash("bomb") and not self.going_away then
+				elseif message.group == hash_group_bomb and not self.going_away then
+					pos = go.get_position() + message.normal * (message.distance * 1.22)
+					go.set_position(pos)
+					if self.waiting then
+						go.cancel_animations(".", "scale")
+						go.set_scale(1)
+						particlefx.stop(self.particle_url)
+						self.waiting = false
+						self.wait_timeout = 0
+					end
 					get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
 
 
 				-- collide with deadly blast
-				elseif message.group == hash("blast") then
+				elseif message.group == hash_group_blast and self.active then
 					emojis_left = emojis_left - 1
 					killed = killed + 1
 					score = score + self.score
 					msg.post("game_layer2:/main#game_gui", "display_update")
+					msg.post("game_layer1:/main#ctrl", "update_music")
 					particlefx.stop(self.particle_url)
 					self.active = false
 					msg.post(self.collide_url, "disable")
@@ -368,36 +413,26 @@ function on_message(self, message_id, message, sender)
 					msg.post(bomb_url, "count charged_kill", {score = self.score, charged = false})
 
 
-				elseif message.group == hash("wavepush") then
-					self.pushed = true
-					pos = go.get_position() + message.normal * (message.distance * math.random(2, 6))
+				-- collide with explosion wave
+				elseif message.group == hash_group_wave and self.active then
+					pos = go.get_position() + message.normal * (message.distance * math.random(2, 4))
+					if self.waiting then
+						self.collide_type = 1
+						go.cancel_animations(".", "scale")
+						go.set_scale(1)
+						particlefx.stop(self.particle_url)
+						self.waiting = false
+						self.wait_timeout = 0
+						self.score = score_default
+					end
+
 					go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, 1, 0, function()
-						--if not self.going_away then
-							self.pushed = false
-							get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
-						--else
-							--go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, 1)
-						--end
-					end)
-				end
-
-
-
-
-				if not self.going_away and self.active and not self.pushed then
-					time = rnd.range(26, 44) / 10
-					time = time + (time * speed / 100)
-
-					go.set_position(pos)
-					go.cancel_animations(".", "position")
-					go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
-						if self.need_pos_check == true then
-							self.wait_timeout = 0
-							--go.cancel_animations(".", "position")
-							get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
-						else
+						if self.collide_type == 1 and not self.need_pos_check then
 							emoji_waiting(self)
+						elseif self.collide_type == 0 or self.need_pos_check then
+							get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
 						end
+						self.collide_type = 0
 					end)
 				end
 			end
@@ -407,7 +442,7 @@ function on_message(self, message_id, message, sender)
 
 		-- bonus level handling:
 		else
-			if message.group == collide_weapon_hash and self.active == true then
+			if message.group == hash_group_weapon and self.active == true then
 				local sound_type, sound_speed
 
 				self.active = false
@@ -434,7 +469,7 @@ function on_message(self, message_id, message, sender)
 				msg.post("game_layer2:/main#game_gui", "bonus_display_update")
 
 
-			elseif message_id == hash("collision_response") and self.active == true then
+			elseif message_id == hash_collision and self.active == true then
 				if go.get_scale(".").x == 1 then multiplier = 1 else multiplier = 2 end
 				pos_x, pos_y = get_onscreen_pos(10, multiplier)
 				go.set_position(vmath.vector3(pos_x, pos_y, 1))

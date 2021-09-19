@@ -23,6 +23,7 @@ function on_message(self, message_id, message)
 			old_score = score
 			multiplier = (message.amount - message.charged) + (2 * message.charged)
 			score = score + (message.score * multiplier)
+			darkness_level = darkness_level - (message.amount / 1000)
 			text = tostring(score - old_score)
 			scale, attack, sustain, release = .8, 1, .8, .42
 		else

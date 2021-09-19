@@ -97,8 +97,10 @@ function prepare_gui()
 		gui.animate(gui.get_node("clover"..a), "color.w", 1, gui.EASING_LINEAR, 1)
 	end
 
-	if dark_mode then msg.post("/main#ctrl", "light_particle", {enabled = true}) end
-	timer.delay(1, false, function() gui.play_particlefx(gui.get_node("particlefx")) end)
+	timer.delay(1, false, function()
+		gui.play_particlefx(gui.get_node("particlefx"))
+		msg.post("/main#ctrl", "light_particle", {enabled = true})
+	end)
 	msg.post("#", "enable")
 end
 

@@ -1,4 +1,20 @@
+
+local tint
+
+
+
+
 function init(self)
-	go.set_scale(4.2)
-	go.set("#sprite", "tint.w", .6)
+	go.set_scale(4.4)
+	msg.post("#", "update cursor light")
+end
+
+
+
+
+function on_message(self, message_id)
+	if message_id == hash("update cursor light") then
+		tint = vmath.vector4(1,1,1, .68) * darkness_level
+		go.set("#sprite", "tint", tint)
+	end
 end

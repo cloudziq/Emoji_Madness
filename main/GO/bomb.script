@@ -5,15 +5,13 @@ local charged_combo_count, charged_combo_score, charged_emoji_count
 
 
 function init(self)
-	local type
+	--local type
 
 	self.active    = true
 	self.sprite    = msg.url(nil, go.get_id(), "sprite")
 	self.collision = msg.url(nil, go.get_id(), "collide_emoji")
 	self.blast     = msg.url(nil, go.get_id(), "blast")
-
-	type = not dark_mode and "" or "_dark"
-	self.particle  = msg.url(nil, go.get_id(), "explosion"..type)
+	self.particle  = msg.url(nil, go.get_id(), "explosion")
 
 	msg.post(self.blast, "disable")
 end
@@ -24,23 +22,25 @@ end
 function on_message(self, message_id, message)
 	if message_id == hash("collision_response") and self.active then
 		local pos = go.get_position()
-		charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
 
 		if message.group == hash("weapon") then
+			charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
 			self.active = false
 			allow_combo_counter = false
 			score = score + bullet_miss
+			change_darkness(25)
 			msg.post(self.collision, "disable")
 			go.set(self.sprite, "tint.w", 0)
 			go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)), self.sprite)
-			go.set_scale(2, self.particle)
+			go.set_scale(2)
 
 			msg.post(self.blast, "enable")
-			timer.delay(0.1, false, function()
-				allow_combo_counter = true
+			timer.delay(.1, false, function()
 				msg.post(self.blast, "disable")
-				factory.create("/bomb#wavepush_factory")
-				if allow_combo_counter and charged_combo_count > 0 then
+				factory.create("/bomb#wavepush_factory", vmath.vector3(pos.x, pos.y, 0.9))
+			end)
+			timer.delay(.2, false, function()
+				if charged_combo_count > 0 then
 					msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count})
 				end
 			end)

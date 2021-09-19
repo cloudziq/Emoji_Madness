@@ -13,21 +13,6 @@ components {
     w: 1.0
   }
 }
-components {
-  id: "particles"
-  component: "/main/GO/bonuses/clock.particlefx"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
 embedded_components {
   id: "sprite"
   type: "sprite"
@@ -96,9 +81,9 @@ embedded_components {
 embedded_components {
   id: "halo"
   type: "sprite"
-  data: "tile_set: \"/assets/graphic/lights.atlas\"\n"
-  "default_animation: \"emoji_light_small\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
+  data: "tile_set: \"/assets/graphic/weapon.atlas\"\n"
+  "default_animation: \"emoji_light\"\n"
+  "material: \"/main/render/materials/light_sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
   position {
