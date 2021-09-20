@@ -1,6 +1,6 @@
 components {
   id: "bomb_wave"
-  component: "/main/GO/bomb_wave.script"
+  component: "/main/GO/bonuses/bomb_wave.script"
   position {
     x: 0.0
     y: 0.0

@@ -304,7 +304,7 @@ emitters {
 emitters {
   id: "emitter_light"
   mode: PLAY_MODE_LOOP
-  duration: 1.0
+  duration: 2.0
   space: EMISSION_SPACE_WORLD
   position {
     x: 0.0
@@ -614,5 +614,5 @@ emitters {
   start_delay_spread: 0.0
   duration_spread: 0.0
   stretch_with_velocity: false
-  start_offset: 0.0
+  start_offset: 1.0
 }

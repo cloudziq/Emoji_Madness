@@ -51,6 +51,7 @@ function on_message(self, message_id, message)
 	if message_id == hash("collision_response") and level_play and self.active then
 		if message.group == hash("weapon") then
 			self.active = false
+			bullets_is_hit = true
 			allow_combo_counter = false
 			score = score + bullet_miss
 			change_darkness(-10)

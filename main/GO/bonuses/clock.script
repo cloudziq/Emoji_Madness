@@ -72,6 +72,7 @@ function on_message(self, message_id, message, sender)
 			sound.play("/main#health_bonus")
 
 			self.active = false
+			bullets_is_hit = true
 			proxy_speed_changing = true
 			proxy_speed = 1 ; speed_change(-1)
 			bonus_clock_active = true

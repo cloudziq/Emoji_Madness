@@ -1,6 +1,6 @@
 components {
   id: "bomb"
-  component: "/main/GO/bomb.script"
+  component: "/main/GO/bonuses/bomb.script"
   position {
     x: 0.0
     y: 0.0

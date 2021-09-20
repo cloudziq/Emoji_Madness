@@ -7,6 +7,7 @@ local charged_combo_count, charged_combo_score, charged_emoji_count
 function init(self)
 	charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
 	allow_combo_counter = false
+	bullets_is_hit = false
 	if level_play then allow_combo_counter = true end
 
 	if score > 0 and level_play == true then
@@ -14,13 +15,17 @@ function init(self)
 		if score < 0 then score = 0 end
 	end
 
+	if weapon_collide then stat_bullets_all = stat_bullets_all + 1 end
+
 	timer.delay(0.04, false, function()
 		msg.post("game_layer2:/main#game_gui", "display_update")
 		if allow_combo_counter then
 			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count})
 		end
 
-		--charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
+		if bullets_is_hit then
+			stat_bullets_hit = stat_bullets_hit + 1
+		end
 		go.delete()
 	end)
 end

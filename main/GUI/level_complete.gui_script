@@ -20,6 +20,7 @@ function on_message(self, message_id, message)
 	if message_id == hash("show") then
 		local text
 
+		stat_levels = stat_levels + 1
 		anim_next_node = false
 
 		-- prepare GUI:

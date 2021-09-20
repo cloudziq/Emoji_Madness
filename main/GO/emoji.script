@@ -159,6 +159,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 						sound.play("game_layer1:/main#energy_loss", {speed = math.random(80, 120) / 100})
 						emojis_left = emojis_left - 1 ; escaped = escaped + 1
 						health = health - 1
+						stat_health_loss = stat_health_loss + 1
 						change_darkness(10)
 						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "emoji_left"})
 						msg.post("game_layer1:/main#ctrl", "update_music")
@@ -178,7 +179,7 @@ function emoji_waiting(self)
 
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (self.wait * speed / 100) + math.random(-2, 4 + (level / 8)) + socket.gettime() - darkness_level
+			self.wait_timeout = self.wait - (self.wait * speed / 100) + math.random(-2, 4 + (level / 8)) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			particlefx.play(self.particle_url)
@@ -262,7 +263,7 @@ function on_message(self, message_id, message, sender)
 			end
 
 
-			if message.group == hash_right_click then
+			if message.group == hash_group_menuclick then
 				force = 20
 				distance = rnd.range(28, 62) / 10
 				time = rnd.range(10, 24) / 10
@@ -300,8 +301,11 @@ function on_message(self, message_id, message, sender)
 				if score > 0 then score = score + bullet_miss end
 				emojis_left = emojis_left - 1
 				killed = killed + 1
+				stat_kills = stat_kills + 1
+				bullets_is_hit = true
 				combo_charged = false
-				score = score + self.score
+				--score = score + self.score
+				stat_score = stat_score + self.score
 				change_darkness(1)
 
 				if emojis_left > 0 then
@@ -452,17 +456,22 @@ function on_message(self, message_id, message, sender)
 
 				if go.get_scale().x == 1 then
 					bonus_score = bonus_score + 10
+					stat_score = stat_score + 10
 					bonus_level_kills.small = bonus_level_kills.small + 1
 					make_blood(pos, blood_scale)
 					sound_type = "game_layer1:/main#squeak_small"
 					sound_speed = (math.random(60, 120) / 100)
 				else
 					bonus_score = bonus_score + 50
+					stat_score = stat_score + 50
 					bonus_level_kills.big = bonus_level_kills.big + 1
 					make_blood(pos, blood_scale, 1.6)
 					sound_type = "game_layer1:/main#squeak_big"
 					sound_speed = (math.random(20, 35) / 100)
 				end
+
+				stat_kills = stat_kills + 1
+				bullets_is_hit = true
 
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				msg.post("game_layer2:/main#ctrl", "reset anim", {visible = true})

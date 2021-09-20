@@ -105,6 +105,7 @@ function on_input(self, action_id, action)
 					msg.post("/main#ctrl", "menu_end")
 					sound.play("main:/main#button_press")
 					start_allow = false
+					stat_games = stat_games + 1
 				end
 			else
 				gui.animate(gui.get_node("NEW_GAME"), "scale", vmath.vector3(1, 1, 1), go.EASING_INOUTSINE, 1)
@@ -193,9 +194,9 @@ function title_prepare()
 
 	if play_intro == true then title_music_delay = 7 else title_music_delay = 0 end
 
-	msg.post("/main#ctrl", "start_menu_music", {delay = title_music_delay})
+	load_config() ; load_stats()
 
-	load_config()
+	msg.post("/main#ctrl", "start_menu_music", {delay = title_music_delay})
 
 	gui.set_enabled(gui.get_node("version_number"), false)
 	gui.set_color(gui.get_node("stars"), vmath.vector4(0,0,0,0))

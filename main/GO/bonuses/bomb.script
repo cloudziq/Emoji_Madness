@@ -26,8 +26,10 @@ function on_message(self, message_id, message)
 		if message.group == hash("weapon") then
 			charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
 			self.active = false
+			bullets_is_hit = true
 			allow_combo_counter = false
 			score = score + bullet_miss
+			stat_bombs = stat_bombs + 1
 			change_darkness(25)
 			msg.post(self.collision, "disable")
 			go.set(self.sprite, "tint.w", 0)

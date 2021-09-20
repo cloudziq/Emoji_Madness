@@ -44,6 +44,7 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("collision_response") then
 		if message.group == hash("weapon") and self.active == true then
 			self.active = false
+			bullets_is_hit = true
 			bonus_level_active = true
 			allow_combo_counter = false
 			score = score + bullet_miss
