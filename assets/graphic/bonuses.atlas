@@ -3,19 +3,11 @@ images {
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/graphic/bonuses/bonus_gift.png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
-  image: "/assets/graphic/bonuses/bomb.png"
-  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-}
-images {
   image: "/assets/graphic/bonuses/luck.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/graphic/bonuses/wealth.png"
+  image: "/assets/graphic/bonuses/light_orb.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

@@ -28,7 +28,7 @@ end
 
 
 
-function update(self, dt)
+function update(self)
 	if weapon_collide == true then
 		msg.post("#collide_emoji", "enable")
 		msg.post("#collide_bonus", "enable")

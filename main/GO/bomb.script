@@ -20,7 +20,7 @@ end
 
 
 function on_message(self, message_id, message)
-	if message_id == hash("collision_response") and self.active then
+	if message_id == hash("collision_response") and level_play and self.active then
 		local pos = go.get_position()
 
 		if message.group == hash("weapon") then

@@ -50,28 +50,15 @@ function on_message(self, message_id, message)
 		if shot_x + x + (72 * scale * tex_len) >= window_w then x = -x + (window_w - cursor_x) - (48 * scale * tex_len) end
 		if shot_y + y + 72 * scale >= window_h - 72 * scale then y = -y - 22 * scale end
 
-		-- if not dark_mode then
-		-- 	go.set("#+", "material", self.mat1)
-		-- 	go.set("#count", "material", self.mat1)
-		-- else
-		-- 	go.set("#+", "material", self.mat2)
-		-- 	go.set("#count", "material", self.mat2)
-		-- end
-
 		go.set_scale(0.01)
 		go.set_position(vmath.vector3(shot_x, shot_y, 1))
-		--go.set("#+", "color.w", 0) ; go.set("#count", "color.w", 0)
 
 		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, scale, go.EASING_LINEAR, attack)
-		--go.animate("#+", "color.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, attack)
-		--go.animate("#count", "color.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, attack)
 		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, shot_x + x, go.EASING_OUTSINE, attack + (attack * 1.4))
 		go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, shot_y + y, go.EASING_OUTSINE, attack + (attack * 1.4), 0, function()
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0.01, go.EASING_LINEAR, release, sustain)
-			--go.animate("#+", "color.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INSINE, release, sustain)
-			--go.animate("#count", "color.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INSINE, release, sustain, function()
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0.01, go.EASING_LINEAR, release, sustain, function()
 				go.delete(".")
+			end)
 		end)
-		--end)
 	end
 end

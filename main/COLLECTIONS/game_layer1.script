@@ -34,6 +34,14 @@ function on_message(self, message_id, message)
 
 
 
+	elseif message_id == hash("generate_orbs") then
+		timer.delay(0.1, false, function()
+			generate_orbs(message.amount, message.scale)
+		end)
+
+
+
+
 	elseif message_id == hash("bonus level emoji at end") then
 		for _, id in ipairs(emoji_table) do
 			msg.post(id, "bonus level emoji at end", {timeout = socket.gettime() + timeout, delay = delay})
@@ -78,9 +86,15 @@ function on_message(self, message_id, message)
 			sound.play("main#level_loop")
 			sound.play("main#level_loop_dark")
 		end
-		sound.set_gain("main#level_loop", 0)
-		sound.set_gain("main#level_loop_dark", 0)
-		go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, message.time, message.delay)
+			sound.set_gain("main#level_loop", 0)
+			sound.set_gain("main#level_loop_dark", 0)
+
+		if message.continue == nil then
+			go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, message.time, message.delay)
+		else
+			go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 1 - darkness_level, go.EASING_LINEAR, message.time, message.delay)
+			go.animate("main#level_loop_dark", "gain", go.PLAYBACK_ONCE_FORWARD, darkness_level, go.EASING_LINEAR, message.time, message.delay)
+		end
 
 
 	elseif message_id == hash("fade_out_music") then

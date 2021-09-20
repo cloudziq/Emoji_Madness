@@ -1,0 +1,100 @@
+
+-- local variables:
+local orb_scale, scale = 0.62
+local scale_min, scale_max = (orb_scale - (orb_scale / 7)) * 1000, (orb_scale + (orb_scale / 7)) * 1000
+
+
+
+
+function init(self)
+	self.active 	 = true
+	self.wait_anim   = false
+	self.appear_time = socket.gettime() + math.random(3, 5)
+
+	go.set_scale(0.001)
+	go.set("#halo", "scale", vmath.vector3(.68, .68, 1))
+	go.set("#halo", "tint.w", 0)
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, orb_scale, go.EASING_INOUTSINE, 1, 0, function()
+		scale = math.random(scale_min, scale_max) / 1000
+		go.animate(".", "scale", go.PLAYBACK_LOOP_PINGPONG, vmath.vector3(scale, scale, 1) , go.EASING_INOUTSINE, math.random(8, 12) / 10)
+	end)
+	go.animate(".", "euler.z", go.PLAYBACK_LOOP_PINGPONG, math.random(-360, 360), go.EASING_INOUTSINE, .2)
+	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1)
+	go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, .6 * darkness_level, go.EASING_INOUTSINE, 1)
+end
+
+
+
+
+function update(self, dt)
+	if self.active then
+		if go.get_scale().x < 0.1 then
+			msg.post("#collide_weapon", "disable")
+		else
+			msg.post("#collide_weapon", "enable")
+		end
+
+		if socket.gettime() > self.appear_time then
+			msg.post("#", "change position")
+		else
+			msg.post("#", "wait")
+		end
+	end
+end
+
+
+
+
+function on_message(self, message_id, message)
+	local x, y, pos
+
+	if message_id == hash("collision_response") and level_play and self.active then
+		if message.group == hash("weapon") then
+			self.active = false
+			allow_combo_counter = false
+			score = score + bullet_miss
+			change_darkness(-10)
+
+			sound.play("/bonus#orb_collect", {speed = 1 * proxy_speed})
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 64, go.EASING_INOUTSINE, .62)
+			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, .6)
+			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
+		end
+	end	
+
+
+
+
+	if message_id == hash("change position") then
+		self.appear_time = socket.gettime() + math.random(3, 5)
+		go.cancel_animations(".", "position")
+		go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
+		go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
+		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0.001, go.EASING_INSINE, .4, 0, function()
+			self.wait_anim = false
+			x, y = get_onscreen_pos(60, 1)
+			go.set_position(vmath.vector3(x, y, .98))
+			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1)
+			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1 * darkness_level, go.EASING_INOUTSINE, 1)
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, orb_scale, go.EASING_INOUTSINE, .4, 0, function()
+				scale = math.random(scale_min, scale_max) / 1000
+				go.animate(".", "scale", go.PLAYBACK_LOOP_PINGPONG, vmath.vector3(scale, scale, 1) , go.EASING_INOUTSINE, math.random(8, 12) / 10)
+			end)
+		end)
+
+
+	elseif message_id == hash("wait") and not self.wait_anim then
+		self.wait_anim = true
+		pos = go.get_position()
+		x = math.random(-60, 60) ; y = math.random(-60, 60)
+		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos.x + x, pos.y + y, .98), go.EASING_INOUTSINE, 1.4, 0, function()
+			self.wait_anim = false
+		end)
+
+
+	elseif message_id == hash("clean_orbs") then
+		for _,a in ipairs(orb_table) do
+			go.delete(a)
+		end
+	end
+end

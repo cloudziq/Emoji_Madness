@@ -93,6 +93,20 @@ end
 
 
 
+function generate_orbs(amount, scale)
+	local x, y, id
+
+	for a = 1, amount do
+		x, y = get_onscreen_pos(60, 1)
+		id = factory.create("/bonus#orb_factory", vmath.vector3(x, y, .98), nil, nil, scale)
+		table.insert(orb_table, id)
+	end
+	orb_url = msg.url(nil, id, nil)
+end
+
+
+
+
 function slider(container, pointer, left, right, action)
 	local pos_center, pos_pointer, pos
 

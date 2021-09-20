@@ -133,6 +133,7 @@ function on_message(self, message_id, message)
 
 				msg.post(emoji_url, "clean_emojis", {continue = true})
 				msg.post(bomb_url,  "clean_bombs")
+				if #orb_table > 0 then msg.post(orb_url, "clean_orbs") end
 				gui.animate(gui.get_node("box1"), "scale", vmath.vector3(1, 1, 1), gui.EASING_INSINE, 1.2, 0, function()
 					allow_continue = true
 				end)

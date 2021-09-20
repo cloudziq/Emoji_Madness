@@ -77,6 +77,7 @@ function on_message(self, message_id, message, sender)
 		if bonus_level_active then bonus_level_active = false end
 		msg.post(emoji_url, "clean_emojis", {continue = false})
 		msg.post(bomb_url,  "clean_bombs")
+		if #orb_table > 0 then msg.post(orb_url, "clean_orbs") end
 		if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end
 
 		--post_clean_start = false

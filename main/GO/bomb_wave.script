@@ -1,7 +1,9 @@
 
 function init(self)
 	go.set("#sprite", "tint", vmath.vector4(.4, .36, .32 , .88))
-	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(10,10,1), go.EASING_OUTSINE, .24, 0, function()
+	go.set_scale(.1)
+	go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_OUTSINE, .2, .6)
+	go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(12,12,1), go.EASING_OUTSINE, .26, 0, function()
 		go.delete()
 	end)
 end
