@@ -50,28 +50,25 @@ function on_message(self, message_id, message, sender)
 
 
 
-	elseif message_id == hash("show darkness intro") then
+	elseif message_id == hash("show bombs info") then
 		delay = 0 ; weapon_collide = false
 
-		--dark_mode = true
-		fade_darkness(6, 1)
-
-		for i = 1, 3 do
-			node = gui.get_node("dark_text"..i) ; a = gui.get_color(node)
+		for i = 1, 5 do
+			node = gui.get_node("bomb"..i) ; a = gui.get_color(node)
 			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
 			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
-			delay = delay + .88
+			delay = delay + .74
 		end
-		timer.delay(3, false, function()
+		timer.delay(4.65, false, function()
 			delay = 1
-			for i = 3, 1, -1 do
-				node = gui.get_node("dark_text"..i)
+			for i = 5, 1, -1 do
+				node = gui.get_node("bomb"..i)
 				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.25, delay)
-				delay = delay + .44
+				delay = delay + .34
 			end
 		end)
-		gui.set_enabled(gui.get_node("DARKNESS"), true)
-		timer.delay(4.8, false, function()
+		gui.set_enabled(gui.get_node("BOMBS_AVAILABLE"), true)
+		timer.delay(6.65, false, function()
 			msg.post("#", "show_level_intro")
 		end)
 
@@ -143,7 +140,7 @@ function on_message(self, message_id, message, sender)
 			gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
 			gui.animate(gui.get_node("BG"), "color", vmath.vector4(.22, .26, .32, .52), gui.EASING_LINEAR, 1.2)
 			gui.set_enabled(gui.get_node("BULLET_MISS_INFO"), false)
-			gui.set_enabled(gui.get_node("DARKNESS"), false)
+			gui.set_enabled(gui.get_node("BOMBS_AVAILABLE"), false)
 			gui.set_enabled(gui.get_node("BONUS_AVAILABLE"), false)
 			gui.set_enabled(gui.get_node("cursor_counter"), false)
 
@@ -300,7 +297,7 @@ function on_message(self, message_id, message, sender)
 			gui.set_text(gui.get_node("darkness_amount"), tostring(darkness_level * 1000))
 			msg.post("main:/main#ctrl", "set dark render")
 
-			if message.stat == "emoji_left" then
+			if message.stat == "health loss" then
 				gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function()
 					gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .14)
 				end)

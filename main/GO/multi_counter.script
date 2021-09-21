@@ -1,10 +1,4 @@
 
-go.property("mat1", resource.material("/builtins/fonts/label.material"))
-go.property("mat2", resource.material("/main/render/materials/light_label.material"))
-
-
-
-
 function on_message(self, message_id, message)
 	local old_score, multiplier, text, tex_len, charged
 	local ax, ay, x, y = 60, 46    -- default position for text to appear
@@ -45,6 +39,7 @@ function on_message(self, message_id, message)
 		tex_len = #text
 		x, y = ax * scale, ay * scale
 		label.set_text("#count", text)
+		msg.post("game_layer2:/main#game_gui", "display_update")
 		--pprint("charged_emojis: "..message.charged.."    combo_amount: "..message.amount.."    score_result:"..text)
 
 

@@ -31,7 +31,7 @@ local hash_group_wave      = hash("wavepush")
 
 function init(self)
 	self.active         = true
-	self.delay          = rnd.range(2, 2 + (emojis / 14) + (level / 6)) - darkness_level
+	self.delay          = rnd.range(2, 2 + (emojis / 14) + (level / 6))
 	self.wait_timeout   = 0
 	self.waiting        = false
 	self.going_away     = false
@@ -161,7 +161,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 						health = health - 1
 						stat_health_loss = stat_health_loss + 1
 						change_darkness(10)
-						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "emoji_left"})
+						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "health loss"})
 						msg.post("game_layer1:/main#ctrl", "update_music")
 					end
 					particlefx.stop(self.particle_url)
@@ -179,7 +179,7 @@ function emoji_waiting(self)
 
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (self.wait * speed / 100) + math.random(-2, 4 + (level / 8)) + socket.gettime()
+			self.wait_timeout = self.wait - (self.wait * speed / 100) + math.random(-2, 4 + ((level / 6) - darkness_level)) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			particlefx.play(self.particle_url)
@@ -302,10 +302,9 @@ function on_message(self, message_id, message, sender)
 				emojis_left = emojis_left - 1
 				killed = killed + 1
 				stat_kills = stat_kills + 1
-				bullets_is_hit = true
+				bullet_is_hit = true
 				combo_charged = false
-				--score = score + self.score
-				stat_score = stat_score + self.score
+				--stat_score = stat_score + self.score
 				change_darkness(1)
 
 				if emojis_left > 0 then
@@ -471,7 +470,7 @@ function on_message(self, message_id, message, sender)
 				end
 
 				stat_kills = stat_kills + 1
-				bullets_is_hit = true
+				--bullet_is_hit = true
 
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				msg.post("game_layer2:/main#ctrl", "reset anim", {visible = true})

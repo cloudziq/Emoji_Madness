@@ -3,11 +3,15 @@ images {
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/assets/graphic/simple-01.png"
+  image: "/assets/graphic/cursor.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
   image: "/assets/graphic/emoji_light.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/assets/graphic/cursor_hover.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

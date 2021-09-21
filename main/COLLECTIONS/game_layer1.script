@@ -27,17 +27,13 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("generate_bombs") then
-		timer.delay(0.1, false, function()
-			generate_bombs(message.amount, message.scale)
-		end)
+		generate_bombs(message.amount, message.scale)
 
 
 
 
 	elseif message_id == hash("generate_orbs") then
-		timer.delay(0.1, false, function()
-			generate_orbs(message.amount, message.scale)
-		end)
+		generate_orbs(message.amount, message.scale)
 
 
 
@@ -132,9 +128,12 @@ function on_message(self, message_id, message)
 
 
 
-	elseif message_id == hash("get bonus_delay_time") then
+	elseif message_id == hash("get bonuses_delay_time") then
 		timer.delay(10, false, function()
 			bonus_can_spawn = true
+		end)
+		timer.delay(6, false, function()
+			orb_can_spawn = true
 		end)
 	end
 end

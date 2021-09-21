@@ -1697,8 +1697,8 @@ nodes {
 }
 nodes {
   position {
-    x: -96.0
-    y: -98.0
+    x: -100.0
+    y: -100.0
     z: 0.0
     w: 1.0
   }
@@ -1709,8 +1709,8 @@ nodes {
     w: 1.0
   }
   scale {
-    x: 3.0
-    y: 3.0
+    x: 2.4
+    y: 2.4
     z: 1.0
     w: 1.0
   }
@@ -1728,11 +1728,11 @@ nodes {
   }
   type: TYPE_BOX
   blend_mode: BLEND_MODE_ALPHA
-  texture: "weapon/simple-01"
+  texture: "weapon/cursor"
   id: "crosshair"
   xanchor: XANCHOR_NONE
   yanchor: YANCHOR_NONE
-  pivot: PIVOT_CENTER
+  pivot: PIVOT_NW
   adjust_mode: ADJUST_MODE_FIT
   layer: ""
   inherit_alpha: true

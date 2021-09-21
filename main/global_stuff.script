@@ -258,18 +258,16 @@ end
 
 -- game        -  total games started
 -- kill        -  total kills
--- accurancy   -  accurancy in percentage
 -- health      -  total number of health loss
 -- level       -  total levels completed
 -- bonus_level -  total bonus level completed
--- bullet      -  total bullets
+-- bullet      -  total bullets shots
+-- hit         -  total succesfull hits
 -- bomb        -  total bombs detonated
 -- score       -  total score collected
 
 -- stats_define:
-stats_table = {game = 0, kill = 0, accurancy = -1, health = 0, level = 0, bonus_level = 0, bullet = 0, bomb = 0, score = 0}
--- table holding values to determine if certain stat need to be saved or not:
--- stats_check = {game, kill, accurancy, level, bullet, score}
+stats_table = {game = 0, kill = 0, health = 0, level = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}
 
 function load_stats()
 	local file = sys.get_save_file("Emoji_Madness", "stats.dzq")
@@ -283,16 +281,8 @@ function load_stats()
 end
 
 
-function stat_change(key, val, average)
-	if average == nil then
-		stats_table[key] = stats_table[key] + val
-	else
-		if stats_table[key] == -1 then
-			stats_table[key] = val
-		else
-			stats_table[key] = math.floor((stats_table[key] + val) / 2)
-		end
-	end
+function stat_change(key, val)
+	stats_table[key] = stats_table[key] + val
 end
 
 
@@ -300,6 +290,7 @@ function save_stats()
 	local file = sys.get_save_file("Emoji_Madness", "stats.dzq")
 	sys.save(file, stats_table)
 end
+
 
 stat_games         = 0
 stat_levels        = 0
@@ -310,7 +301,6 @@ stat_bombs         = 0
 stat_bullets_all   = 0
 stat_bullets_hit   = 0
 stat_score         = 0
-stat_accurancy     = 0
 
 function final()
 	stat_change("game",         stat_games)
@@ -320,12 +310,10 @@ function final()
 	stat_change("health",       stat_health_loss)
 	stat_change("bomb",         stat_bombs)
 	stat_change("bullet",       stat_bullets_all)
+	stat_change("hit",          stat_bullets_hit)
 	stat_change("score",        stat_score)
-	if stat_bullets_hit == 0 and stat_bullets_all >= 0 then
-		stat_change("accurancy", 0, true)
-	else
-		stat_change("accurancy", (stat_bullets_hit / stat_bullets_all) * 100, true)
-	end
 	save_stats()
+
 	pprint(stats_table)
+	pprint("accurancy: "..(stats_table.hit / stats_table.bullet) * 100)
 end

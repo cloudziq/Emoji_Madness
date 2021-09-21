@@ -1,5 +1,5 @@
 
-local charged_combo_count, charged_combo_score, charged_emoji_count
+local charged_combo_count, charged_combo_score--, charged_emoji_count
 
 
 
@@ -24,11 +24,13 @@ function on_message(self, message_id, message)
 		local pos = go.get_position()
 
 		if message.group == hash("weapon") then
-			charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
+			charged_combo_count, charged_combo_score = 0, 0--, charged_emoji_count = 0, 0, 0
+			msg.post("game_layer2:/main#game_gui", "display_update", {stat = "health loss"})
 			self.active = false
-			bullets_is_hit = true
+			bullet_is_hit = true
 			allow_combo_counter = false
-			score = score + bullet_miss
+			health = health - 1
+			if score > 0 then score = score + bullet_miss end
 			stat_bombs = stat_bombs + 1
 			change_darkness(25)
 			msg.post(self.collision, "disable")
@@ -43,7 +45,7 @@ function on_message(self, message_id, message)
 			end)
 			timer.delay(.2, false, function()
 				if charged_combo_count > 0 then
-					msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count})
+					msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = 0})
 				end
 			end)
 
@@ -58,7 +60,7 @@ function on_message(self, message_id, message)
 
 	elseif message_id == hash("count charged_kill") then
 		charged_combo_count = charged_combo_count + 1
-		if message.charged then charged_emoji_count = charged_emoji_count + 1 end
+		--if message.charged then charged_emoji_count = charged_emoji_count + 1 end
 		charged_combo_score = charged_combo_score + message.score
 
 

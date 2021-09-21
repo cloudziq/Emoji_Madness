@@ -5,13 +5,14 @@ score  = 0
 health = 5
 emojis = 8
 speed  = 0   -- (self.speed minus this value as percentage)
---dark_start_level = 3
 level_bonus_unlocked = 4
+level_bombs_unlocked = 10
 bonus_requirement = 0
 bullet_miss = 1
 bullet_miss_level = 6
 
 bonus_can_spawn = false
+orb_can_spawn = false
 bonus_clock_active = false
 bonus_level_active = false
 change_music_variant = false
@@ -30,7 +31,7 @@ total_kills = 0
 
 
 --local variables:
-local multi_counter_id
+local multi_counter_id, orbs_spawned
 
 --local functions:
 local level_prepare, bonus_level_prepare
@@ -64,15 +65,16 @@ function update(self, dt)
 		post_clean_start = false
 		if bonus_level_active == false then
 			if level == 20 then emojis_add = 2 end
-			-- if level == dark_start_level then
-			-- 	msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2})
-			-- 	msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 0, mode = "dark", start_new = true})
-			-- 	msg.post("main#game_gui", "show darkness intro")
 
 			if level == level_bonus_unlocked then
-				bonus_requirement = 5 - 1
+				bonus_requirement = 8 - 1
 				timer.delay(1.4, false, function()
 					msg.post("#game_gui", "show_bonus_available_info")
+				end)
+
+			elseif level == level_bombs_unlocked then
+				timer.delay(1.4, false, function()
+					msg.post("#game_gui", "show bombs info")
 				end)
 
 			elseif level == bullet_miss_level then
@@ -132,6 +134,11 @@ function update(self, dt)
 			end
 		end
 
+		if level > 1 and rnd.range(1, 20000) >= (20000 - level) and orbs_spawned < level / 2 and emojis_left >= 8 and orb_can_spawn then
+			orbs_spawned = orbs_spawned + 1
+			msg.post("game_layer1:/main#ctrl", "generate_orbs", {amount = 1, scale = 0.001})
+		end
+
 
 
 
@@ -166,13 +173,9 @@ function update(self, dt)
 			msg.post("game_layer1:/main#ctrl", "fade_out_add_music", {time = 8})
 			msg.post("game_layer1:/main#ctrl", "bonus level emoji at end")
 			timer.delay(4, false, function() msg.post("#bonus_level_complete", "show") end)
-			-- if level - 1 < dark_start_level then
 			msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 6, start_new = false, continue = true})
-			-- else
 			fade_darkness(4, darkness_level_temp)
 			darkness_level_temp = nil
-			-- 	msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 6, mode = "dark", start_new = false})
-			-- end
 		end)
 	end
 end
@@ -259,7 +262,7 @@ end
 
 function level_prepare()
 	crosshair_light_id = factory.create("#crosshair_light", vmath.vector3(cursor_x, cursor_y, 1))
-	escaped = 0 ; killed = 0
+	escaped = 0 ; killed = 0 ; orbs_spawned = 0
 	emojis_left = emojis
 	bonus_can_spawn = false
 	bonus_requirement = bonus_requirement + 1
@@ -267,13 +270,10 @@ function level_prepare()
 	bomb_table = {}
 	orb_table = {}
 	level_play = true
-	msg.post("game_layer1:/main#ctrl", "get bonus_delay_time")
+	msg.post("game_layer1:/main#ctrl", "get bonuses_delay_time")
 	msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = emojis, scale = 1})
-	msg.post("game_layer1:/main#ctrl", "generate_bombs", {amount = 2, scale = 0.5})
-	if level > 1 then
-		timer.delay(6, false, function()
-			msg.post("game_layer1:/main#ctrl", "generate_orbs", {amount = level / 2, scale = 0.001})
-		end)
+	if level >= level_bombs_unlocked then
+		msg.post("game_layer1:/main#ctrl", "generate_bombs", {amount = 2, scale = 0.5})
 	end
 	msg.post("/main#game_gui", "display_update")
 end
