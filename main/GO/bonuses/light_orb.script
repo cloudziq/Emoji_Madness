@@ -57,6 +57,7 @@ function on_message(self, message_id, message)
 			bullet_is_hit = true
 			allow_combo_counter = false
 			score = score + bullet_miss
+			stat_score = stat_score + bullet_miss
 			change_darkness(-20)
 
 			sound.play("/bonus#orb_collect", {speed = 1 * proxy_speed})

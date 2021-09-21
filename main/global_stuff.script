@@ -315,5 +315,5 @@ function final()
 	save_stats()
 
 	pprint(stats_table)
-	pprint("accurancy: "..(stats_table.hit / stats_table.bullet) * 100)
+	pprint(string.format("accurancy: %d%%", (stats_table.hit / stats_table.bullet) * 100))
 end

@@ -51,7 +51,7 @@ repeat_interval = 0.1
 use_accelerometer = 0
 
 [particle_fx]
-max_count = 128
+max_count = 160
 max_particle_count = 2048
 
 [model]
@@ -65,6 +65,8 @@ max_count = 4
 
 [gui]
 max_count = 16
+max_particlefx_count = 16
+max_particle_count = 512
 
 [label]
 max_count = 32
@@ -74,4 +76,8 @@ max_count = 4
 
 [factory]
 max_count = 16
+
+[sound]
+max_sound_data = 64
+max_sound_buffers = 64
 

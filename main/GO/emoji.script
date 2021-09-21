@@ -298,7 +298,10 @@ function on_message(self, message_id, message, sender)
 
 			if message.group == hash_group_weapon and self.active == true then
 
-				if score > 0 then score = score + bullet_miss end
+				if score > 0 then
+					score = score + bullet_miss
+					stat_score = stat_score + bullet_miss
+				end
 				emojis_left = emojis_left - 1
 				killed = killed + 1
 				stat_kills = stat_kills + 1
@@ -400,7 +403,7 @@ function on_message(self, message_id, message, sender)
 				elseif message.group == hash_group_blast and self.active then
 					emojis_left = emojis_left - 1
 					killed = killed + 1
-					score = score + self.score
+					--score = score + self.score
 					msg.post("game_layer2:/main#game_gui", "display_update")
 					msg.post("game_layer1:/main#ctrl", "update_music")
 					particlefx.stop(self.particle_url)

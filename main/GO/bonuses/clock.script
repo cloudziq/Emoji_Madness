@@ -78,6 +78,7 @@ function on_message(self, message_id, message, sender)
 			bonus_clock_active = true
 			allow_combo_counter = false
 			score = score + bullet_miss
+			stat_score = stat_score + bullet_miss
 		end
 
 

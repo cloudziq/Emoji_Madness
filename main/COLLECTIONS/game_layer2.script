@@ -104,6 +104,7 @@ function update(self, dt)
 		elseif emojis_left == 0 then
 			level_play = false
 			score = score + (level * 10)
+			stat_score = stat_score + (level * 10)
 			level = level + 1
 			health = health + health_add
 			emojis = emojis + emojis_add ; if emojis > 120 then emojis = 120 end
@@ -168,6 +169,7 @@ function update(self, dt)
 		timer.delay(.1, false, function()
 			weapon_collide = false
 			score = score + bonus_score
+			stat_score = stat_score + bonus_score
 			total_kills = total_kills + bonus_level_kills.small + bonus_level_kills.big
 			msg.post("game_layer2:/main#game_gui", "hide_after_level")
 			msg.post("game_layer1:/main#ctrl", "fade_out_add_music", {time = 8})
