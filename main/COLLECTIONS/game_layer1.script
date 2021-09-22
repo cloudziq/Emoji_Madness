@@ -88,8 +88,9 @@ function on_message(self, message_id, message)
 		if message.continue == nil then
 			go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_LINEAR, message.time, message.delay)
 		else
-			go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 1 - darkness_level, go.EASING_LINEAR, message.time, message.delay)
-			go.animate("main#level_loop_dark", "gain", go.PLAYBACK_ONCE_FORWARD, darkness_level, go.EASING_LINEAR, message.time, message.delay)
+			go.animate("main#level_loop", "gain", go.PLAYBACK_ONCE_FORWARD, 1 - darkness_level_temp, go.EASING_LINEAR, message.time, message.delay)
+			go.animate("main#level_loop_dark", "gain", go.PLAYBACK_ONCE_FORWARD, darkness_level_temp, go.EASING_LINEAR, message.time, message.delay)
+			darkness_level_temp = nil
 		end
 
 

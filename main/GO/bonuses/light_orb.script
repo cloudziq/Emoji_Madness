@@ -1,6 +1,6 @@
 
 -- local variables:
-local orb_scale, scale = 0.62
+local orb_scale, scale = 0.56
 local scale_min, scale_max = (orb_scale - (orb_scale / 7)) * 1000, (orb_scale + (orb_scale / 7)) * 1000
 
 
@@ -10,7 +10,7 @@ function init(self)
 	self.active 	 = true
 	self.wait_anim   = false
 	self.appear_time = socket.gettime() + math.random(22, 36) / 10
-	self.lifespan    = socket.gettime() + math.random(64, 98) / 10
+	self.lifespan    = socket.gettime() + math.random(84, 124) / 10
 
 	go.set_scale(0.001)
 	go.set("#halo", "scale", vmath.vector3(.68, .68, 1))
@@ -35,9 +35,7 @@ function update(self, dt)
 			msg.post("#collide_weapon", "enable")
 		end
 
-		if socket.gettime() > self.lifespan then
-			msg.post("#", "remove")
-		elseif socket.gettime() > self.appear_time then
+		if socket.gettime() > self.appear_time then
 			msg.post("#", "change position")
 		else
 			msg.post("#", "wait")
@@ -76,20 +74,46 @@ function on_message(self, message_id, message)
 
 
 	if message_id == hash("change position") then
+		local x, y, pos, pos_check
+
 		self.appear_time = socket.gettime() + math.random(18, 36) / 10
 		go.cancel_animations(".", "position")
 		go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
 		go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
 		go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 0.001, go.EASING_INSINE, .4, 0, function()
-			self.wait_anim = false
-			x, y = get_onscreen_pos(60, 1)
-			go.set_position(vmath.vector3(x, y, .98))
-			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1)
-			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1 * darkness_level, go.EASING_INOUTSINE, 1)
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, orb_scale, go.EASING_INOUTSINE, .4, 0, function()
-				scale = math.random(scale_min, scale_max) / 1000
-				go.animate(".", "scale", go.PLAYBACK_LOOP_PINGPONG, vmath.vector3(scale, scale, 1) , go.EASING_INOUTSINE, math.random(8, 12) / 10)
-			end)
+			if socket.gettime() > self.lifespan then
+				msg.post("#", "remove")
+			else
+				self.wait_anim = false
+				pos_check = false
+
+				if level >= level_bombs_unlocked then
+					while pos_check == false do
+						pos = go.get_position(id)
+						x, y = get_onscreen_pos(60, 1)
+
+						for _, id in ipairs(bomb_table) do
+
+							if x < pos.x + 60 and x > pos.x - 60 and y < pos.y + 60 and y > pos.y - 60 then
+								pos_check = true
+							else
+								pos_check = false
+							end
+						end
+					end
+				else
+					x, y = get_onscreen_pos(60, 1)
+				end
+
+				go.set_position(vmath.vector3(x, y, .98))
+
+				go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1)
+				go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1 * darkness_level, go.EASING_INOUTSINE, 1)
+				go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, orb_scale, go.EASING_INOUTSINE, .4, 0, function()
+					scale = math.random(scale_min, scale_max) / 1000
+					go.animate(".", "scale", go.PLAYBACK_LOOP_PINGPONG, vmath.vector3(scale, scale, 1) , go.EASING_INOUTSINE, math.random(8, 12) / 10)
+				end)
+			end
 		end)
 
 

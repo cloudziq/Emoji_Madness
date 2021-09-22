@@ -73,7 +73,6 @@ function prepare_gui()
 	menu_col = gui.get_color(gui.get_node("WIN"))
 	points_col = gui.get_color(gui.get_node("small_="))
 
-	--gui.set_color(gui.get_node("WIN"), vmath.vector4(1,1,1,0))
 	gui.set_color(gui.get_node("BG"), vmath.vector4(0,0,0,0))
 	gui.set_scale(gui.get_node("total_points"), vmath.vector3(0,0,0))
 	gui.set_scale(gui.get_node("total_points_amount"), vmath.vector3(0,0,0))

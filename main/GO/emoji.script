@@ -181,7 +181,7 @@ function emoji_waiting(self)
 
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (speed / self.wait) + math.random(0, 4 + ((level / 6) * (1 - darkness_level))) + socket.gettime()
+			self.wait_timeout = self.wait - (speed / self.wait) + math.random(0, 2 + ((level / 8) * (1 - darkness_level))) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			self.dark = dark_default * 2

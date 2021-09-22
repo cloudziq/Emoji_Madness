@@ -80,4 +80,5 @@ max_count = 16
 [sound]
 max_sound_data = 64
 max_sound_buffers = 64
+max_component_count = 64
 
