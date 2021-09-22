@@ -5,12 +5,15 @@ function on_message(self, message_id, message)
 	local scale, attack, sustain, release
 
 	if message_id == hash("charged_combo text -final") then
+		-- if no combo
 		if message.amount == 1 and message.charged == 1 or message.charged == 0 and message.amount > 0 then
 			score = score + message.score
 			stat_score = stat_score + message.score
+			change_darkness(message.dark)
 			text = tostring(message.score)
 			scale, attack, sustain, release = .52, .4, .2, .16
-		elseif message.amount > 0 and message.charged > 0 then
+		-- if combo
+		elseif message.amount > 1 and message.charged > 0 then
 			go.set("#+",     "color", vmath.vector4(.1, 1, .44, 1))
 			go.set("#count", "color", vmath.vector4(.1, 1, .44, 1))
 			go.set("#+",     "outline", vmath.vector4(0,0,0,1))
@@ -20,7 +23,8 @@ function on_message(self, message_id, message)
 			multiplier = (message.amount - message.charged) + (2 * message.charged)
 			score = score + (message.score * multiplier)
 			stat_score = stat_score + (message.score * multiplier)
-			darkness_level = darkness_level - (message.amount / 1000)
+			stat_combo = stat_combo + 1
+			change_darkness(message.amount)
 			text = tostring(score - old_score)
 			scale, attack, sustain, release = .8, 1, .8, .42
 		else
@@ -39,8 +43,9 @@ function on_message(self, message_id, message)
 		tex_len = #text
 		x, y = ax * scale, ay * scale
 		label.set_text("#count", text)
-		msg.post("game_layer2:/main#game_gui", "display_update")
-		--pprint("charged_emojis: "..message.charged.."    combo_amount: "..message.amount.."    score_result:"..text)
+
+		text = emojis_left == 0 and "force" or ""
+		msg.post("game_layer2:/main#game_gui", "display_update", {stat = text})
 
 
 

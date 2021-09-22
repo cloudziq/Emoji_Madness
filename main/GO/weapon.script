@@ -1,11 +1,11 @@
 
-local charged_combo_count, charged_combo_score, charged_emoji_count
+local charged_combo_count, charged_combo_score, charged_emoji_count, charged_dark_add
 
 
 
 
 function init(self)
-	charged_combo_count, charged_combo_score, charged_emoji_count = 0, 0, 0
+	charged_combo_count, charged_combo_score, charged_emoji_count, charged_dark_add = 0, 0, 0, 0
 	if level_play then
 		allow_combo_counter = true
 	else
@@ -23,7 +23,7 @@ function init(self)
 	timer.delay(0.04, false, function()
 		-- msg.post("game_layer2:/main#game_gui", "display_update")
 		if allow_combo_counter then
-			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count})
+			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count, dark = charged_dark_add})
 		end
 
 		if bullet_is_hit then
@@ -54,5 +54,6 @@ function on_message(self, message_id, message)
 		charged_combo_count = charged_combo_count + 1
 		if message.charged then charged_emoji_count = charged_emoji_count + 1 end
 		charged_combo_score = charged_combo_score + message.score
+		charged_dark_add = charged_dark_add + message.dark
 	end
 end

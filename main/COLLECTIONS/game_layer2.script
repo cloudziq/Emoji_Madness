@@ -4,7 +4,7 @@ level  = 1
 score  = 0
 health = 5
 emojis = 8
-speed  = 0   -- (self.speed minus this value as percentage)
+speed  = 4.4   -- percentage which affects emojis speed, wait_timeout added in each level
 level_bonus_unlocked = 4
 level_bombs_unlocked = 10
 bonus_requirement = 0
@@ -16,11 +16,9 @@ orb_can_spawn = false
 bonus_clock_active = false
 bonus_level_active = false
 change_music_variant = false
-crosshair_light_id = false
 
 -- adds for level completion:
 emojis_add     = 3
-speed_add      = 3.54
 health_add     = 1
 health_perfect = 1
 
@@ -40,20 +38,23 @@ local level_prepare, bonus_level_prepare
 
 
 function init(self)
+	local id
+
 	msg.post("/main#game_gui", "disable")
 	wait_for_clean = true
 	post_clean_start = false
 
-	timer.delay(4, false, function ()
+	timer.delay(4, false, function()
 		msg.post("/main#game_gui", "show_level_intro")
 	end)
 
-	timer.delay(10, false, function ()
+	timer.delay(10, false, function()
 		msg.post("main:/main#title_menu_proxy", "unload")
 		menu_proxy = false
 	end)
 
 	cursor_x = 0 ; cursor_y = 0
+	cursor_light_id = factory.create("#cursor_light", vmath.vector3(cursor_x, cursor_y, 1))
 end
 
 
@@ -78,7 +79,7 @@ function update(self, dt)
 				end)
 
 			elseif level == bullet_miss_level then
-				if bullet_miss == 1 then bullet_miss = 10 else bullet_miss = bullet_miss * 2 end
+				if bullet_miss == 1 then bullet_miss = 5 else bullet_miss = bullet_miss * 2 end
 				bullet_miss_level = bullet_miss_level + 6
 				timer.delay(1.4, false, function()
 					msg.post("#game_gui", "show bullet_miss info", {amount = bullet_miss})
@@ -102,16 +103,16 @@ function update(self, dt)
 			sound.play("game_layer1:/main#fart", {gain = 0.6})
 
 		elseif emojis_left == 0 then
+			--msg.post("/main#game_gui", "display_update", {stat = "force"})
 			level_play = false
-			score = score + (level * 10)
-			stat_score = stat_score + (level * 10)
-			level = level + 1
-			health = health + health_add
-			emojis = emojis + emojis_add ; if emojis > 120 then emojis = 120 end
-			speed = speed + speed_add - (level / 8)
-
-			msg.post("#game_gui", "hide_after_level")
+			weapon_collide = false
 			timer.delay(1, false, function()
+				score = score + (level * 10)
+				stat_score = stat_score + (level * 10)
+				level = level + 1
+				health = health + health_add
+				emojis = emojis + emojis_add ; if emojis > 120 then emojis = 120 end
+				msg.post("#game_gui", "hide_after_level")
 				msg.post("#level_complete", "show", {killed = killed, escaped = escaped})
 			end)
 		end
@@ -144,13 +145,6 @@ function update(self, dt)
 
 
 	else
-		-- disable light around cursor
-		--if dark_mode and crosshair_light_id then
-		if crosshair_light_id then
-			go.delete(crosshair_light_id)
-			crosshair_light_id = false
-		end
-
 		-- disable effect of active bonus_clock
 		if bonus_clock_active == true then
 			msg.post(clock_url, "delete_clock")
@@ -227,7 +221,7 @@ function on_message(self, message_id, message, sender)
 
 	elseif message_id == hash("show charged_combo display") then
 		multi_counter_id = factory.create("/main#multi_counter_factory")
-		msg.post(multi_counter_id, "charged_combo text -final", {amount = message.amount, score = message.score, charged = message.charged})
+		msg.post(multi_counter_id, "charged_combo text -final", {amount = message.amount, dark = message.dark, score = message.score, charged = message.charged})
 
 
 
@@ -244,9 +238,7 @@ function on_input(self, action_id, action)
 	if action_id == hash("pause") and action.pressed then pause("main:/main#game_proxy1") end
 	
 	if pause_id == nil then
-		if crosshair_light_id then
-			go.set(crosshair_light_id, "position", vmath.vector3(action.x, action.y, 1))
-		end
+		go.set(cursor_light_id, "position", vmath.vector3(action.x, action.y, 1))
 
 		if action_id == hash("click1") and action.pressed == true then
 			msg.post("game_layer1:/main#ctrl", "spawn_weapon", {x = action.x, y = action.y})
@@ -263,7 +255,6 @@ end
 
 
 function level_prepare()
-	crosshair_light_id = factory.create("#crosshair_light", vmath.vector3(cursor_x, cursor_y, 1))
 	escaped = 0 ; killed = 0 ; orbs_spawned = 0
 	emojis_left = emojis
 	bonus_can_spawn = false

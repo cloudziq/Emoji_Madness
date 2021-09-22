@@ -1,6 +1,6 @@
 components {
-  id: "crosshair_light"
-  component: "/main/GO/crosshair_light.script"
+  id: "cursor_light"
+  component: "/main/GO/cursor_light.script"
   position {
     x: 0.0
     y: 0.0

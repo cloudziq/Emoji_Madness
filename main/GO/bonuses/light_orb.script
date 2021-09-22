@@ -60,10 +60,15 @@ function on_message(self, message_id, message)
 			stat_score = stat_score + bullet_miss
 			change_darkness(-20)
 
+			for _, id in ipairs(emoji_table) do
+				msg.post(id, "orb charge add")
+			end
+
+			msg.post("game_layer2:/main#game_gui", "display_update" , {stat = "orb collect"})
 			sound.play("/bonus#orb_collect", {speed = 1 * proxy_speed})
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 64, go.EASING_INOUTSINE, .62)
 			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, .6)
-			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
+			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 4.4)
 		end
 	end	
 

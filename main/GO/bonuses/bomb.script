@@ -1,5 +1,5 @@
 
-local charged_combo_count, charged_combo_score--, charged_emoji_count
+local charged_combo_count, charged_combo_score, charged_dark_add--, charged_emoji_count
 
 
 
@@ -24,7 +24,7 @@ function on_message(self, message_id, message)
 		local pos = go.get_position()
 
 		if message.group == hash("weapon") then
-			charged_combo_count, charged_combo_score = 0, 0--, charged_emoji_count = 0, 0, 0
+			charged_combo_count, charged_combo_score, charged_dark_add = 0, 0, 0--, charged_emoji_count = 0, 0, 0
 			msg.post("game_layer2:/main#game_gui", "display_update", {stat = "health loss"})
 			self.active = false
 			bullet_is_hit = true
@@ -35,7 +35,6 @@ function on_message(self, message_id, message)
 				stat_score = stat_score + bullet_miss
 			end
 			stat_bombs = stat_bombs + 1
-			change_darkness(25)
 			msg.post(self.collision, "disable")
 			go.set(self.sprite, "tint.w", 0)
 			go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)), self.sprite)
@@ -47,8 +46,9 @@ function on_message(self, message_id, message)
 				factory.create("/bomb#wavepush_factory", vmath.vector3(pos.x, pos.y, 0.9))
 			end)
 			timer.delay(.2, false, function()
+				change_darkness(charged_combo_count)
 				if charged_combo_count > 0 then
-					msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = 0})
+					msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, dark = charged_dark_add, score = charged_combo_score, charged = 0})
 				end
 			end)
 
@@ -63,6 +63,7 @@ function on_message(self, message_id, message)
 
 	elseif message_id == hash("count charged_kill") then
 		charged_combo_count = charged_combo_count + 1
+		charged_dark_add = charged_dark_add + message.dark
 		--if message.charged then charged_emoji_count = charged_emoji_count + 1 end
 		charged_combo_score = charged_combo_score + message.score
 

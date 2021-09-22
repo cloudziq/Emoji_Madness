@@ -258,6 +258,7 @@ end
 
 -- game        -  total games started
 -- kill        -  total kills
+-- combo       -  total number of charged kills
 -- health      -  total number of health loss
 -- level       -  total levels completed
 -- bonus_level -  total bonus level completed
@@ -267,7 +268,7 @@ end
 -- score       -  total score collected
 
 -- stats_define:
-stats_table = {game = 0, kill = 0, health = 0, level = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}
+stats_table = {game = 0, kill = 0, combo = 0, health = 0, level = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}
 
 function load_stats()
 	local file = sys.get_save_file("Emoji_Madness", "stats.dzq")
@@ -296,6 +297,7 @@ stat_games         = 0
 stat_levels        = 0
 stat_bonus_level   = 0
 stat_kills         = 0
+stat_combo         = 0
 stat_health_loss   = 0
 stat_bombs         = 0
 stat_bullets_all   = 0
@@ -307,6 +309,7 @@ function final()
 	stat_change("level",        stat_levels)
 	stat_change("bonus_level",  stat_bonus_level)
 	stat_change("kill",         stat_kills)
+	stat_change("combo",        stat_combo)
 	stat_change("health",       stat_health_loss)
 	stat_change("bomb",         stat_bombs)
 	stat_change("bullet",       stat_bullets_all)
