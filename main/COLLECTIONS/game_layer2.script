@@ -4,10 +4,10 @@ level  = 1
 score  = 0
 health = 5
 emojis = 8
-speed  = 12.4   -- percentage which affects emojis speed, wait_timeout -added in each level
+speed  = 12   -- percentage modifier which affects emojis speed, wait_timeout
 level_bonus_unlocked = 4
-level_bombs_unlocked = 8
-bombs_amount = 2
+level_bombs_unlocked = 1
+bombs_amount = 1
 bonus_requirement = 0
 bullet_miss = 1
 bullet_miss_level = 6
@@ -19,7 +19,8 @@ bonus_level_active = false
 change_music_variant = false
 
 -- adds for level completion:
-emojis_add     = 4
+speed_add      = 0.82
+emojis_add     = 3
 health_add     = 1
 health_perfect = 1
 
@@ -104,10 +105,10 @@ function update(self, dt)
 			sound.play("game_layer1:/main#fart", {gain = 0.6})
 
 		elseif emojis_left == 0 then
-			--msg.post("/main#game_gui", "display_update", {stat = "force"})
 			level_play = false
 			weapon_collide = false
 			timer.delay(1, false, function()
+				speed = speed + speed_add
 				score = score + (level * 10)
 				stat_score = stat_score + (level * 10)
 				level = level + 1
@@ -137,7 +138,8 @@ function update(self, dt)
 			end
 		end
 
-		if level > 1 and rnd.range(1, 20000) >= (19999 - level) and orbs_spawned < level / 2 and emojis_left >= 8 and orb_can_spawn then
+		-- orbs spawning
+		if level > 1 and rnd.range(1, 22000) >= (22001 - level) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
 			orbs_spawned = orbs_spawned + 1
 			msg.post("game_layer1:/main#ctrl", "generate_orbs", {amount = 1, scale = 0.001})
 		end
@@ -265,11 +267,14 @@ function level_prepare()
 	bomb_table = {}
 	orb_table = {}
 	level_play = true
-	if level > level_bombs_unlocked and level % 2 == 0 then bombs_amount = bombs_amount + 1 end
+	if level > level_bombs_unlocked and level % 2 == 0 then
+		bombs_amount = bombs_amount + 1
+	end
 	msg.post("game_layer1:/main#ctrl", "get bonuses_delay_time")
 	msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = emojis, scale = 1})
 	if level >= level_bombs_unlocked then
 		msg.post("game_layer1:/main#ctrl", "generate_bombs", {amount = bombs_amount, scale = 0.5})
+		bombs_left = bombs_amount
 	end
 	msg.post("/main#game_gui", "display_update")
 end

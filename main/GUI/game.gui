@@ -2599,7 +2599,7 @@ nodes {
 nodes {
   position {
     x: -89.0
-    y: -30.0
+    y: 30.0
     z: 0.0
     w: 1.0
   }
@@ -2639,7 +2639,7 @@ nodes {
   layer: ""
   inherit_alpha: true
   outerBounds: PIEBOUNDS_ELLIPSE
-  innerRadius: 7.5
+  innerRadius: 8.0
   perimeterVertices: 42
   pieFillAngle: 360.0
   clipping_mode: CLIPPING_MODE_NONE
@@ -2669,8 +2669,8 @@ nodes {
     w: 1.0
   }
   size {
-    x: 36.0
-    y: 36.0
+    x: 32.0
+    y: 32.0
     z: 0.0
     w: 1.0
   }
@@ -3176,7 +3176,7 @@ nodes {
 }
 nodes {
   position {
-    x: 92.0
+    x: 78.0
     y: -27.0
     z: 0.0
     w: 1.0

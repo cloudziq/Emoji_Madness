@@ -167,7 +167,6 @@ end
 
 
 function defold_logo()
-
 	local logo = gui.get_node("DEFOLD LOGO")
 	local text = gui.get_node("DEFOLD TEXT")
 
@@ -176,13 +175,11 @@ function defold_logo()
 
 	sound.play("/main#logo")
 
-	gui.animate(logo, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 1, 0, function ()
-		--gui.animate(logo, "position.y", 1180, gui.EASING_LINEAR, 1, 1)
-		--gui.animate(logo, "scale", vmath.vector3(.5, .5, .5), gui.EASING_LINEAR, 1, 1)
-		gui.animate(logo, "color", vmath.vector4(1,1,1,0), gui.EASING_LINEAR, 2, 1.4)
+	gui.animate(logo, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 1, 0, function()
+		gui.animate(logo, "color", vmath.vector4(1,1,1,0), gui.EASING_LINEAR, 1.6, 2)
 	end)
 
-	gui.animate(text, "color", vmath.vector4(.2, .2, .2, .8), gui.EASING_LINEAR, 1.2, 1)
+	gui.animate(text, "color", vmath.vector4(.2, .2, .2, .8), gui.EASING_LINEAR, 1.2, 1.2)
 	title_prepare()
 end
 

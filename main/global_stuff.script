@@ -1,9 +1,9 @@
 
-function get_offscreen_pos(offset, oposite, pos, spread)
+function get_offscreen_pos(offset, oposite_method, pos, spread)
 	local a, x, y, method
 	if spread == nil then spread = 0 end
 
-	if oposite == true then
+	if oposite_method == 1 then
 		method = math.random(1, 2)
 
 		if method == 1 then -- to left or right
@@ -21,6 +21,58 @@ function get_offscreen_pos(offset, oposite, pos, spread)
 			end
 			x = math.random(0, window_w)
 		end
+
+	elseif oposite_method == 2 then
+		-- if pos.x >= pos.y then
+		-- 	if pos.x >= window_w / 2 then
+		-- 		x = -offset
+		-- 	elseif pos.x < window_w / 2 then
+		-- 		x = window_w + offset
+		-- 	end
+		-- 	y = window_h - pos.y
+		-- end
+		-- 	if pos.y >= window_h / 2 then
+		-- 		y = -offset
+		-- 	elseif pos.y < window_h / 2 then
+		-- 		y = window_h + offset
+		-- 	end
+		-- 	x = window_w - pos.x
+		-- end
+
+		-- if pos.x >= pos.y then
+		-- 	x = -offset
+		-- 	y = window_h - pos.y
+		-- else
+		-- 	x = window_w - pos.x
+		-- 	y = -offset
+		-- end
+
+		x = window_w - pos.x
+		y = window_h - pos.y
+
+		-- if pos.x >= window_w / 2 then
+		-- 	x = -offset
+		-- elseif pos.x < window_w / 2 then
+		-- 	x = window_w + offset
+		-- end
+		-- if pos.y >= window_h / 2 then
+		-- 	y = -offset
+		-- elseif pos.y < window_h / 2 then
+		-- 	y = window_h + offset
+		-- end
+
+		
+		-- if pos.x >= window_w / 2 then
+		-- 	x = -offset
+		-- elseif pos.x < window_w / 2 then
+		-- 	x = window_w + offset
+		-- end
+		-- if pos.y >= window_h / 2 then
+		-- 	y = -offset
+		-- elseif pos.y < window_h / 2 then
+		-- 	y = window_h + offset
+		-- end
+
 	else
 		a = rnd.range(1,4)
 
@@ -83,8 +135,13 @@ function generate_bombs(amount, scale)
 	local x, y, id
 
 	for a = 1, amount do
-		x, y = get_onscreen_pos(80, 1)
-		id = factory.create("/bomb#bomb_factory", vmath.vector3(x, y, 1), nil, nil, scale)
+		if a == 1 then
+			x, y = get_onscreen_pos(80, 1)
+			pos = {x = x, y = y}
+		else
+			pos = check_bomb_proximity(0, 80, 220)
+		end
+		id = factory.create("/bomb#bomb_factory", vmath.vector3(pos.x, pos.y, 1), nil, nil, scale)
 		table.insert(bomb_table, id)
 	end
 	bomb_url = msg.url(nil, id, nil)
@@ -102,6 +159,36 @@ function generate_orbs(amount, scale)
 		table.insert(orb_table, id)
 	end
 	orb_url = msg.url(nil, id, nil)
+end
+
+
+
+
+-- 0: generate on_screen position
+-- 1: generate near position using original pos (4th argument must be set)
+function check_bomb_proximity(type, offset, distance, pos)
+	local pos_check, id, x, y, bomb_pos = false
+
+	while pos_check == false do
+		if type == 0 then
+			x, y = get_onscreen_pos(offset, 1)
+		else  -- for orbs movement, so they can't fly near bombs
+			x = pos.x + math.random(-offset, offset)
+			y = pos.y + math.random(-offset, offset)
+		end
+
+		for _, id in ipairs(bomb_table) do
+			bomb_pos = go.get_position(id)
+
+			if x < bomb_pos.x + distance and x > bomb_pos.x - distance and y < bomb_pos.y + distance and y > bomb_pos.y - distance then
+				pos_check = false
+			else
+				pos_check = true
+			end
+		end
+	end
+
+	return {x = x, y = y}
 end
 
 

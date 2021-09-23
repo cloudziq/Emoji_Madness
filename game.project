@@ -9,6 +9,7 @@ shared_state = 1
 width = 1280
 height = 1320
 update_frequency = 60
+samples = 2
 
 [android]
 input_method = HiddenInputField
@@ -52,7 +53,7 @@ use_accelerometer = 0
 
 [particle_fx]
 max_count = 160
-max_particle_count = 2048
+max_particle_count = 2200
 
 [model]
 max_count = 4
@@ -80,5 +81,5 @@ max_count = 16
 [sound]
 max_sound_data = 64
 max_sound_buffers = 64
-max_component_count = 64
+max_component_count = 32
 

@@ -34,6 +34,7 @@ function on_message(self, message_id, message)
 				score = score + bullet_miss
 				stat_score = stat_score + bullet_miss
 			end
+			bombs_left = bombs_left - 1
 			stat_bombs = stat_bombs + 1
 			msg.post(self.collision, "disable")
 			go.set(self.sprite, "tint.w", 0)

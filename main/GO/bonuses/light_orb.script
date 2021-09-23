@@ -57,7 +57,7 @@ function on_message(self, message_id, message)
 			allow_combo_counter = false
 			score = score + bullet_miss
 			stat_score = stat_score + bullet_miss
-			change_darkness(-25)
+			change_darkness(math.random(-40, -20))
 
 			for _, id in ipairs(emoji_table) do
 				msg.post(id, "orb charge add")
@@ -67,7 +67,7 @@ function on_message(self, message_id, message)
 			sound.play("/bonus#orb_collect", {speed = 1 * proxy_speed})
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 64, go.EASING_INOUTSINE, .62)
 			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, .6)
-			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 4.4)
+			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 5.6)
 		end
 	end	
 
@@ -75,7 +75,7 @@ function on_message(self, message_id, message)
 
 
 	if message_id == hash("change position") then
-		local x, y, pos, pos_check
+		local x, y, pos
 
 		self.appear_time = socket.gettime() + math.random(18, 36) / 10
 		go.cancel_animations(".", "position")
@@ -86,27 +86,15 @@ function on_message(self, message_id, message)
 				msg.post("#", "remove")
 			else
 				self.wait_anim = false
-				pos_check = false
 
 				if level >= level_bombs_unlocked then
-					while pos_check == false do
-						x, y = get_onscreen_pos(60, 1)
-
-						for _, id in ipairs(bomb_table) do
-							pos = go.get_position(id)
-
-							if x < pos.x + 80 and x > pos.x - 80 and y < pos.y + 80 and y > pos.y - 80 then
-								pos_check = false
-							else
-								pos_check = true
-							end
-						end
-					end
+					pos = check_bomb_proximity(0, 60, 80)
 				else
 					x, y = get_onscreen_pos(60, 1)
+					pos = {x = x, y = y}
 				end
 
-				go.set_position(vmath.vector3(x, y, .98))
+				go.set_position(vmath.vector3(pos.x, pos.y, .98))
 
 				go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1, go.EASING_INOUTSINE, 1)
 				go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 1 * darkness_level, go.EASING_INOUTSINE, 1)
@@ -121,8 +109,14 @@ function on_message(self, message_id, message)
 	elseif message_id == hash("wait") and not self.wait_anim then
 		self.wait_anim = true
 		pos = go.get_position()
-		x = math.random(-60, 60) ; y = math.random(-60, 60)
-		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos.x + x, pos.y + y, .98), go.EASING_INOUTSINE, 1.4, 0, function()
+
+		if level >= level_bombs_unlocked then
+			pos = check_bomb_proximity(1, 20, 80, pos)
+		else
+			x = math.random(-60, 60) ; y = math.random(-60, 60)
+		end
+
+		go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos.x, pos.y, .98), go.EASING_INOUTSINE, 1.4, 0, function()
 			self.wait_anim = false
 		end)
 

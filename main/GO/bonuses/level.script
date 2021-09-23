@@ -12,7 +12,7 @@ function init(self)
 
 	self.active = true
 	self.fade_in = 2.64
-	self.time = 3.4
+	self.time = 2.86
 	self.fade_out = 2.64
 
 	x = rnd.range(80 + 50, window_w - 80 - 50)
@@ -58,7 +58,7 @@ function on_message(self, message_id, message, sender)
 
 			pos = go.get_position()
 			go.set_position(vmath.vector3(pos.x, pos.y, 0.9), "/bonus#level_bonus_particles")
-			go.set_scale(1.4, "/bonus#level_bonus_particles")
+			go.set_scale(1.2, "/bonus#level_bonus_particles")
 			particlefx.play("/bonus#level_particles")
 			particlefx.set_constant("/bonus#level_particles", "emitter", "tint", vmath.vector4(1,1,1,1))
 			sound.play("/main#health_bonus")

@@ -17,7 +17,7 @@ emitters {
   tile_source: "/builtins/graphics/particle_blob.tilesource"
   animation: "anim"
   material: "/main/render/materials/light_particle.material"
-  blend_mode: BLEND_MODE_ALPHA
+  blend_mode: BLEND_MODE_ADD
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   inherit_velocity: 0.0
   max_particle_count: 64
