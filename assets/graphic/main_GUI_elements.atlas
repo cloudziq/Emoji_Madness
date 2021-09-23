@@ -66,6 +66,10 @@ images {
   image: "/assets/graphic/window_overlay.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
+images {
+  image: "/assets/graphic/pie.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
 animations {
   id: "eyes_backward"
   images {

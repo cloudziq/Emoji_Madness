@@ -256,7 +256,13 @@ function on_message(self, message_id, message, sender)
 		gui.set_text(gui.get_node("emojis_left"), tostring(emojis))
 		gui.set_text(gui.get_node("bonus_item_requirement"), tostring(bonus_requirement + 1))
 		gui.set_text(gui.get_node("score"), "SCORE: "..score)
+		gui.set_fill_angle(gui.get_node("darkness_indicator"), (360 * darkness_level))
 		gui.set_text(gui.get_node("darkness_amount"), tostring(darkness_level * 1000))
+		if level >= level_bombs_unlocked then
+			gui.set_enabled(gui.get_node("bomb_display"), true)
+		else
+			gui.set_enabled(gui.get_node("bomb_display"), false)
+		end
 		msg.post("main:/main#ctrl", "set dark render")
 
 		gui.animate(gui.get_node("display"), "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 2.8, 1.65)
@@ -274,7 +280,7 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("display_update") then
 		local counter, counter_text, node1, node2, pos1, pos2
 
-		if level_play or message.stat == "force" then
+		if level_play then
 			msg.post(cursor_light_id, "update cursor light")
 
 			--> reposition emoji counter a bit if emojis > 99
@@ -293,8 +299,9 @@ function on_message(self, message_id, message, sender)
 			gui.set_text(gui.get_node("score"), "SCORE: "..score)
 			gui.set_text(gui.get_node("health"), tostring(health))
 			gui.set_text(gui.get_node("emojis_left"), tostring(emojis_left))
-			gui.set_size(gui.get_node("darkness_indicator_actual"), vmath.vector3(darkness_level * 200, 32, 1))
+			gui.set_fill_angle(gui.get_node("darkness_indicator"), (360 * darkness_level))
 			gui.set_text(gui.get_node("darkness_amount"), tostring(darkness_level * 1000))
+			gui.set_text(gui.get_node("bomb_amount"), tostring(bombs_amount))
 			msg.post("main:/main#ctrl", "set dark render")
 
 			if message.stat == "health loss" then

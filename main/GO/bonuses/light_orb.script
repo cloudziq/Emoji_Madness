@@ -9,7 +9,8 @@ local scale_min, scale_max = (orb_scale - (orb_scale / 7)) * 1000, (orb_scale + 
 function init(self)
 	self.active 	 = true
 	self.wait_anim   = false
-	self.appear_time = socket.gettime() + math.random(22, 36) / 10
+	-- self.appear_time = socket.gettime() + math.random(22, 36) / 10
+	self.appear_time = 0
 	self.lifespan    = socket.gettime() + math.random(84, 124) / 10
 
 	go.set_scale(0.001)
@@ -29,7 +30,7 @@ end
 
 function update(self, dt)
 	if self.active then
-		if go.get_scale().x < 0.1 then
+		if go.get_scale().x < 0.08 then
 			msg.post("#collide_weapon", "disable")
 		else
 			msg.post("#collide_weapon", "enable")
@@ -56,7 +57,7 @@ function on_message(self, message_id, message)
 			allow_combo_counter = false
 			score = score + bullet_miss
 			stat_score = stat_score + bullet_miss
-			change_darkness(-20)
+			change_darkness(-25)
 
 			for _, id in ipairs(emoji_table) do
 				msg.post(id, "orb charge add")
@@ -89,15 +90,15 @@ function on_message(self, message_id, message)
 
 				if level >= level_bombs_unlocked then
 					while pos_check == false do
-						pos = go.get_position(id)
 						x, y = get_onscreen_pos(60, 1)
 
 						for _, id in ipairs(bomb_table) do
+							pos = go.get_position(id)
 
-							if x < pos.x + 60 and x > pos.x - 60 and y < pos.y + 60 and y > pos.y - 60 then
-								pos_check = true
-							else
+							if x < pos.x + 80 and x > pos.x - 80 and y < pos.y + 80 and y > pos.y - 80 then
 								pos_check = false
+							else
+								pos_check = true
 							end
 						end
 					end
