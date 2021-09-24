@@ -88,7 +88,7 @@ function on_message(self, message_id, message)
 				self.wait_anim = false
 
 				if level >= level_bombs_unlocked then
-					pos = check_bomb_proximity(0, 60, 80)
+					pos = check_bomb_proximity(self, 0, 60, 80)
 				else
 					x, y = get_onscreen_pos(60, 1)
 					pos = {x = x, y = y}
@@ -111,7 +111,7 @@ function on_message(self, message_id, message)
 		pos = go.get_position()
 
 		if level >= level_bombs_unlocked then
-			pos = check_bomb_proximity(1, 20, 80, pos)
+			pos = check_bomb_proximity(self, 1, 20, 80, pos)
 		else
 			x = math.random(-60, 60) ; y = math.random(-60, 60)
 		end

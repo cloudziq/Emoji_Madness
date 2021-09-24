@@ -23,55 +23,8 @@ function get_offscreen_pos(offset, oposite_method, pos, spread)
 		end
 
 	elseif oposite_method == 2 then
-		-- if pos.x >= pos.y then
-		-- 	if pos.x >= window_w / 2 then
-		-- 		x = -offset
-		-- 	elseif pos.x < window_w / 2 then
-		-- 		x = window_w + offset
-		-- 	end
-		-- 	y = window_h - pos.y
-		-- end
-		-- 	if pos.y >= window_h / 2 then
-		-- 		y = -offset
-		-- 	elseif pos.y < window_h / 2 then
-		-- 		y = window_h + offset
-		-- 	end
-		-- 	x = window_w - pos.x
-		-- end
-
-		-- if pos.x >= pos.y then
-		-- 	x = -offset
-		-- 	y = window_h - pos.y
-		-- else
-		-- 	x = window_w - pos.x
-		-- 	y = -offset
-		-- end
-
 		x = window_w - pos.x
 		y = window_h - pos.y
-
-		-- if pos.x >= window_w / 2 then
-		-- 	x = -offset
-		-- elseif pos.x < window_w / 2 then
-		-- 	x = window_w + offset
-		-- end
-		-- if pos.y >= window_h / 2 then
-		-- 	y = -offset
-		-- elseif pos.y < window_h / 2 then
-		-- 	y = window_h + offset
-		-- end
-
-		
-		-- if pos.x >= window_w / 2 then
-		-- 	x = -offset
-		-- elseif pos.x < window_w / 2 then
-		-- 	x = window_w + offset
-		-- end
-		-- if pos.y >= window_h / 2 then
-		-- 	y = -offset
-		-- elseif pos.y < window_h / 2 then
-		-- 	y = window_h + offset
-		-- end
 
 	else
 		a = rnd.range(1,4)
@@ -132,16 +85,10 @@ end
 
 
 function generate_bombs(amount, scale)
-	local x, y, id
+	local id
 
 	for a = 1, amount do
-		if a == 1 then
-			x, y = get_onscreen_pos(80, 1)
-			pos = {x = x, y = y}
-		else
-			pos = check_bomb_proximity(0, 80, 220)
-		end
-		id = factory.create("/bomb#bomb_factory", vmath.vector3(pos.x, pos.y, 1), nil, nil, scale)
+		id = factory.create("/bomb#bomb_factory", nil, nil, nil, scale)
 		table.insert(bomb_table, id)
 	end
 	bomb_url = msg.url(nil, id, nil)
@@ -151,11 +98,10 @@ end
 
 
 function generate_orbs(amount, scale)
-	local x, y, id
+	local id
 
 	for a = 1, amount do
-		x, y = get_onscreen_pos(60, 1)
-		id = factory.create("/bonus#orb_factory", vmath.vector3(x, y, .98), nil, nil, scale)
+		id = factory.create("/bonus#orb_factory", nil, nil, nil, scale)
 		table.insert(orb_table, id)
 	end
 	orb_url = msg.url(nil, id, nil)
@@ -165,11 +111,12 @@ end
 
 
 -- 0: generate on_screen position
--- 1: generate near position using original pos (4th argument must be set)
-function check_bomb_proximity(type, offset, distance, pos)
-	local pos_check, id, x, y, bomb_pos = false
+-- 1: generate near position using original pos (5th argument must be set)
+function check_bomb_proximity(self, type, offset, distance, pos)
+	self.pos_check = false
+	local id, x, y, bomb_pos
 
-	while pos_check == false do
+	while self.pos_check == false do
 		if type == 0 then
 			x, y = get_onscreen_pos(offset, 1)
 		else  -- for orbs movement, so they can't fly near bombs
@@ -181,9 +128,9 @@ function check_bomb_proximity(type, offset, distance, pos)
 			bomb_pos = go.get_position(id)
 
 			if x < bomb_pos.x + distance and x > bomb_pos.x - distance and y < bomb_pos.y + distance and y > bomb_pos.y - distance then
-				pos_check = false
+				self.pos_check = false
 			else
-				pos_check = true
+				self.pos_check = true
 			end
 		end
 	end

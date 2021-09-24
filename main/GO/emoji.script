@@ -1,12 +1,12 @@
 
 -- local variables:
-local score_default, dark_default = 4, 1
+local score_default = 4
 
 
 go.property("speed",  6.32)
 go.property("wait",   5.20)
 go.property("score",  4)
-go.property("dark",   1)
+go.property("dark",   2)
 go.property("dest",   vmath.vector3())
 
 
@@ -145,8 +145,13 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			radius = rnd.range(40, 160)
 			self.dest = vmath.vector3(pos_x, pos_y, 1)
 		else
-			time = time * 2.2
-			if self.need_pos_check then method = 2 else method = 1 end
+			if self.need_pos_check then
+				method = 2
+				time = time * 3.4
+			else
+				method = 1
+				time = time * 2.2
+			end
 			pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
 			radius = rnd.range(26, 82)
 		end
@@ -183,10 +188,12 @@ function emoji_waiting(self)
 
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (speed / self.wait) + math.random(0, 2 + ((level / 8) * (1 - darkness_level))) + socket.gettime()
+			self.wait_timeout = self.wait - (speed / self.wait) + math.random(0, 2 + ((level / 8) * (1.4 - darkness_level))) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			--self.dark = dark_default * 2
+			pos = go.get_position()
+			sprite_flip(pos.x, true, false)
 			particlefx.play(self.particle_url)
 			particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.38, .42, .72, .64))
 			tint = vmath.vector4(.62, .66, .88, .86) * darkness_level
@@ -224,8 +231,18 @@ end
 
 
 
-function sprite_flip(pos)
-	sprite.set_hflip(".", go.get_position().x < pos)
+function sprite_flip(pos, reset, noflip)
+	local rot
+
+	if reset ~= nil then
+		rot = 0
+	else
+		rot = go.get_position().x < pos and -10 or 10
+	end
+	go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, rot, go.EASING_INOUTSINE, .4)
+	if noflip ~= nil then
+		sprite.set_hflip(".", go.get_position().x < pos)
+	end
 end
 
 
@@ -288,7 +305,8 @@ function on_message(self, message_id, message, sender)
 				end
 			end
 
-			go.set_position(pos + message.normal * message.distance) ; sprite_flip(pos.x)
+			sprite_flip(pos.x, true)
+			go.set_position(pos + message.normal * message.distance)
 			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
 				self.collide_type = 0
 				get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
@@ -336,7 +354,6 @@ function on_message(self, message_id, message, sender)
 
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				msg.post("game_layer2:/main#game_gui", "display_update")
-				--msg.post("game_layer1:/main#ctrl", "update_music")
 				particlefx.stop(self.particle_url)
 
 				self.active = false
@@ -382,6 +399,7 @@ function on_message(self, message_id, message, sender)
 
 						go.set_position(pos)
 						go.cancel_animations(".", "position")
+						sprite_flip(pos.x, true)
 						go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
 							if self.need_pos_check == true then
 								get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
@@ -440,6 +458,7 @@ function on_message(self, message_id, message, sender)
 						--self.dark = dark_default
 					end
 
+					sprite_flip(pos.x)
 					go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, pos, go.EASING_OUTSINE, 1, 0, function()
 						if self.collide_type == 1 and not self.need_pos_check then
 							emoji_waiting(self)
@@ -498,7 +517,7 @@ function on_message(self, message_id, message, sender)
 
 		if message_id == hash("orb charge add") then
 			if self.waiting then
-				self.wait_timeout = self.wait_timeout + math.random(14, 32) / 10
+				self.wait_timeout = self.wait_timeout + math.random(16, 32) / 10
 			end
 
 

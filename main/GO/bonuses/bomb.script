@@ -5,8 +5,6 @@ local charged_combo_count, charged_combo_score, charged_dark_add--, charged_emoj
 
 
 function init(self)
-	--local type
-
 	self.active    = true
 	self.sprite    = msg.url(nil, go.get_id(), "sprite")
 	self.collision = msg.url(nil, go.get_id(), "collide_emoji")
@@ -14,6 +12,14 @@ function init(self)
 	self.particle  = msg.url(nil, go.get_id(), "explosion")
 
 	msg.post(self.blast, "disable")
+
+	if #bomb_table == 0 then
+		x, y = get_onscreen_pos(80, 1)
+		pos = {x = x, y = y}
+	else
+		pos = check_bomb_proximity(self, 0, 80, 220)
+	end
+	go.set_position(vmath.vector3(pos.x, pos.y, .98))
 end
 
 

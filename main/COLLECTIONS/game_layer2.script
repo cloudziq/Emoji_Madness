@@ -131,7 +131,7 @@ function update(self, dt)
 			end
 
 			--bonus_level_spawn
-			if rnd.range(1, 24000) >= 23996 and bonus_level_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 28000) >= 27996 and bonus_level_visible == false and emojis_left >= bonus_requirement then
 			--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and killed > 1 then
 				msg.post("game_layer1:/main#ctrl", "bonus_level")
 				bonus_level_visible = true
@@ -139,7 +139,7 @@ function update(self, dt)
 		end
 
 		-- orbs spawning
-		if level > 1 and rnd.range(1, 22000) >= (22001 - level) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
+		if level > 1 and rnd.range(1, 22000) >= (22000 - level) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
 			orbs_spawned = orbs_spawned + 1
 			msg.post("game_layer1:/main#ctrl", "generate_orbs", {amount = 1, scale = 0.001})
 		end
@@ -258,9 +258,9 @@ end
 
 function level_prepare()
 	escaped = 0 ; killed = 0
-	orbs_spawned = 0
 	emojis_left = emojis
 	bonus_can_spawn = false
+	orbs_spawned = 0
 	orb_can_spawn = false
 	bonus_requirement = bonus_requirement + 1
 	blood_table = {}
