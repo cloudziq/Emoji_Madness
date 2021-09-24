@@ -88,7 +88,7 @@ function generate_bombs(amount, scale)
 	local id
 
 	for a = 1, amount do
-		id = factory.create("/bomb#bomb_factory", nil, nil, nil, scale)
+		id = factory.create("/bomb#bomb_factory", vmath.vector3(-100, -100, 1), nil, nil, scale)
 		table.insert(bomb_table, id)
 	end
 	bomb_url = msg.url(nil, id, nil)
@@ -113,10 +113,12 @@ end
 -- 0: generate on_screen position
 -- 1: generate near position using original pos (5th argument must be set)
 function check_bomb_proximity(self, type, offset, distance, pos)
+	local collide, id, x, y, bomb_pos
 	self.pos_check = false
-	local id, x, y, bomb_pos
+
 
 	while self.pos_check == false do
+
 		if type == 0 then
 			x, y = get_onscreen_pos(offset, 1)
 		else  -- for orbs movement, so they can't fly near bombs
@@ -128,11 +130,14 @@ function check_bomb_proximity(self, type, offset, distance, pos)
 			bomb_pos = go.get_position(id)
 
 			if x < bomb_pos.x + distance and x > bomb_pos.x - distance and y < bomb_pos.y + distance and y > bomb_pos.y - distance then
-				self.pos_check = false
+				collide = true
+				break
 			else
-				self.pos_check = true
+				collide = false
 			end
 		end
+
+		self.pos_check = not collide and true or false
 	end
 
 	return {x = x, y = y}

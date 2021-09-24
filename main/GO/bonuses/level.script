@@ -47,8 +47,9 @@ function on_message(self, message_id, message, sender)
 			bullet_is_hit = true
 			bonus_level_active = true
 			allow_combo_counter = false
-			score = score + bullet_miss
-			stat_score = stat_score + bullet_miss
+			-- if score > 0 then
+			-- 	score = score + bullet_miss
+			-- end
 			go.cancel_animations(".", "scale")
 			go.animate("#halo", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 1)
 			go.animate("#sprite", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_INOUTSINE, 2, 0, function()

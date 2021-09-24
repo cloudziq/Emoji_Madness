@@ -53,7 +53,7 @@ function init(self)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.22, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 		else
-			local delay = rnd.range(2, 3 + (emojis / 12) + (level / 6))
+			local delay = rnd.range(1, 4 + (emojis / 12) + (level / 6))
 
 			self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
 			sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
@@ -136,10 +136,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 
 		if bonus_level_active == 1 then self.active = false end
 
-		time = (self.speed - (self.speed * (speed / 100))) * (1.25 - darkness_level)
+		time = self.speed - (speed * (self.speed / 100)) * (1.25 - darkness_level)
 
 		if not self.going_away then
-			time = time + math.random(-2, 4)
+			time = time + math.random(0, 6)
 			pos_x = rnd.range(80 + 50, window_w - 80 - 50)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 			radius = rnd.range(40, 160)
@@ -147,10 +147,11 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 		else
 			if self.need_pos_check then
 				method = 2
-				time = time * 3.4
+				time = time * 3.64
 			else
 				method = 1
-				time = time * 2.2
+				time = time * 2.82
+				pprint(time)
 			end
 			pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
 			radius = rnd.range(26, 82)
@@ -158,8 +159,8 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 		sprite_flip(pos_x)
 
 		go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, pos_y, easing1, time, delay)
-		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x - radius, easing2, time * 0.5, delay, function()
-			go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x, easing2, time * 0.5, 0, function()
+		go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x - radius, easing2, time * .5, delay, function()
+			go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, pos_x, easing2, time * .5, 0, function()
 				if not self.going_away then
 					self.need_pos_check = false
 					emoji_waiting(self)
@@ -188,7 +189,7 @@ function emoji_waiting(self)
 
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (speed / self.wait) + math.random(0, 2 + ((level / 8) * (1.4 - darkness_level))) + socket.gettime()
+			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(0, 4 + ((level / 8) * (1.4 - darkness_level))) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			--self.dark = dark_default * 2
@@ -206,15 +207,14 @@ function emoji_waiting(self)
 			tint = vmath.vector4(1, .74, .44, 1) * darkness_level
 			particlefx.set_constant(self.particle_url, "emitter_light", "tint", tint)
 
-			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_INSINE, .44, 0, function()
+			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_OUTSINE, .44, 0, function()
 				go.cancel_animations(".", "position")
 				msg.post(self.collide_url, "disable")
 				self.waiting = false
 				self.going_away = true
 				self.score = score_default / 4
-				--self.dark = dark_default * 4
 				sound.play("game_layer1:/main#emoji_going_away", {speed = (math.random(80, 120) / 100) * proxy_speed})
-				get_new_emoji_pos(self, go.EASING_INSINE, go.EASING_LINEAR, .1)
+				get_new_emoji_pos(self, go.EASING_INSINE, go.EASING_INOUTSINE, .1)
 			end)
 		else
 			local pos = go.get_position()
@@ -323,10 +323,10 @@ function on_message(self, message_id, message, sender)
 
 			if message.group == hash_group_weapon and self.active == true then
 
-				if score > 0 then
-					score = score + bullet_miss
-					stat_score = stat_score + bullet_miss
-				end
+				-- if score > 0 then
+				-- 	score = score + bullet_miss
+				-- 	stat_score = stat_score + bullet_miss
+				-- end
 				emojis_left = emojis_left - 1
 				killed = killed + 1
 				stat_kills = stat_kills + 1
@@ -353,7 +353,7 @@ function on_message(self, message_id, message, sender)
 				msg.post(weapon_id, "count charged_kill", {score = self.score, dark = self.dark, charged = combo_charged})
 
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
-				msg.post("game_layer2:/main#game_gui", "display_update")
+				--msg.post("game_layer2:/main#game_gui", "display_update")
 				particlefx.stop(self.particle_url)
 
 				self.active = false
@@ -500,7 +500,6 @@ function on_message(self, message_id, message, sender)
 				end
 
 				stat_kills = stat_kills + 1
-				--bullet_is_hit = true
 
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				msg.post("game_layer2:/main#ctrl", "reset anim", {visible = true})

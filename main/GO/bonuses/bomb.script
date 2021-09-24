@@ -17,7 +17,7 @@ function init(self)
 		x, y = get_onscreen_pos(80, 1)
 		pos = {x = x, y = y}
 	else
-		pos = check_bomb_proximity(self, 0, 80, 220)
+		pos = check_bomb_proximity(self, 0, 80, 120)
 	end
 	go.set_position(vmath.vector3(pos.x, pos.y, .98))
 end
@@ -36,10 +36,9 @@ function on_message(self, message_id, message)
 			bullet_is_hit = true
 			allow_combo_counter = false
 			health = health - 1
-			if score > 0 then
-				score = score + bullet_miss
-				stat_score = stat_score + bullet_miss
-			end
+			-- if score > 0 then
+			-- 	score = score + bullet_miss
+			-- end
 			bombs_left = bombs_left - 1
 			stat_bombs = stat_bombs + 1
 			msg.post(self.collision, "disable")

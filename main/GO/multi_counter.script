@@ -49,7 +49,9 @@ function on_message(self, message_id, message)
 		label.set_text("#count", text)
 
 		text = emojis_left == 0 and "force" or ""
-		msg.post("game_layer2:/main#game_gui", "display_update", {stat = text})
+		timer.delay(0.04, false, function()
+			msg.post("game_layer2:/main#game_gui", "display_update", {stat = text})
+		end)
 
 
 

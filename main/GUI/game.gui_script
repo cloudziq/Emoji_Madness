@@ -29,21 +29,21 @@ function on_message(self, message_id, message, sender)
 			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
 			if i == 4 then
 				gui.set_text(node, tostring(message.amount))
-				delay = delay + .22
+				delay = delay + .08
 			else
-				delay = delay + .76
+				delay = delay + .36
 			end
 		end
-		timer.delay(3.9, false, function()
+		timer.delay(2.6, false, function()
 			delay = 1
 			for i = 1, 5 do
 				node = gui.get_node("bullet_text"..i)
 				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.1, delay)
-				delay = delay + .32
+				delay = delay + .12
 			end
 		end)
 		gui.set_enabled(gui.get_node("BULLET_MISS_INFO"), true)
-		timer.delay(5.8, false, function()
+		timer.delay(4.2, false, function()
 			msg.post("#", "show_level_intro")
 		end)
 

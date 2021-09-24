@@ -55,8 +55,9 @@ function on_message(self, message_id, message)
 			self.active = false
 			bullet_is_hit = true
 			allow_combo_counter = false
-			score = score + bullet_miss
-			stat_score = stat_score + bullet_miss
+			-- if score > 0 then
+			-- 	score = score + bullet_miss
+			-- end
 			change_darkness(math.random(-40, -20))
 
 			for _, id in ipairs(emoji_table) do
@@ -111,7 +112,7 @@ function on_message(self, message_id, message)
 		pos = go.get_position()
 
 		if level >= level_bombs_unlocked then
-			pos = check_bomb_proximity(self, 1, 20, 80, pos)
+			pos = check_bomb_proximity(self, 1, 20, 60, pos)
 		else
 			x = math.random(-60, 60) ; y = math.random(-60, 60)
 		end

@@ -13,12 +13,12 @@ function init(self)
 	end
 	bullet_is_hit = false
 
-	if score > 0 and level_play == true then
+	if level_play == true then
 		score = score - bullet_miss
-		if score < 0 then score = 0 end
+		--if score < 0 then score = 0 end
 	end
 
-	if weapon_collide and bonus_level_active ~= 1 then stat_bullets_all = stat_bullets_all + 1 end
+	if weapon_collide and level_play then stat_bullets_all = stat_bullets_all + 1 end
 
 	timer.delay(0.04, false, function()
 		-- msg.post("game_layer2:/main#game_gui", "display_update")
@@ -28,6 +28,9 @@ function init(self)
 
 		if bullet_is_hit then
 			stat_bullets_hit = stat_bullets_hit + 1
+			score = score + bullet_miss
+		elseif score < 0 then
+			score = 0
 		end
 		go.delete()
 	end)
