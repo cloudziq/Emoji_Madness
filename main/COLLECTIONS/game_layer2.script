@@ -2,15 +2,15 @@
 -- starting values:
 level  = 1
 score  = 0
-health = 5
-emojis = 8
-speed  = 6.2   -- percentage modifier which affects emojis speed, wait_timeout
+health = 200
+emojis = 80
+speed  = 22.2   -- percentage modifier which affects emojis speed, wait_timeout
 level_bonus_unlocked = 4
 level_bombs_unlocked = 8
 bombs_amount = 1
 bonus_requirement = 0
 bullet_miss = 1
-bullet_miss_level = 4
+bullet_miss_level = 6
 
 bonus_can_spawn = false
 orb_can_spawn = false
@@ -19,8 +19,8 @@ bonus_level_active = false
 change_music_variant = false
 
 -- adds for level completion:
-speed_add      = 1.22
-emojis_add     = 3
+speed_add      = 2.4
+emojis_add     = 4
 health_add     = 1
 health_perfect = 1
 
@@ -80,9 +80,9 @@ function update(self, dt)
 					msg.post("#game_gui", "show bombs info")
 				end)
 
-			elseif level == bullet_miss_level + 2 then
+			elseif level == bullet_miss_level then
 				if bullet_miss == 1 then bullet_miss = 10 else bullet_miss = bullet_miss * 2 end
-				bullet_miss_level = bullet_miss_level + 6
+				bullet_miss_level = bullet_miss_level + 4
 				timer.delay(1.4, false, function()
 					msg.post("#game_gui", "show bullet_miss info", {amount = bullet_miss})
 				end)
@@ -131,7 +131,7 @@ function update(self, dt)
 			end
 
 			--bonus_level_spawn
-			if rnd.range(1, 28000) >= 27996 and bonus_level_visible == false and emojis_left >= bonus_requirement then
+			if rnd.range(1, 28000) >= 27998 and bonus_level_visible == false and emojis_left >= bonus_requirement then
 			--if math.random(1, 20000) >= 9998 and bonus_level_visible == false and killed > 1 then
 				msg.post("game_layer1:/main#ctrl", "bonus_level")
 				bonus_level_visible = true
@@ -139,7 +139,7 @@ function update(self, dt)
 		end
 
 		-- orbs spawning
-		if level > 1 and rnd.range(1, 22000) >= (21999 - level) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
+		if level > 1 and rnd.range(1, 40000) >= 40000 - (level * 2) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
 			orbs_spawned = orbs_spawned + 1
 			msg.post("game_layer1:/main#ctrl", "generate_orbs", {amount = 1, scale = 0.001})
 		end
@@ -223,7 +223,7 @@ function on_message(self, message_id, message, sender)
 
 	elseif message_id == hash("show charged_combo display") then
 		multi_counter_id = factory.create("/main#multi_counter_factory")
-		msg.post(multi_counter_id, "charged_combo text -final", {amount = message.amount, dark = message.dark, score = message.score, charged = message.charged})
+		msg.post(multi_counter_id, "charged_combo text -final", {amount = message.amount, dark = message.dark, score = message.score, charged = message.charged, pos = message.pos})
 
 
 
@@ -244,6 +244,7 @@ function on_input(self, action_id, action)
 
 		if action_id == hash("click1") and action.pressed == true then
 			msg.post("game_layer1:/main#ctrl", "spawn_weapon", {x = action.x, y = action.y})
+			shot_x = action.x ; shot_y = action.y
 			msg.post("#game_gui", "animate cursor")
 			if bonus_level_active == 1 and weapon_collide then
 				bonus_shots = bonus_shots - 1

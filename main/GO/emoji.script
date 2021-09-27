@@ -3,7 +3,7 @@
 local score_default = 4
 
 
-go.property("speed",  6.32)
+go.property("speed",  8.32)
 go.property("wait",   5.20)
 go.property("score",  4)
 go.property("dark",   2)
@@ -21,6 +21,7 @@ local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_waiting, sprite_flip
 local hash_collision       = hash("collision_response")
 local hash_contact         = hash("contact_point_response")
 local hash_group_weapon    = hash("weapon")
+local hash_group_discharge = hash("discharge")
 local hash_group_emoji     = hash("emoji")
 local hash_group_menuclick = hash("menu_right_click")
 local hash_group_bomb      = hash("bomb")
@@ -36,6 +37,7 @@ function init(self)
 	self.waiting        = false
 	self.going_away     = false
 	self.need_pos_check = false
+	self.discharge      = false
 	self.sound_delay    = 0
 	self.collide_type   = 0
 	self.particle_url   = msg.url(nil, go.get_id(), "particle")
@@ -53,8 +55,7 @@ function init(self)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.22, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 		else
-			local delay = rnd.range(1, 4 + (emojis / 12) + (level / 6))
-
+			local delay = rnd.range(1, 6 + (emojis / 12) + (level / 6))
 			self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
 			sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
 			get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, delay)
@@ -151,7 +152,6 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			else
 				method = 1
 				time = time * 2.82
-				pprint(time)
 			end
 			pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
 			radius = rnd.range(26, 82)
@@ -321,19 +321,18 @@ function on_message(self, message_id, message, sender)
 		if bonus_level_active ~= 1 then
 			local sound_type, sound_speed
 
-			if message.group == hash_group_weapon and self.active == true then
+			if (message.group == hash_group_weapon or message.group == hash_group_discharge) and self.active == true then
+				if self.going_away and not self.discharge and message.group == hash_group_weapon then
+					self.discharge = true
+					factory.create("/main#discharge_factory", go.get_position(), nil)
+					msg.post(weapon_id, "weapon ttl expand")
+				end
 
-				-- if score > 0 then
-				-- 	score = score + bullet_miss
-				-- 	stat_score = stat_score + bullet_miss
-				-- end
 				emojis_left = emojis_left - 1
 				killed = killed + 1
 				stat_kills = stat_kills + 1
 				bullet_is_hit = true
 				combo_charged = false
-				--stat_score = stat_score + self.score
-				--change_darkness(1)
 
 				if emojis_left > 0 then
 					sound_speed = (math.random(60, 120) / 100)
@@ -345,15 +344,12 @@ function on_message(self, message_id, message, sender)
 					sound.stop("game_layer1:/main#emoji_going_away")
 					sound_type = "game_layer1:/main#squeak_big"
 					combo_charged = true
-					--change_darkness(-5)
 				else
 					sound_type = "game_layer1:/main#squeak_small"
-					--change_darkness(1)
 				end
 				msg.post(weapon_id, "count charged_kill", {score = self.score, dark = self.dark, charged = combo_charged})
 
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
-				--msg.post("game_layer2:/main#game_gui", "display_update")
 				particlefx.stop(self.particle_url)
 
 				self.active = false

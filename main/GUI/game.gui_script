@@ -43,7 +43,7 @@ function on_message(self, message_id, message, sender)
 			end
 		end)
 		gui.set_enabled(gui.get_node("BULLET_MISS_INFO"), true)
-		timer.delay(4.2, false, function()
+		timer.delay(4, false, function()
 			msg.post("#", "show_level_intro")
 		end)
 
@@ -82,9 +82,9 @@ function on_message(self, message_id, message, sender)
 			node = gui.get_node("tt"..i) ; a = gui.get_color(node)
 			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
 			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
-			delay = delay + .44
+			delay = delay + .36
 		end
-		timer.delay(2.8, false, function()
+		timer.delay(2.5, false, function()
 			delay = 1
 			for i = 1, 4 do
 				node = gui.get_node("tt"..i)
@@ -93,7 +93,7 @@ function on_message(self, message_id, message, sender)
 			end
 		end)
 		gui.set_enabled(gui.get_node("BONUS_AVAILABLE"), true)
-		timer.delay(4, false, function()
+		timer.delay(3.8, false, function()
 			msg.post("#", "show_level_intro")
 		end)
 

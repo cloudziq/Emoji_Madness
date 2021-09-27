@@ -6,6 +6,7 @@ local charged_combo_count, charged_combo_score, charged_emoji_count, charged_dar
 
 function init(self)
 	charged_combo_count, charged_combo_score, charged_emoji_count, charged_dark_add = 0, 0, 0, 0
+
 	if level_play then
 		allow_combo_counter = true
 	else
@@ -19,11 +20,36 @@ function init(self)
 	end
 
 	if weapon_collide and level_play then stat_bullets_all = stat_bullets_all + 1 end
+	self.ttl = socket.gettime() + 0.04
+	self.collide_emoji = msg.url(nil, go.get_id(), "collide_emoji")
+	self.x = shot_x
+	self.y = shot_y
 
-	timer.delay(0.04, false, function()
-		-- msg.post("game_layer2:/main#game_gui", "display_update")
+	--timer.delay(0.01, false, function()
+-- 		timer.delay(shot_ttl, false, function()
+-- 			-- msg.post("game_layer2:/main#game_gui", "display_update")
+-- 			if allow_combo_counter then
+-- 				msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count, dark = charged_dark_add})
+-- 			end
+-- 
+-- 			if bullet_is_hit then
+-- 				stat_bullets_hit = stat_bullets_hit + 1
+-- 				score = score + bullet_miss
+-- 			elseif score < 0 then
+-- 				score = 0
+-- 			end
+-- 			go.delete()
+-- 		end)
+	--end)
+end
+
+
+
+
+function update(self)
+	if socket.gettime() > self.ttl then
 		if allow_combo_counter then
-			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count, dark = charged_dark_add})
+			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count, dark = charged_dark_add, pos = {x = self.x, y = self.y}})
 		end
 
 		if bullet_is_hit then
@@ -33,13 +59,9 @@ function init(self)
 			score = 0
 		end
 		go.delete()
-	end)
-end
+	end
 
 
-
-
-function update(self)
 	if weapon_collide == true then
 		msg.post("#collide_emoji", "enable")
 		msg.post("#collide_bonus", "enable")
@@ -49,11 +71,24 @@ function update(self)
 	end
 end
 
-
+-- function weapon_ttl_expand()
+-- 	self.ttl = socket.gettime() + 1.1
+-- 	msg.post(self.collide_emoji, "disable")
+-- end
 
 
 function on_message(self, message_id, message)
-	if message_id == hash("count charged_kill") then
+	if message_id == hash("weapon ttl expand") then
+		self.ttl = socket.gettime() + 1.1
+		msg.post(self.collide_emoji, "disable")
+		--pprint("weapon ttl: "..tostring(self.ttl))
+
+
+	elseif message_id == hash("weapon ttl expire") then
+		self.ttl = 0
+		
+
+	elseif message_id == hash("count charged_kill") then
 		charged_combo_count = charged_combo_count + 1
 		if message.charged then charged_emoji_count = charged_emoji_count + 1 end
 		charged_combo_score = charged_combo_score + message.score
