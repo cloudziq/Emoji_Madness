@@ -9,6 +9,9 @@ go.property("score",  4)
 go.property("dark",   2)
 go.property("dest",   vmath.vector3())
 
+go.property("active",       true)
+go.property("going_away",   false)
+
 
 emojis = 10 ; level = 1  -- dummy values, will be overwriten anyway
 
@@ -37,7 +40,6 @@ function init(self)
 	self.waiting        = false
 	self.going_away     = false
 	self.need_pos_check = false
-	self.discharge      = false
 	self.sound_delay    = 0
 	self.collide_type   = 0
 	self.particle_url   = msg.url(nil, go.get_id(), "particle")
@@ -56,13 +58,14 @@ function init(self)
 			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 		else
 			local delay = rnd.range(1, 6 + (emojis / 12) + (level / 6))
-			self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
+			self.collide_emoji     = msg.url(nil, go.get_id(), "collide_emoji")
+			self.collide_weapon    = msg.url(nil, go.get_id(), "collide_weapon")
 			sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
 			get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, delay)
 		end
 	else
 		sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,0))
-		self.collide_url = msg.url(nil, go.get_id(), "collide_emoji")
+		self.collide_emoji = msg.url(nil, go.get_id(), "collide_emoji")
 		self.sprite_url = msg.url(nil, go.get_id(), "sprite")
 	end
 end
@@ -93,11 +96,11 @@ function update(self, dt)
 			if pos.x > 50 and pos.x < window_w - 50 and pos.y > 50 and pos.y < window_h -50 - 44 and self.active == true then
 				self.need_pos_check = false
 				if not self.going_away then
-					msg.post(self.collide_url, "enable")
+					msg.post(self.collide_emoji, "enable")
 				end
 			else
 				self.need_pos_check = true
-				msg.post(self.collide_url, "disable")
+				msg.post(self.collide_emoji, "disable")
 			end
 		end
 	end
@@ -209,7 +212,7 @@ function emoji_waiting(self)
 
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, go.get_scale() * 1.32, go.EASING_OUTSINE, .44, 0, function()
 				go.cancel_animations(".", "position")
-				msg.post(self.collide_url, "disable")
+				msg.post(self.collide_emoji, "disable")
 				self.waiting = false
 				self.going_away = true
 				self.score = score_default / 4
@@ -240,7 +243,7 @@ function sprite_flip(pos, reset, noflip)
 		rot = go.get_position().x < pos and -10 or 10
 	end
 	go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, rot, go.EASING_INOUTSINE, .4)
-	if noflip ~= nil then
+	if noflip == nil or noflip == true then
 		sprite.set_hflip(".", go.get_position().x < pos)
 	end
 end
@@ -259,6 +262,7 @@ function on_message(self, message_id, message, sender)
 
 		if message_id == hash_contact and self.active == true then
 			pos = go.get_position()
+			sprite_flip(pos.x, true)
 
 			if self.collide_type == 0 then
 				if math.random(1, 400) <= 360 then
@@ -305,7 +309,6 @@ function on_message(self, message_id, message, sender)
 				end
 			end
 
-			sprite_flip(pos.x, true)
 			go.set_position(pos + message.normal * message.distance)
 			go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
 				self.collide_type = 0
@@ -321,12 +324,8 @@ function on_message(self, message_id, message, sender)
 		if bonus_level_active ~= 1 then
 			local sound_type, sound_speed
 
-			if (message.group == hash_group_weapon or message.group == hash_group_discharge) and self.active == true then
-				if self.going_away and not self.discharge and message.group == hash_group_weapon then
-					self.discharge = true
-					factory.create("/main#discharge_factory", go.get_position(), nil)
-					msg.post(weapon_id, "weapon ttl expand")
-				end
+			-- if (message.group == hash_group_weapon or message.group == hash_group_discharge) and self.active == true then
+			if message_id == hash("kill emoji") and self.active then
 
 				emojis_left = emojis_left - 1
 				killed = killed + 1
@@ -347,19 +346,19 @@ function on_message(self, message_id, message, sender)
 				else
 					sound_type = "game_layer1:/main#squeak_small"
 				end
-				msg.post(weapon_id, "count charged_kill", {score = self.score, dark = self.dark, charged = combo_charged})
+				msg.post(message.id, "count charged_kill", {score = self.score, dark = self.dark, charged = combo_charged})
 
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				particlefx.stop(self.particle_url)
 
 				self.active = false
-				msg.post(self.collide_url, "disable")
-
+				msg.post(self.collide_emoji,  "disable")
+				msg.post(self.collide_weapon, "disable")
 				go.cancel_animations(".", "position")
 				go.cancel_animations(".", "scale")
 				pos = go.get_position()
 				go.set_position(vmath.vector3(pos.x, pos.y, .8))
-				go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)))
+				go.set_rotation(vmath.quat_rotation_z(math.random(0, 360)))
 				make_blood(pos, blood_scale)
 
 
@@ -429,7 +428,7 @@ function on_message(self, message_id, message, sender)
 					--msg.post("game_layer1:/main#ctrl", "update_music")
 					particlefx.stop(self.particle_url)
 					self.active = false
-					msg.post(self.collide_url, "disable")
+					msg.post(self.collide_emoji, "disable")
 					go.cancel_animations(".", "position")
 					go.cancel_animations(".", "scale")
 					pos = go.get_position() + message.normal * (message.distance * math.random(1, 2))
