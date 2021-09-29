@@ -6,8 +6,8 @@ health = 200
 emojis = 80
 speed  = 22.2   -- percentage modifier which affects emojis speed, wait_timeout
 level_bonus_unlocked = 4
-level_bombs_unlocked = 8
-bombs_amount = 1
+level_bombs_unlocked = 1
+bombs_amount = 4
 bonus_requirement = 0
 bullet_miss = 1
 bullet_miss_level = 6
@@ -139,7 +139,8 @@ function update(self, dt)
 		end
 
 		-- orbs spawning
-		if level > 1 and rnd.range(1, 40000) >= 40000 - (level * 2) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
+		-- if level > 1 and rnd.range(1, 40000) >= 40000 - (level * 2) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
+		if level > 1 and rnd.range(1, 40000) >= 40000 - (level * 2) and orbs_spawned < 10 and emojis_left >= 4 and orb_can_spawn then
 			orbs_spawned = orbs_spawned + 1
 			msg.post("game_layer1:/main#ctrl", "generate_orbs", {amount = 1, scale = 0.001})
 		end

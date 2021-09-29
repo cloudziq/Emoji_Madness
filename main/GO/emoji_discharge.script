@@ -1,53 +1,62 @@
 
+go.property("delayed", false)
+
+
 local discharge_table = {}
+local sound_delay = 0
 
 
 
 
 function init(self)
+	local num
 	self.charged_combo_count, self.charged_combo_score, self.charged_emoji_count, self.charged_dark_add = 0, 0, 0, 0
 	self.active = true
 	self.parent = nil
-	self.allow_counter = true
+	self.allow_counter = false
 
-	go.set_scale(.6)
+	go.set_scale(.32)
 	particlefx.play("#particles")
 	particlefx.set_constant("#particles", "emitter", "tint", vmath.vector4(1, .6, .2, .86))
 	particlefx.set_constant("#particles", "longer",  "tint", vmath.vector4(1, .6, .2, .78))
+	particlefx.set_constant("#particles", "blink",  "tint", vmath.vector4(1, .6, .2, .78))
 	tint = vmath.vector4(1, .74, .44, 1) * darkness_level
 	particlefx.set_constant("#particles", "emitter_light", "tint", tint)
 
-	timer.delay(1.2, false, function()
-		pprint(#discharge_table[self.parent].objects)
-		if #discharge_table[self.parent].objects == 0 then
+	timer.delay(1.22, false, function()
+		self.active = false
+		timer.delay(2, false, function() go.delete() end)
+
+		if discharge_table[self.parent].instances == 1 then
 			self.charged_combo_count = discharge_table[self.parent].counter.amount
 			self.charged_emoji_count = discharge_table[self.parent].counter.charged
 			self.charged_combo_score = discharge_table[self.parent].counter.score
 			self.charged_dark_add = discharge_table[self.parent].counter.dark
 			self.x = discharge_table[self.parent].counter.pos.x
 			self.y = discharge_table[self.parent].counter.pos.y
+			self.allow_counter = true
 
-			-- self.x = 0
-			-- for a = 1, #discharge_table
+			if self.allow_counter then
+				msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = self.charged_combo_count, score = self.charged_combo_score, charged = self.charged_emoji_count, dark = self.charged_dark_add, pos = {x = self.x, y = self.y}})
+			end
 
 			discharge_table[self.parent] = nil
-			self.allow_counter = true
-			pprint("removed")
+			pprint("DELETED")
 		else
 			pprint("removed entry")
-			table.remove(discharge_table[self.parent].objects, self.num)
+			pprint(discharge_table[self.parent].instances)
+			num = discharge_table[self.parent].instances - 1
+			--table.remove(discharge_table[self.parent].objects, self.num)
+			discharge_table[self.parent].instances = num
 		end
-
-		if self.allow_counter then
-			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = self.charged_combo_count, score = self.charged_combo_score, charged = self.charged_emoji_count, dark = self.charged_dark_add, pos = {x = self.x, y = self.y}})
-		end
-		go.delete()
 	end)
 end
 
 
+
+
 function on_message(self, message_id, message)
-	if message.group == hash("emoji") then
+	if message.group == hash("emoji") and self.active then
 		local emoji, going_away, id
 
 		local emoji = msg.url(nil, message.other_id, "emoji")
@@ -55,33 +64,56 @@ function on_message(self, message_id, message)
 		local charged = go.get(emoji, "going_away")
 		local active = go.get(emoji, "active")
 
-		msg.post(emoji, "kill emoji", {id = go.get_id()})
+		if active then
+			msg.post(emoji, "kill emoji", {id = self.parent, force = true})
+			go.set(emoji, "active", false)
 
-		if charged and active then
-			self.active = false
-			self.allow_counter = false
-			id = factory.create("/main#discharge_factory", go.get_position(emoji))
-			msg.post(id, "assign child", {id = self.parent, num = self.num})
-			pprint("assign child")
+			if socket.gettime() > sound_delay then
+				sound_delay = socket.gettime() + 0.06
+				sound.play("/main#discharge", {speed = (math.random(80, 120) / 100) * 1 - darkness_level})
+			end
+
+			if charged and not self.delayed then
+				id = factory.create("/main#discharge_factory", go.get_position(emoji))
+				msg.post(id, "assign child", {id = self.parent, num = self.num})
+				pprint("assign child")
+			end
 		end
+
+		if self.delayed then self.delayed = false end
 	end
 
 
-	if message_id == hash("create parent") then
+
+
+	if message_id == hash("make parent") then
 		self.parent = go.get_id()
-		self.num = 0
-		discharge_table[self.parent] = {counter = {charged = 0, amount = 0, score = 0, dark = 0, pos = {x = shot_x, y = shot_y}}, objects = {}}
+		--self.num = 1
+		discharge_table[self.parent] = {counter = {charged = 0, amount = 0, score = 0, dark = 0, pos = {x = shot_x, y = shot_y}}, instances = 1}
+		--table.insert(discharge_table[self.parent].objects, self.num)
 		--msg.post(collide_weapon, "disable")
 
 
+
+
 	elseif message_id == hash("assign child") then
+		local num
 		self.parent = message.id
-		self.num = message.num + 1
-		table.insert(discharge_table[self.parent].objects, self.num)
-		self.x = (discharge_table[self.parent].counter.pos.x + go.get_position().x) / #discharge_table[self.parent].objects
-		self.y = (discharge_table[self.parent].counter.pos.y + go.get_position().y) / #discharge_table[self.parent].objects
+		--self.num = message.num + 1
+		num = discharge_table[self.parent].instances + 1
+
+		if num > stat_chain_record then
+			stat_chain_record = num
+		end
+
+		--table.insert(discharge_table[self.parent].objects, self.num)
+		discharge_table[self.parent].instances = num
+		self.x = (discharge_table[self.parent].counter.pos.x + go.get_position().x) / 2
+		self.y = (discharge_table[self.parent].counter.pos.y + go.get_position().y) / 2
 		discharge_table[self.parent].counter.pos.x = self.x
 		discharge_table[self.parent].counter.pos.y = self.y
+
+
 
 
 	elseif message_id == hash("count charged_kill") then

@@ -325,7 +325,7 @@ function on_message(self, message_id, message, sender)
 			local sound_type, sound_speed
 
 			-- if (message.group == hash_group_weapon or message.group == hash_group_discharge) and self.active == true then
-			if message_id == hash("kill emoji") and self.active then
+			if message_id == hash("kill emoji") and (self.active or message.force == true) then
 
 				emojis_left = emojis_left - 1
 				killed = killed + 1
@@ -351,7 +351,9 @@ function on_message(self, message_id, message, sender)
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				particlefx.stop(self.particle_url)
 
-				self.active = false
+				--if message.active == true then
+					self.active = false
+				--end
 				msg.post(self.collide_emoji,  "disable")
 				msg.post(self.collide_weapon, "disable")
 				go.cancel_animations(".", "position")
