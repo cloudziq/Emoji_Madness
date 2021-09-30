@@ -3,8 +3,8 @@
 local score_default = 4
 
 
-go.property("speed",  8.32)
-go.property("wait",   5.20)
+go.property("speed",  4.62)
+go.property("wait",   5.36)
 go.property("score",  4)
 go.property("dark",   2)
 go.property("dest",   vmath.vector3())
@@ -154,7 +154,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 				time = time * 3.64
 			else
 				method = 1
-				time = time * 2.82
+				time = time * 6.24
 			end
 			pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
 			radius = rnd.range(26, 82)
@@ -192,7 +192,7 @@ function emoji_waiting(self)
 
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(0, 4 + ((level / 8) * (1.4 - darkness_level))) + socket.gettime()
+			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(0, 6 + ((level / 12) * (1.26 - darkness_level))) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			--self.dark = dark_default * 2
@@ -351,9 +351,7 @@ function on_message(self, message_id, message, sender)
 				sound.play(sound_type, {speed = sound_speed * proxy_speed, gain = math.random(80, 120) / 100 })
 				particlefx.stop(self.particle_url)
 
-				--if message.active == true then
-					self.active = false
-				--end
+				self.active = false
 				msg.post(self.collide_emoji,  "disable")
 				msg.post(self.collide_weapon, "disable")
 				go.cancel_animations(".", "position")

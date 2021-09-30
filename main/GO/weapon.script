@@ -1,18 +1,21 @@
 
---local charged_combo_count, charged_combo_score, charged_emoji_count, charged_dark_add
+local id    -- discharge_id
 
 
 
 
 function init(self)
 	self.charged_combo_count, self.charged_combo_score, self.charged_emoji_count, self.charged_dark_add = 0, 0, 0, 0
+	--self.discharge_used = false
 	self.active = true
 	self.id = go.get_id()
 	self.ttl = socket.gettime() + 0.04
-	self.collide_emoji = msg.url(nil, go.get_id(), "collide_emoji")
+	--self.collide_emoji = msg.url(nil, go.get_id(), "collide_emoji")
 	self.x = shot_x
 	self.y = shot_y
 
+	self.to_kill_table = {}
+	self.discharged_amount = 0
 	allow_combo_counter = level_play and true or false
 	bullet_is_hit = false
 
@@ -27,18 +30,38 @@ end
 
 
 function update(self)
-	if socket.gettime() > self.ttl then
-		if allow_combo_counter then
-			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = self.charged_combo_count, score = self.charged_combo_score, charged = self.charged_emoji_count, dark = self.charged_dark_add, pos = {x = self.x, y = self.y}})
+	if socket.gettime() > self.ttl and self.active then
+		self.active = false
+
+		if self.discharged_amount > 0 then
+			allow_combo_counter = false
+
+			if #self.to_kill_table > 0 then
+				for _, a in ipairs(self.to_kill_table) do
+					msg.post(a, "kill emoji", {id = id, force = true})
+				end
+			end
+		else
+			for _, a in ipairs(self.to_kill_table) do
+				msg.post(a, "kill emoji", {id = self.id, force = true})
+			end
 		end
 
-		if bullet_is_hit then
-			stat_bullets_hit = stat_bullets_hit + 1
-			score = score + bullet_miss
-		elseif score < 0 then
-			score = 0
-		end
-		go.delete()
+
+		timer.delay(0.02, false, function()
+			if bullet_is_hit then
+				stat_bullets_hit = stat_bullets_hit + 1
+				score = score + bullet_miss
+			elseif score < 0 then
+				score = 0
+			end
+
+			if allow_combo_counter then
+				msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = self.charged_combo_count, score = self.charged_combo_score, charged = self.charged_emoji_count, dark = self.charged_dark_add, pos = {x = self.x, y = self.y}})
+			end
+
+			go.delete()
+		end)
 	end
 
 
@@ -56,23 +79,43 @@ end
 
 function on_message(self, message_id, message)
 	if message.group == hash("emoji") and self.active then
-		local emoji, going_away, id
+		local id2
 		local emoji = msg.url(nil, message.other_id, "emoji")
 		local charged = go.get(emoji, "going_away")
 		local active = go.get(emoji, "active")
 
-		if not charged then
-			msg.post(emoji, "kill emoji", {id = self.id})
-		else
-			self.active = false
-			allow_combo_counter = false
+		if active then
+			go.set(emoji, "active", false)
 
-			id = factory.create("/main#discharge_factory", go.get_position(emoji), nil, {delayed = true})
-			msg.post(id, "make parent")
-			pprint("PARENT")
+			if not charged then
+				table.insert(self.to_kill_table, emoji)
+				-- go.set(emoji, "active", false)
+				--msg.post(emoji, "kill emoji", {id = self.id})
+			else
+				--if not self.discharge_used then
+				--self.discharge_used = true
+				--to_kill_table = {}
+					self.discharged_amount = self.discharged_amount + 1
+					--allow_combo_counter = false
+					if self.discharged_amount == 1 then
+						id = factory.create("/main#discharge_factory", go.get_position(emoji), nil, {delayed = false})
+						msg.post(id, "make parent")
+					else
+						timer.delay(0.04, false, function()
+							id2 = factory.create("/main#discharge_factory", go.get_position(emoji), nil, {delayed = false})
+							msg.post(id2, "assign child", {id = id})
+						end)
+					end
+
+					msg.post(emoji, "kill emoji", {id = id, force = true})
+
+					
+					
+				--end
+			end
 		end
 	end
-		
+
 
 	if message_id == hash("count charged_kill") then
 		self.charged_combo_count = self.charged_combo_count + 1
