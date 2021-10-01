@@ -59,7 +59,7 @@ function on_message(self, message_id, message, sender)
 
 			pos = go.get_position()
 			go.set_position(vmath.vector3(pos.x, pos.y, 0.9), "/bonus#level_bonus_particles")
-			go.set_scale(1.1, "/bonus#level_bonus_particles")
+			go.set_scale(1.2, "/bonus#level_bonus_particles")
 			particlefx.play("/bonus#level_particles")
 			particlefx.set_constant("/bonus#level_particles", "emitter", "tint", vmath.vector4(1,1,1,1))
 			sound.play("/main#health_bonus")
@@ -72,6 +72,7 @@ function on_message(self, message_id, message, sender)
 			go.animate("#sprite", "tint.w", playback, 0, easing, self.fade_out, 0)
 			go.animate(".", "scale", playback, 0, easing, self.fade_out, 0, function()
 				go.delete(".")
+				level_url = nil
 			end)
 		end
 	end

@@ -154,7 +154,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 				time = time * 3.64
 			else
 				method = 1
-				time = time * 6.24
+				time = time * 5.86
 			end
 			pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
 			radius = rnd.range(26, 82)
@@ -533,7 +533,7 @@ function on_message(self, message_id, message, sender)
 
 
 		elseif message_id == hash("bonus level emoji at end") then
-			self.speed = 2
+			self.speed = 1
 			self.wait_timeout = message.timeout
 			timer.delay(message.delay, false, function()
 				sound.play("/main#plumk", {gain = 0.22, speed = math.random(100, 200) / 100})

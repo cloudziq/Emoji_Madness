@@ -1,7 +1,4 @@
 
-go.property("delayed", false)
-
-
 local discharge_table = {}
 local sound_delay = 0
 
@@ -22,6 +19,14 @@ function init(self)
 	particlefx.set_constant("#particles", "blink",  "tint", vmath.vector4(1, .6, .2, .78))
 	tint = vmath.vector4(1, .74, .44, 1) * darkness_level
 	particlefx.set_constant("#particles", "emitter_light", "tint", tint)
+
+	if socket.gettime() > sound_delay then
+		sound_delay = socket.gettime() + 0.06
+		sound.play("/main#discharge", {speed = (math.random(80, 120) / 100) * proxy_speed})
+	end
+
+	level_summary_delay = socket.gettime() + 2.8
+
 
 	timer.delay(1.24, false, function()
 		self.active = false
@@ -47,7 +52,6 @@ function init(self)
 		else
 			pprint("removed entry")
 			num = discharge_table[self.parent].instances - 1
-			--table.remove(discharge_table[self.parent].objects, self.num)
 			discharge_table[self.parent].instances = num
 		end
 	end)
@@ -61,7 +65,6 @@ function on_message(self, message_id, message)
 		local emoji, going_away, id
 
 		local emoji = msg.url(nil, message.other_id, "emoji")
-		local collide_weapon = msg.url(nil, message.other_id, "collide_weapon")
 		local charged = go.get(emoji, "going_away")
 		local active = go.get(emoji, "active")
 
@@ -69,17 +72,11 @@ function on_message(self, message_id, message)
 			msg.post(emoji, "kill emoji", {id = self.parent, force = true})
 			go.set(emoji, "active", false)
 
-			if socket.gettime() > sound_delay then
-				sound_delay = socket.gettime() + 0.06
-				sound.play("/main#discharge", {speed = (math.random(80, 120) / 100) * proxy_speed})
-			end
-
-			if charged and not self.delayed then
+			if charged then
 				id = factory.create("/main#discharge_factory", go.get_position(emoji))
 				msg.post(id, "assign child", {id = self.parent})
 			end
 		end
-		if self.delayed then self.delayed = false end
 	end
 
 
@@ -88,10 +85,7 @@ function on_message(self, message_id, message)
 	if message_id == hash("make parent") then
 		pprint("PARENT")
 		self.parent = go.get_id()
-		--self.num = 1
 		discharge_table[self.parent] = {counter = {charged = 0, amount = 0, score = 0, dark = 0, pos = {x = shot_x, y = shot_y}}, instances = 1}
-		--table.insert(discharge_table[self.parent].objects, self.num)
-		--msg.post(collide_weapon, "disable")
 	end
 
 
@@ -101,14 +95,12 @@ function on_message(self, message_id, message)
 		pprint("assign child")
 		local num
 		self.parent = message.id
-		--self.num = message.num + 1
 		num = discharge_table[self.parent].instances + 1
 
 		if num > stat_chain_record then
 			stat_chain_record = num
 		end
 
-		--table.insert(discharge_table[self.parent].objects, self.num)
 		discharge_table[self.parent].instances = num
 		self.x = (discharge_table[self.parent].counter.pos.x + go.get_position().x) / 2
 		self.y = (discharge_table[self.parent].counter.pos.y + go.get_position().y) / 2

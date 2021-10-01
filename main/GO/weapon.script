@@ -6,11 +6,9 @@ local id    -- discharge_id
 
 function init(self)
 	self.charged_combo_count, self.charged_combo_score, self.charged_emoji_count, self.charged_dark_add = 0, 0, 0, 0
-	--self.discharge_used = false
 	self.active = true
 	self.id = go.get_id()
 	self.ttl = socket.gettime() + 0.04
-	--self.collide_emoji = msg.url(nil, go.get_id(), "collide_emoji")
 	self.x = shot_x
 	self.y = shot_y
 
@@ -18,6 +16,10 @@ function init(self)
 	self.discharged_amount = 0
 	allow_combo_counter = level_play and true or false
 	bullet_is_hit = false
+
+	if socket.gettime() + 1.1 > level_summary_delay then
+		level_summary_delay = socket.gettime() + 1.1
+	end
 
 	if level_play == true then
 		score = score - bullet_miss
@@ -36,12 +38,14 @@ function update(self)
 		if self.discharged_amount > 0 then
 			allow_combo_counter = false
 
+			-- assign kills to discharge
 			if #self.to_kill_table > 0 then
 				for _, a in ipairs(self.to_kill_table) do
 					msg.post(a, "kill emoji", {id = id, force = true})
 				end
 			end
 		else
+			-- assign kills to weapon
 			for _, a in ipairs(self.to_kill_table) do
 				msg.post(a, "kill emoji", {id = self.id, force = true})
 			end
@@ -89,29 +93,19 @@ function on_message(self, message_id, message)
 
 			if not charged then
 				table.insert(self.to_kill_table, emoji)
-				-- go.set(emoji, "active", false)
-				--msg.post(emoji, "kill emoji", {id = self.id})
 			else
-				--if not self.discharge_used then
-				--self.discharge_used = true
-				--to_kill_table = {}
-					self.discharged_amount = self.discharged_amount + 1
-					--allow_combo_counter = false
-					if self.discharged_amount == 1 then
-						id = factory.create("/main#discharge_factory", go.get_position(emoji), nil, {delayed = false})
-						msg.post(id, "make parent")
-					else
-						timer.delay(0.04, false, function()
-							id2 = factory.create("/main#discharge_factory", go.get_position(emoji), nil, {delayed = false})
-							msg.post(id2, "assign child", {id = id})
-						end)
-					end
+				self.discharged_amount = self.discharged_amount + 1
+				if self.discharged_amount == 1 then
+					id = factory.create("/main#discharge_factory", go.get_position(emoji))
+					msg.post(id, "make parent")
+				else
+					--timer.delay(0.04 * proxy_speed, false, function()
+						id2 = factory.create("/main#discharge_factory", go.get_position(emoji))
+						msg.post(id2, "assign child", {id = id})
+					--end)
+				end
 
-					msg.post(emoji, "kill emoji", {id = id, force = true})
-
-					
-					
-				--end
+				msg.post(emoji, "kill emoji", {id = id, force = true})
 			end
 		end
 	end

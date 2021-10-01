@@ -11,7 +11,11 @@ function on_message(self, message_id, message)
 			stat_score = stat_score + message.score
 			change_darkness(message.dark)
 			text = tostring(message.score)
-			scale, attack, sustain, release = .52, .4, .2, .16
+			if message.longer then
+				scale, attack, sustain, release = .64, .82, .6, .42
+			else
+				scale, attack, sustain, release = .52, .4, .2, .16
+			end
 		-- if combo
 		elseif message.amount > 1 and message.charged > 0 then
 			go.set("#+",     "color", vmath.vector4(.1, 1, .44, 1))
