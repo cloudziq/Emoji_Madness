@@ -11,7 +11,7 @@ function on_message(self, message_id, message)
 	local val, tint
 	if message_id == hash("update cursor light") then
 		val = message.stat == nil and darkness_level or message.val
-		tint = vmath.vector4(1,1,1, .68) * val
+		tint = vmath.vector4(1,1,1, .82) * val
 		go.set("#sprite", "tint", tint)
 	end
 end

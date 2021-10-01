@@ -1,64 +1,71 @@
 
-local charged_combo_count, charged_combo_score, charged_emoji_count, charged_dark_add
+local id    -- discharge_id
 
 
 
 
 function init(self)
-	charged_combo_count, charged_combo_score, charged_emoji_count, charged_dark_add = 0, 0, 0, 0
-
-	if level_play then
-		allow_combo_counter = true
-	else
-		allow_combo_counter = false
-	end
-	bullet_is_hit = false
-
-	if level_play == true then
-		score = score - bullet_miss
-		--if score < 0 then score = 0 end
-	end
-
-	if weapon_collide and level_play then stat_bullets_all = stat_bullets_all + 1 end
+	self.charged_combo_count, self.charged_combo_score, self.charged_emoji_count, self.charged_dark_add = 0, 0, 0, 0
+	self.active = true
+	self.id = go.get_id()
 	self.ttl = socket.gettime() + 0.04
-	self.collide_emoji = msg.url(nil, go.get_id(), "collide_emoji")
 	self.x = shot_x
 	self.y = shot_y
 
-	--timer.delay(0.01, false, function()
--- 		timer.delay(shot_ttl, false, function()
--- 			-- msg.post("game_layer2:/main#game_gui", "display_update")
--- 			if allow_combo_counter then
--- 				msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count, dark = charged_dark_add})
--- 			end
--- 
--- 			if bullet_is_hit then
--- 				stat_bullets_hit = stat_bullets_hit + 1
--- 				score = score + bullet_miss
--- 			elseif score < 0 then
--- 				score = 0
--- 			end
--- 			go.delete()
--- 		end)
-	--end)
+	self.to_kill_table = {}
+	self.discharged_amount = 0
+	allow_combo_counter = level_play and true or false
+	bullet_is_hit = false
+
+	if socket.gettime() + 1.1 > level_summary_delay then
+		level_summary_delay = socket.gettime() + 1.1
+	end
+
+	if level_play == true then
+		score = score - bullet_miss
+	end
+
+	if weapon_collide and level_play then stat_bullets_all = stat_bullets_all + 1 end
 end
 
 
 
 
 function update(self)
-	if socket.gettime() > self.ttl then
-		if allow_combo_counter then
-			msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, score = charged_combo_score, charged = charged_emoji_count, dark = charged_dark_add, pos = {x = self.x, y = self.y}})
+	if socket.gettime() > self.ttl and self.active then
+		self.active = false
+
+		if self.discharged_amount > 0 then
+			allow_combo_counter = false
+
+			-- assign kills to discharge
+			if #self.to_kill_table > 0 then
+				for _, a in ipairs(self.to_kill_table) do
+					msg.post(a, "kill emoji", {id = id, force = true})
+				end
+			end
+		else
+			-- assign kills to weapon
+			for _, a in ipairs(self.to_kill_table) do
+				msg.post(a, "kill emoji", {id = self.id, force = true})
+			end
 		end
 
-		if bullet_is_hit then
-			stat_bullets_hit = stat_bullets_hit + 1
-			score = score + bullet_miss
-		elseif score < 0 then
-			score = 0
-		end
-		go.delete()
+
+		timer.delay(0.02, false, function()
+			if bullet_is_hit then
+				stat_bullets_hit = stat_bullets_hit + 1
+				score = score + bullet_miss
+			elseif score < 0 then
+				score = 0
+			end
+
+			if allow_combo_counter then
+				msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = self.charged_combo_count, score = self.charged_combo_score, charged = self.charged_emoji_count, dark = self.charged_dark_add, pos = {x = self.x, y = self.y}})
+			end
+
+			go.delete()
+		end)
 	end
 
 
@@ -71,27 +78,43 @@ function update(self)
 	end
 end
 
--- function weapon_ttl_expand()
--- 	self.ttl = socket.gettime() + 1.1
--- 	msg.post(self.collide_emoji, "disable")
--- end
+
 
 
 function on_message(self, message_id, message)
-	if message_id == hash("weapon ttl expand") then
-		self.ttl = socket.gettime() + 1.1
-		msg.post(self.collide_emoji, "disable")
-		--pprint("weapon ttl: "..tostring(self.ttl))
+	if message.group == hash("emoji") and self.active then
+		local id2
+		local emoji = msg.url(nil, message.other_id, "emoji")
+		local charged = go.get(emoji, "going_away")
+		local active = go.get(emoji, "active")
+
+		if active then
+			go.set(emoji, "active", false)
+
+			if not charged then
+				table.insert(self.to_kill_table, emoji)
+			else
+				self.discharged_amount = self.discharged_amount + 1
+				if self.discharged_amount == 1 then
+					id = factory.create("/main#discharge_factory", go.get_position(emoji))
+					msg.post(id, "make parent")
+				else
+					--timer.delay(0.04 * proxy_speed, false, function()
+						id2 = factory.create("/main#discharge_factory", go.get_position(emoji))
+						msg.post(id2, "assign child", {id = id})
+					--end)
+				end
+
+				msg.post(emoji, "kill emoji", {id = id, force = true})
+			end
+		end
+	end
 
 
-	elseif message_id == hash("weapon ttl expire") then
-		self.ttl = 0
-		
-
-	elseif message_id == hash("count charged_kill") then
-		charged_combo_count = charged_combo_count + 1
-		if message.charged then charged_emoji_count = charged_emoji_count + 1 end
-		charged_combo_score = charged_combo_score + message.score
-		charged_dark_add = charged_dark_add + message.dark
+	if message_id == hash("count charged_kill") then
+		self.charged_combo_count = self.charged_combo_count + 1
+		if message.charged then self.charged_emoji_count = self.charged_emoji_count + 1 end
+		self.charged_combo_score = self.charged_combo_score + message.score
+		self.charged_dark_add = self.charged_dark_add + message.dark
 	end
 end

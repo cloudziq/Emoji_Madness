@@ -54,7 +54,7 @@ function on_message(self, message_id, message)
 			timer.delay(.2, false, function()
 				change_darkness(charged_combo_count)
 				if charged_combo_count > 0 then
-					msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, dark = charged_dark_add, score = charged_combo_score, charged = 0})
+					msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, dark = charged_dark_add, score = charged_combo_score, charged = 0, pos = {x = shot_x, y = shot_y}, longer = true})
 				end
 			end)
 

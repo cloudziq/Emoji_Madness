@@ -2,24 +2,26 @@
 -- starting values:
 level  = 1
 score  = 0
-health = 200
-emojis = 80
-speed  = 22.2   -- percentage modifier which affects emojis speed, wait_timeout
-level_bonus_unlocked = 4
-level_bombs_unlocked = 8
-bombs_amount = 1
+health = 5
+emojis = 20
+speed  = 28.2   -- percentage modifier which affects emojis speed, wait_timeout
+level_bonus_unlocked = 1
+level_bombs_unlocked = 1
+bombs_amount = 4
 bonus_requirement = 0
 bullet_miss = 1
 bullet_miss_level = 6
+level_summary_delay = 0
 
 bonus_can_spawn = false
 orb_can_spawn = false
 bonus_clock_active = false
 bonus_level_active = false
 change_music_variant = false
+wait_for_summary = false
 
 -- adds for level completion:
-speed_add      = 2.4
+speed_add      = 2.2
 emojis_add     = 4
 health_add     = 1
 health_perfect = 1
@@ -95,7 +97,24 @@ function update(self, dt)
 		end
 	end
 
-	
+
+
+
+	if wait_for_summary then
+		if socket.gettime() > level_summary_delay then
+			wait_for_summary = false
+			speed = speed + speed_add
+			score = score + (level * 10)
+			stat_score = stat_score + (level * 10)
+			level = level + 1
+			health = health + health_add
+			emojis = emojis + emojis_add ; if emojis > 120 then emojis = 120 end
+			msg.post("#game_gui", "hide_after_level")
+			msg.post("#level_complete", "show", {killed = killed, escaped = escaped})
+		end
+	end
+
+
 	if level_play == true then
 
 		if health == 0 then
@@ -107,16 +126,7 @@ function update(self, dt)
 		elseif emojis_left == 0 then
 			level_play = false
 			weapon_collide = false
-			timer.delay(1, false, function()
-				speed = speed + speed_add
-				score = score + (level * 10)
-				stat_score = stat_score + (level * 10)
-				level = level + 1
-				health = health + health_add
-				emojis = emojis + emojis_add ; if emojis > 120 then emojis = 120 end
-				msg.post("#game_gui", "hide_after_level")
-				msg.post("#level_complete", "show", {killed = killed, escaped = escaped})
-			end)
+			wait_for_summary = true
 		end
 
 
@@ -124,8 +134,8 @@ function update(self, dt)
 
 		if bonus_can_spawn and level >= level_bonus_unlocked and not pause_id then
 			--bonus_clock_spawn
-			if rnd.range(1, 15000) >= 14997 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
-			--if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and killed > 1 and emojis_left >= 2 then
+			--if rnd.range(1, 15000) >= 14997 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
+			if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and killed > 1 and emojis_left >= 2 then
 				msg.post("game_layer1:/main#ctrl", "bonus_clock")
 				bonus_clock_visible = true
 			end
@@ -140,6 +150,7 @@ function update(self, dt)
 
 		-- orbs spawning
 		if level > 1 and rnd.range(1, 40000) >= 40000 - (level * 2) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
+		-- if level > 1 and rnd.range(1, 40000) >= 40000 - (level * 2) and orbs_spawned < 10 and emojis_left >= 4 and orb_can_spawn then
 			orbs_spawned = orbs_spawned + 1
 			msg.post("game_layer1:/main#ctrl", "generate_orbs", {amount = 1, scale = 0.001})
 		end
@@ -223,7 +234,7 @@ function on_message(self, message_id, message, sender)
 
 	elseif message_id == hash("show charged_combo display") then
 		multi_counter_id = factory.create("/main#multi_counter_factory")
-		msg.post(multi_counter_id, "charged_combo text -final", {amount = message.amount, dark = message.dark, score = message.score, charged = message.charged, pos = message.pos})
+		msg.post(multi_counter_id, "charged_combo text -final", {amount = message.amount, dark = message.dark, score = message.score, charged = message.charged, pos = message.pos, longer = message.longer})
 
 
 
@@ -271,6 +282,7 @@ function level_prepare()
 	if level > level_bombs_unlocked and level % 2 == 0 then
 		bombs_amount = bombs_amount + 1
 	end
+
 	msg.post("game_layer1:/main#ctrl", "get bonuses_delay_time")
 	msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = emojis, scale = 1})
 	if level >= level_bombs_unlocked then

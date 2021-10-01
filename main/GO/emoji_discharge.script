@@ -1,19 +1,126 @@
-local instances = 0
+
+local discharge_table = {}
+local sound_delay = 0
+
+
+
 
 function init(self)
-	instances = instances + 1
-	go.set_scale(.62)
+	local num
+	self.charged_combo_count, self.charged_combo_score, self.charged_emoji_count, self.charged_dark_add = 0, 0, 0, 0
+	self.active = true
+	self.parent = nil
+	self.allow_counter = false
+
+	go.set_scale(.34)
 	particlefx.play("#particles")
 	particlefx.set_constant("#particles", "emitter", "tint", vmath.vector4(1, .6, .2, .86))
-	particlefx.set_constant("#particles", "longer",  "tint", vmath.vector4(1, .6, .2, .78))
+	particlefx.set_constant("#particles", "longer",  "tint", vmath.vector4(1, .8, .4, .84))
+	particlefx.set_constant("#particles", "blink",  "tint", vmath.vector4(1, .6, .2, .78))
 	tint = vmath.vector4(1, .74, .44, 1) * darkness_level
 	particlefx.set_constant("#particles", "emitter_light", "tint", tint)
 
-	timer.delay(1, false, function()
-		-- instances = instances - 1
-		-- if instances == 0 then
-			--msg.post(weapon_id, "weapon ttl expire")
-		-- end
-		go.delete()
+	if socket.gettime() > sound_delay then
+		sound_delay = socket.gettime() + 0.06
+		sound.play("/main#discharge", {speed = (math.random(80, 120) / 100) * proxy_speed})
+	end
+
+	level_summary_delay = socket.gettime() + 2.8
+
+
+	timer.delay(1.24, false, function()
+		self.active = false
+		timer.delay(2, false, function() go.delete() end)
+
+		pprint(discharge_table[self.parent].instances)
+
+		if discharge_table[self.parent].instances == 1 then
+			self.charged_combo_count = discharge_table[self.parent].counter.amount
+			self.charged_emoji_count = discharge_table[self.parent].counter.charged
+			self.charged_combo_score = discharge_table[self.parent].counter.score
+			self.charged_dark_add = discharge_table[self.parent].counter.dark
+			self.x = discharge_table[self.parent].counter.pos.x
+			self.y = discharge_table[self.parent].counter.pos.y
+			self.allow_counter = true
+
+			if self.allow_counter then
+				msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = self.charged_combo_count, score = self.charged_combo_score, charged = self.charged_emoji_count, dark = self.charged_dark_add, pos = {x = self.x, y = self.y}})
+			end
+
+			discharge_table[self.parent] = nil
+			pprint("DELETED")
+		else
+			pprint("removed entry")
+			num = discharge_table[self.parent].instances - 1
+			discharge_table[self.parent].instances = num
+		end
 	end)
+end
+
+
+
+
+function on_message(self, message_id, message)
+	if message.group == hash("emoji") and self.active then
+		local emoji, going_away, id
+
+		local emoji = msg.url(nil, message.other_id, "emoji")
+		local charged = go.get(emoji, "going_away")
+		local active = go.get(emoji, "active")
+
+		if active then
+			msg.post(emoji, "kill emoji", {id = self.parent, force = true})
+			go.set(emoji, "active", false)
+
+			if charged then
+				id = factory.create("/main#discharge_factory", go.get_position(emoji))
+				msg.post(id, "assign child", {id = self.parent})
+			end
+		end
+	end
+
+
+
+
+	if message_id == hash("make parent") then
+		pprint("PARENT")
+		self.parent = go.get_id()
+		discharge_table[self.parent] = {counter = {charged = 0, amount = 0, score = 0, dark = 0, pos = {x = shot_x, y = shot_y}}, instances = 1}
+	end
+
+
+
+
+	if message_id == hash("assign child") then
+		pprint("assign child")
+		local num
+		self.parent = message.id
+		num = discharge_table[self.parent].instances + 1
+
+		if num > stat_chain_record then
+			stat_chain_record = num
+		end
+
+		discharge_table[self.parent].instances = num
+		self.x = (discharge_table[self.parent].counter.pos.x + go.get_position().x) / 2
+		self.y = (discharge_table[self.parent].counter.pos.y + go.get_position().y) / 2
+		discharge_table[self.parent].counter.pos.x = self.x
+		discharge_table[self.parent].counter.pos.y = self.y
+
+
+
+
+	elseif message_id == hash("count charged_kill") then
+		self.charged_combo_count = self.charged_combo_count + 1
+		discharge_table[self.parent].counter.amount = self.charged_combo_count
+
+		if message.charged then self.charged_emoji_count = self.charged_emoji_count + 1 end
+		discharge_table[self.parent].counter.charged = self.charged_emoji_count
+		
+		self.charged_combo_score = self.charged_combo_score + message.score
+		discharge_table[self.parent].counter.score = self.charged_combo_score
+
+		self.charged_dark_add = self.charged_dark_add + message.dark
+		discharge_table[self.parent].counter.dark = self.charged_dark_add
+	end
 end
