@@ -11,9 +11,9 @@ function init(self)
 	local x, y, tint
 
 	self.active = true
-	self.fade_in = 2.64
-	self.time = 2.86
-	self.fade_out = 2.64
+	self.fade_in = 2.32
+	self.time = 2.44
+	self.fade_out = 2.32
 
 	x = rnd.range(80 + 50, window_w - 80 - 50)
 	y = rnd.range(80 + 50, window_h - 80 - 50 - 44)
@@ -41,7 +41,7 @@ end
 function on_message(self, message_id, message, sender)
 	local pos
 	
-	if message_id == hash("collision_response") then
+	--if message_id == hash("collision_response") then
 		if message.group == hash("weapon") and self.active == true then
 			self.active = false
 			bullet_is_hit = true
@@ -66,7 +66,7 @@ function on_message(self, message_id, message, sender)
 		end
 
 
-	elseif message_id == hash("delete clover") then
+	if message_id == hash("delete clover") then
 		if self.active then
 			go.cancel_animations(".", "scale")
 			go.animate("#sprite", "tint.w", playback, 0, easing, self.fade_out, 0)

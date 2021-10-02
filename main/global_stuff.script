@@ -299,6 +299,7 @@ end
 -- kill        -  total kills
 -- combo       -  total number of charged kills
 -- chain       -  biggest chained combo amount
+-- chain_score -  biggest score in single chain
 -- health      -  total number of health loss
 -- level       -  total levels completed
 -- bonus_level -  total bonus level completed
@@ -308,7 +309,7 @@ end
 -- score       -  total score collected
 
 -- stats_define:
-stats_table = {game = 0, kill = 0, combo = 0, chain = 0, health = 0, level = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}
+stats_table = {game = 0, kill = 0, combo = 0, chain = 0, chain_score = 0, health = 0, level = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}
 
 function load_stats()
 	local file = sys.get_save_file("Emoji_Madness", "stats.dzq")
@@ -339,13 +340,14 @@ stat_bonus_level   = 0
 stat_kills         = 0
 stat_combo         = 0
 stat_chain_record  = 0
+stat_chain_score   = 0
 stat_health_loss   = 0
 stat_bombs         = 0
 stat_bullets_all   = 0
 stat_bullets_hit   = 0
 stat_score         = 0
 
-function final()
+function stats_write()
 	stat_change("game",         stat_games)
 	stat_change("level",        stat_levels)
 	stat_change("bonus_level",  stat_bonus_level)
@@ -353,6 +355,9 @@ function final()
 	stat_change("combo",        stat_combo)
 	if stat_chain_record > stats_table.chain and stat_chain_record >= 2 then
 		stat_change("chain",        stat_chain_record)
+	end
+	if stat_chain_score > stats_table.chain_score then
+		stat_change("chain_score",  stat_chain_score)
 	end
 	stat_change("health",       stat_health_loss)
 	stat_change("bomb",         stat_bombs)
@@ -363,4 +368,9 @@ function final()
 
 	pprint(stats_table)
 	pprint(string.format("accurancy: %d%%", (stats_table.hit / stats_table.bullet) * 100))
+end
+
+
+function final()
+	stats_write()
 end

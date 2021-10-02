@@ -28,7 +28,7 @@ function init(self)
 	--screen_w = 1680
 	--screen_h = 1050
 
-	screen_w = 1650 ; screen_h = 874  -- smaller window
+	--screen_w = 1650 ; screen_h = 874  -- smaller window
 	--screen_w = 1650 ; screen_h = 600   -- for recording
 
 	window_w = 1280 * 4 ; window_h = 1320 * 4

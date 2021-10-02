@@ -59,7 +59,7 @@ end
 function on_message(self, message_id, message, sender)
 	local pos
 
-	if message_id == hash("collision_response") then
+	--if message_id == hash("collision_response") then
 		if message.group == hash("weapon") and bonus_clock_active == false and self.active == true then
 			go.cancel_animations(".", "position")
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 2.5, go.EASING_OUTSINE, 2)
@@ -84,7 +84,7 @@ function on_message(self, message_id, message, sender)
 		end
 
 
-	elseif message_id == hash("delete_clock") then
+	if message_id == hash("delete_clock") then
 		proxy_speed = 1 ; go.delete()
 		msg.post("main:/main#game_proxy1", "set_time_step", {factor = 1 , mode = 1})
 	end

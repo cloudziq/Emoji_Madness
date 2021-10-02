@@ -3,11 +3,11 @@
 level  = 1
 score  = 0
 health = 5
-emojis = 20
-speed  = 28.2   -- percentage modifier which affects emojis speed, wait_timeout
-level_bonus_unlocked = 1
-level_bombs_unlocked = 1
-bombs_amount = 4
+emojis = 16
+speed  = 16   -- percentage modifier which affects emojis speed, wait_timeout
+level_bonus_unlocked = 4
+level_bombs_unlocked = 8
+bombs_amount = 1
 bonus_requirement = 0
 bullet_miss = 1
 bullet_miss_level = 6
@@ -21,7 +21,7 @@ change_music_variant = false
 wait_for_summary = false
 
 -- adds for level completion:
-speed_add      = 2.2
+speed_add      = 6.2
 emojis_add     = 4
 health_add     = 1
 health_perfect = 1
@@ -72,7 +72,7 @@ function update(self, dt)
 			if level == 20 then emojis_add = 2 end
 
 			if level == level_bonus_unlocked then
-				bonus_requirement = 8 - 1
+				bonus_requirement = 20 - 1
 				timer.delay(1.4, false, function()
 					msg.post("#game_gui", "show_bonus_available_info")
 				end)
@@ -124,6 +124,7 @@ function update(self, dt)
 			sound.play("game_layer1:/main#fart", {gain = 0.6})
 
 		elseif emojis_left == 0 then
+			msg.post("#game_gui", "fade crosshair")
 			level_play = false
 			weapon_collide = false
 			wait_for_summary = true
@@ -134,8 +135,8 @@ function update(self, dt)
 
 		if bonus_can_spawn and level >= level_bonus_unlocked and not pause_id then
 			--bonus_clock_spawn
-			--if rnd.range(1, 15000) >= 14997 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
-			if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and killed > 1 and emojis_left >= 2 then
+			if rnd.range(1, 15000) >= 14997 and bonus_clock_visible == false and emojis_left >= bonus_requirement then
+			-- if math.random(1, 12000) >= 1999 and bonus_clock_visible == false and killed > 1 and emojis_left >= 2 then
 				msg.post("game_layer1:/main#ctrl", "bonus_clock")
 				bonus_clock_visible = true
 			end
@@ -150,7 +151,7 @@ function update(self, dt)
 
 		-- orbs spawning
 		if level > 1 and rnd.range(1, 40000) >= 40000 - (level * 2) and orbs_spawned < level / 2 and emojis_left >= 4 and orb_can_spawn then
-		-- if level > 1 and rnd.range(1, 40000) >= 40000 - (level * 2) and orbs_spawned < 10 and emojis_left >= 4 and orb_can_spawn then
+		--if level > 0 and rnd.range(1, 40000) >= 36000 - (level * 2) and orbs_spawned < 10 and emojis_left >= 1 and orb_can_spawn then
 			orbs_spawned = orbs_spawned + 1
 			msg.post("game_layer1:/main#ctrl", "generate_orbs", {amount = 1, scale = 0.001})
 		end

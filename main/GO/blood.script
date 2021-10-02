@@ -1,3 +1,4 @@
+
 function init(self)
 	self.active = true
 	msg.post("#sprite", "play_animation", { id = hash( "blood"..rnd.range(1, blood_in_atlas) ) })

@@ -1,6 +1,6 @@
 
 function on_message(self, message_id, message)
-	local old_score, multiplier, text, tex_len, charged
+	local temp_score, multiplier, text, tex_len, charged
 	local ax, ay, x, y = 60, 46    -- default position for text to appear
 	local scale, attack, sustain, release
 
@@ -23,17 +23,21 @@ function on_message(self, message_id, message)
 			go.set("#+",     "outline", vmath.vector4(0,0,0,1))
 			go.set("#count", "outline", vmath.vector4(0,0,0,1))
 
-			old_score = score
+			--old_score = score
 			--multiplier = (message.amount
 			--multiplier = (message.amount * 10)
-			score = score + (message.score + (3 * message.charged)) * message.amount
+			temp_score = message.score * message.amount
+			score = score + temp_score
+			if temp_score > stat_chain_score then
+				stat_chain_score = temp_score
+			end
 			--score = score + multiplier
-			stat_score = stat_score + (message.score + (3 * message.charged)) * message.amount
+			stat_score = stat_score + temp_score
 			-- stat_score = stat_score + (message.score * multiplier)
 			--stat_score = stat_score + multiplier
 			stat_combo = stat_combo + 1
 			change_darkness(message.amount)
-			text = tostring(score - old_score)
+			text = tostring(temp_score)
 			scale, attack, sustain, release = .64, .82, .6, .42
 		else
 			if score > 0 then

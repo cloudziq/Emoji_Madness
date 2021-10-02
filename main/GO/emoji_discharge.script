@@ -25,10 +25,8 @@ function init(self)
 		sound.play("/main#discharge", {speed = (math.random(80, 120) / 100) * proxy_speed})
 	end
 
-	level_summary_delay = socket.gettime() + 2.8
 
-
-	timer.delay(1.24, false, function()
+	timer.delay(1.26, false, function()
 		self.active = false
 		timer.delay(2, false, function() go.delete() end)
 
@@ -83,6 +81,10 @@ function on_message(self, message_id, message)
 
 
 	if message_id == hash("make parent") then
+		if socket.gettime() + 2.4 > level_summary_delay then
+			level_summary_delay = socket.gettime() + 2.4
+		end
+
 		pprint("PARENT")
 		self.parent = go.get_id()
 		discharge_table[self.parent] = {counter = {charged = 0, amount = 0, score = 0, dark = 0, pos = {x = shot_x, y = shot_y}}, instances = 1}
@@ -96,6 +98,8 @@ function on_message(self, message_id, message)
 		local num
 		self.parent = message.id
 		num = discharge_table[self.parent].instances + 1
+
+		level_summary_delay = socket.gettime() + 3.64
 
 		if num > stat_chain_record then
 			stat_chain_record = num

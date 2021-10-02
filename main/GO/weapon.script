@@ -56,6 +56,7 @@ function update(self)
 			if bullet_is_hit then
 				stat_bullets_hit = stat_bullets_hit + 1
 				score = score + bullet_miss
+				if #self.to_kill_table > 0 and self.discharged_amount == 0 then allow_combo_counter = true end
 			elseif score < 0 then
 				score = 0
 			end

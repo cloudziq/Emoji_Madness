@@ -59,16 +59,16 @@ function on_message(self, message_id, message, sender)
 			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
 			delay = delay + .74
 		end
-		timer.delay(4.65, false, function()
+		timer.delay(4.24, false, function()
 			delay = 1
 			for i = 5, 1, -1 do
 				node = gui.get_node("bomb"..i)
 				gui.animate(node, "color.w", 0, gui.EASING_LINEAR, 1.25, delay)
-				delay = delay + .34
+				delay = delay + .22
 			end
 		end)
 		gui.set_enabled(gui.get_node("BOMBS_AVAILABLE"), true)
-		timer.delay(6.65, false, function()
+		timer.delay(5.82, false, function()
 			msg.post("#", "show_level_intro")
 		end)
 
@@ -103,10 +103,8 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("show_bonus_level_intro") then
 		delay = 0 ; weapon_collide = false
 
-		-- if dark_mode then
-			darkness_level_temp = darkness_level
-			fade_darkness(6, 0)
-		-- end
+		darkness_level_temp = darkness_level
+		fade_darkness(6, 0)
 
 		gui.set_enabled(gui.get_node("crosshair"), true)
 		gui.set_position(gui.get_node("start_info"), vmath.vector3(window_w / 2 , -100, 1))
@@ -159,11 +157,7 @@ function on_message(self, message_id, message, sender)
 					msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = 10, scale = 2, table_clear = false})
 				end)
 
-				-- if level - 1 < dark_start_level then
-					msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "", disable = false})
-				-- else
-				-- 	msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "dark", disable = false})
-				-- end
+				msg.post("game_layer1:/main#ctrl", "fade_out_music", {time = 2, mode = "", disable = false})
 				msg.post("game_layer1:/main#ctrl", "fade_in_add_music")
 			end
 
@@ -251,6 +245,7 @@ function on_message(self, message_id, message, sender)
 			gui.set_enabled(gui.get_node("bonus_item_requirement"), false)
 		end
 
+		gui.set_color(gui.get_node("crosshair"), vmath.vector4(.8, .8, .8, .6))
 		gui.set_text(gui.get_node("level"), "LEVEL "..level)
 		gui.set_text(gui.get_node("health"), tostring(health))
 		gui.set_text(gui.get_node("emojis_left"), tostring(emojis))
@@ -258,6 +253,7 @@ function on_message(self, message_id, message, sender)
 		gui.set_text(gui.get_node("score"), "SCORE: "..score)
 		gui.set_fill_angle(gui.get_node("darkness_indicator"), (360 * darkness_level))
 		gui.set_text(gui.get_node("darkness_amount"), tostring(darkness_level * 1000))
+
 		if level >= level_bombs_unlocked then
 			gui.set_enabled(gui.get_node("bomb_display"), true)
 		else
@@ -272,6 +268,7 @@ function on_message(self, message_id, message, sender)
 
 
 	elseif message_id == hash("show_bonus_level_display") then
+		gui.set_color(gui.get_node("crosshair"), vmath.vector4(.8, .8, .8, .6))
 		gui.set_text(gui.get_node("bullets"), "20")
 		gui.animate(gui.get_node("display_bonus_level"), "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 1.8, 1.2)
 
@@ -298,7 +295,6 @@ function on_message(self, message_id, message, sender)
 			end
 			--<
 
-			gui.set_text(gui.get_node("score"), "SCORE: "..score)
 			gui.set_text(gui.get_node("health"), tostring(health))
 			gui.set_text(gui.get_node("emojis_left"), tostring(emojis_left))
 			gui.set_fill_angle(gui.get_node("darkness_indicator"), (360 * darkness_level))
@@ -306,16 +302,20 @@ function on_message(self, message_id, message, sender)
 			gui.set_text(gui.get_node("bomb_amount"), tostring(bombs_left))
 			msg.post("main:/main#ctrl", "set dark render")
 
-			if message.stat == "health loss" then
-				gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function()
-					gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .14)
-				end)
-			end
+			if message.stat ~= "" then
+				if message.stat == "health loss" then
+					gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function()
+						gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .14)
+					end)
+				end
 
-			if message.stat == "orb collect" then
-				gui.animate(gui.get_node("display"), "color", vmath.vector3(2, 2, 2), gui.EASING_LINEAR, .16, 0, function()
-					gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .16)
-				end)
+				if message.stat == "orb collect" then
+					gui.animate(gui.get_node("display"), "color", vmath.vector3(2, 2, 2), gui.EASING_LINEAR, .16, 0, function()
+						gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .16)
+					end)
+				end
+			else
+				gui.set_text(gui.get_node("score"), "SCORE: "..score)
 			end
 
 			if level >= level_bonus_unlocked then
@@ -324,7 +324,7 @@ function on_message(self, message_id, message, sender)
 				if counter == 0 and not cursor_blinking then
 					cursor_blinking = true
 					gui.animate(gui.get_node("crosshair"), "color", vmath.vector4(1, .54, .08, 1), go.EASING_LINEAR, .32, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
-				elseif counter < 0 then
+				elseif counter < 0 and level_play then
 					cursor_blinking = false
 					gui.cancel_animation(gui.get_node("crosshair"), "color")
 				end
@@ -332,7 +332,7 @@ function on_message(self, message_id, message, sender)
 				gui.set_text(gui.get_node("bonus_item_requirement"), tostring(bonus_requirement))
 
 				if not bonus_can_spawn then
-					gui.set_color(gui.get_node("crosshair"), vmath.vector3(.4, 1, .4))
+					gui.set_color(gui.get_node("crosshair"), vmath.vector4(.4, 1, .4, .6))
 					gui.animate(gui.get_node("cursor_counter"), "color.w", 1, go.EASING_INSINE, 1, .2)
 					gui.animate(gui.get_node("clover_icon"), "color.w", 1, go.EASING_INSINE, 1, .76)
 					gui.animate(gui.get_node("clock_icon"), "color.w", 1, go.EASING_INSINE, 1, .76)
@@ -351,6 +351,14 @@ function on_message(self, message_id, message, sender)
 
 
 
+	elseif message_id == hash("fade crosshair") then
+		gui.set_color(gui.get_node("crosshair"), vmath.vector4(1, .2, .2, .6))
+		gui.cancel_animation(gui.get_node("crosshair"), "color")
+		gui.animate(gui.get_node("crosshair"), "color.w", 0, go.EASING_LINEAR, 1.4, 1)
+
+
+
+
 	elseif message_id == hash("bonus_display_update") then
 		gui.set_text(gui.get_node("score1"), "BONUS SCORE: "..bonus_score)
 		if bonus_shots < 0 then shots = 0 else shots = bonus_shots end
@@ -364,6 +372,7 @@ function on_message(self, message_id, message, sender)
 		total_kills = total_kills + killed
 		skip_main_intro = true
 		gui.set_enabled(gui.get_node("crosshair"), false)
+		gui.cancel_animation(gui.get_node("crosshair"), "color")
 		gui.animate(gui.get_node("display"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.6, .2)
 		gui.animate(gui.get_node("display_bonus_level"), "color", vmath.vector4(0,0,0,0), gui.EASING_LINEAR, 1.6, .2)
 
@@ -372,9 +381,9 @@ function on_message(self, message_id, message, sender)
 
 	elseif message_id == hash("animate cursor") then
 		if weapon_collide then scale = vmath.vector3(4,4,0) else scale = vmath.vector3(1.64, 1.64, 0) end
-		gui.animate(gui.get_node("crosshair"), "color.w", .2, gui.EASING_LINEAR, .15)
+		if level_play then gui.animate(gui.get_node("crosshair"), "color.w", .2, gui.EASING_LINEAR, .15) end
 		gui.animate(gui.get_node("crosshair"), "scale", scale, gui.EASING_LINEAR, .15, 0, function ()
-			gui.animate(gui.get_node("crosshair"), "color.w", .64, gui.EASING_LINEAR, .1)
+			if level_play then gui.animate(gui.get_node("crosshair"), "color.w", .64, gui.EASING_LINEAR, .1) end
 			gui.animate(gui.get_node("crosshair"), "scale", vmath.vector3(3,3,3), gui.EASING_LINEAR, .1)
 		end)
 	end

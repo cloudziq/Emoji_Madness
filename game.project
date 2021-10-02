@@ -32,7 +32,7 @@ app_icon = /icon.ico
 lib_path = discordrich/res
 
 [sprite]
-max_count = 512
+max_count = 620
 
 [physics]
 gravity_y = 0.0

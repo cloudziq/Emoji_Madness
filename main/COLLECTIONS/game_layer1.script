@@ -1,5 +1,6 @@
 
 local clock_id, level_id
+level_url = nil
 
 
 

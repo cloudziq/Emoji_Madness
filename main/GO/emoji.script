@@ -3,8 +3,8 @@
 local score_default = 4
 
 
-go.property("speed",  4.62)
-go.property("wait",   5.36)
+go.property("speed",  4.40)
+go.property("wait",   5.60)
 go.property("score",  4)
 go.property("dark",   2)
 go.property("dest",   vmath.vector3())
@@ -35,10 +35,8 @@ local hash_group_wave      = hash("wavepush")
 
 
 function init(self)
-	self.active         = true
 	self.wait_timeout   = 0
 	self.waiting        = false
-	self.going_away     = false
 	self.need_pos_check = false
 	self.sound_delay    = 0
 	self.collide_type   = 0
@@ -53,11 +51,11 @@ function init(self)
 			particlefx.play(self.particle_url)
 			sprite.set_constant("#sprite", "tint", vmath.vector4(.62, .76, .82, 1))
 			timer.delay(1.84, false, function() msg.post("#collide_emoji", "enable") end)
-			go.set_scale(math.random(36, 360) / 100)
+			go.set_scale(math.random(36, 380) / 100)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.22, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 		else
-			local delay = rnd.range(1, 6 + (emojis / 12) + (level / 6))
+			local delay = rnd.range(1, 4 + (emojis / 10) + ((level / 4) * (1.2 - darkness_level)))
 			self.collide_emoji     = msg.url(nil, go.get_id(), "collide_emoji")
 			self.collide_weapon    = msg.url(nil, go.get_id(), "collide_weapon")
 			sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
@@ -140,10 +138,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 
 		if bonus_level_active == 1 then self.active = false end
 
-		time = self.speed - (speed * (self.speed / 100)) * (1.25 - darkness_level)
+		time = self.speed - (speed * (self.speed / 100)) * (1.24 - darkness_level)
 
 		if not self.going_away then
-			time = time + math.random(0, 6)
+			time = time + math.random(1, 6)
 			pos_x = rnd.range(80 + 50, window_w - 80 - 50)
 			pos_y = rnd.range(80 + 50, window_h - 120 - 50)
 			radius = rnd.range(40, 160)
@@ -151,10 +149,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 		else
 			if self.need_pos_check then
 				method = 2
-				time = time * 3.64
+				time = time * 4.22
 			else
 				method = 1
-				time = time * 5.86
+				time = time * 5.48
 			end
 			pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
 			radius = rnd.range(26, 82)
@@ -192,7 +190,7 @@ function emoji_waiting(self)
 
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(0, 6 + ((level / 12) * (1.26 - darkness_level))) + socket.gettime()
+			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(0, 2 + ((level / 12) * (1.12 - darkness_level))) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			--self.dark = dark_default * 2
@@ -234,7 +232,7 @@ end
 
 
 
-function sprite_flip(pos, reset, noflip)
+function sprite_flip(pos, reset, flip)
 	local rot
 
 	if reset ~= nil then
@@ -243,7 +241,7 @@ function sprite_flip(pos, reset, noflip)
 		rot = go.get_position().x < pos and -10 or 10
 	end
 	go.animate(".", "euler.z", go.PLAYBACK_ONCE_FORWARD, rot, go.EASING_INOUTSINE, .4)
-	if noflip == nil or noflip == true then
+	if flip == nil or flip == true then
 		sprite.set_hflip(".", go.get_position().x < pos)
 	end
 end
@@ -394,7 +392,7 @@ function on_message(self, message_id, message, sender)
 
 						go.set_position(pos)
 						go.cancel_animations(".", "position")
-						sprite_flip(pos.x, true)
+						sprite_flip(pos.x, true, false)
 						go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, self.dest, go.EASING_OUTSINE, time, 0, function()
 							if self.need_pos_check == true then
 								get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)

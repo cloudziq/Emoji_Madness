@@ -13,6 +13,10 @@ function init(self)
 
 	msg.post(self.blast, "disable")
 
+	if socket.gettime() + 1.6 > level_summary_delay then
+		level_summary_delay = socket.gettime() + 1.6
+	end
+
 	if #bomb_table == 0 then
 		x, y = get_onscreen_pos(80, 1)
 		pos = {x = x, y = y}
