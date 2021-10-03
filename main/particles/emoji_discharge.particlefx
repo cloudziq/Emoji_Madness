@@ -27,7 +27,7 @@ emitters {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 40.0
+      y: 60.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -67,7 +67,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_LIFE_TIME
     points {
       x: 0.0
-      y: 1.6
+      y: 1.4
       t_x: 1.0
       t_y: 0.0
     }
@@ -77,11 +77,11 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SPEED
     points {
       x: 0.0
-      y: 1000.0
+      y: 1600.0
       t_x: 1.0
       t_y: 0.0
     }
-    spread: 0.0
+    spread: 200.0
   }
   properties {
     key: EMITTER_KEY_PARTICLE_SIZE
@@ -214,14 +214,26 @@ emitters {
     points {
       x: 0.0
       y: 0.0
-      t_x: 0.07194582
-      t_y: 0.99740857
+      t_x: 0.10255442
+      t_y: 0.9947274
+    }
+    points {
+      x: 0.25683454
+      y: 1.0611147
+      t_x: 0.98259044
+      t_y: 0.18578477
+    }
+    points {
+      x: 0.7540295
+      y: 0.32642004
+      t_x: 0.20572925
+      t_y: -0.97860897
     }
     points {
       x: 1.0
       y: 0.0
-      t_x: 0.07194582
-      t_y: 0.99740857
+      t_x: 0.3650673
+      t_y: 0.93098116
     }
   }
   particle_properties {
@@ -264,8 +276,8 @@ emitters {
     type: MODIFIER_TYPE_DRAG
     use_direction: 0
     position {
-      x: -121.0
-      y: -1.0
+      x: 0.0
+      y: 0.0
       z: 0.0
     }
     rotation {
@@ -278,11 +290,11 @@ emitters {
       key: MODIFIER_KEY_MAGNITUDE
       points {
         x: 0.0
-        y: 20.0
+        y: 12.0
         t_x: 1.0
         t_y: 0.0
       }
-      spread: 2.0
+      spread: 0.0
     }
   }
   modifiers {
@@ -307,7 +319,77 @@ emitters {
         t_x: 1.0
         t_y: 0.0
       }
-      spread: 2000.0
+      spread: 4000.0
+    }
+    properties {
+      key: MODIFIER_KEY_MAX_DISTANCE
+      points {
+        x: 0.0
+        y: 300.0
+        t_x: 1.0
+        t_y: 0.0
+      }
+      spread: 0.0
+    }
+  }
+  modifiers {
+    type: MODIFIER_TYPE_VORTEX
+    use_direction: 0
+    position {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    }
+    rotation {
+      x: 0.0
+      y: 1.0
+      z: 0.0
+      w: 6.123234E-17
+    }
+    properties {
+      key: MODIFIER_KEY_MAGNITUDE
+      points {
+        x: 0.0
+        y: 14000.0
+        t_x: 1.0
+        t_y: 0.0
+      }
+      spread: 6000.0
+    }
+    properties {
+      key: MODIFIER_KEY_MAX_DISTANCE
+      points {
+        x: 0.0
+        y: 300.0
+        t_x: 1.0
+        t_y: 0.0
+      }
+      spread: 0.0
+    }
+  }
+  modifiers {
+    type: MODIFIER_TYPE_RADIAL
+    use_direction: 0
+    position {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    }
+    rotation {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+    }
+    properties {
+      key: MODIFIER_KEY_MAGNITUDE
+      points {
+        x: 0.0
+        y: 900.0
+        t_x: 1.0
+        t_y: 0.0
+      }
+      spread: 0.0
     }
     properties {
       key: MODIFIER_KEY_MAX_DISTANCE

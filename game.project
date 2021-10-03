@@ -23,7 +23,6 @@ publisher = JOPS INTERACTIVE CO LTD
 dependencies#0 = https://github.com/subsoap/defos/archive/v2.5.0.zip
 dependencies#1 = https://github.com/selimanac/defold-random/archive/master.zip
 dependencies#2 = https://github.com/subsoap/chip-sounds/archive/master.zip
-dependencies#3 = https://github.com/subsoap/discordrich/archive/v1.0.3.zip
 
 [windows]
 app_icon = /icon.ico
@@ -52,7 +51,7 @@ repeat_interval = 0.1
 use_accelerometer = 0
 
 [particle_fx]
-max_count = 160
+max_count = 300
 max_particle_count = 2200
 
 [model]

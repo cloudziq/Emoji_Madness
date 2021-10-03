@@ -12,7 +12,7 @@ go.property("reset", false)
 function init(self)
 	self.active = true
 	self.rotate = false
-	self.color  = false
+	self.color  = true
 	self.scale  = false
 	self.change = false
 	self.sprite_id = msg.url(nil, go.get_id(), "sprite")
@@ -24,7 +24,9 @@ function init(self)
 	msg.post(self.sprite_id, "play_animation", { id = hash("bg"..math.random(1, level_bg_in_atlas)) })
 
 	go.set(self.sprite_id, "tint", vmath.vector4(.08, .1, .12, 0))
-	go.animate(self.sprite_id, "tint.w", go.PLAYBACK_ONCE_FORWARD, math.random(90, 220) / 100, go.EASING_INOUTSINE, math.random(8, 22))
+	go.animate(self.sprite_id, "tint.w", go.PLAYBACK_ONCE_FORWARD, math.random(20, 60) / 100, go.EASING_INOUTSINE, math.random(40, 120), 0, function()
+		self.color = false
+	end)
 end
 
 
@@ -71,7 +73,7 @@ function update(self, dt)
 				easing = go.EASING_INOUTSINE
 			end
 
-			tint = vmath.vector4(math.random(10, 100) / 100, math.random(14, 100) / 100, math.random(18, 100) / 100, math.random(2, 52) / 100)
+			tint = vmath.vector4(math.random(40, 100) / 100, math.random(44, 100) / 100, math.random(52, 100) / 100, math.random(18, 46) / 100)
 			go.animate(self.sprite_id, "tint", go.PLAYBACK_ONCE_FORWARD, tint, easing, time, delay, function()
 				if bonus_level_active ~= 1 then self.color = false end
 			end)

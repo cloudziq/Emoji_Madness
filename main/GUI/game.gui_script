@@ -302,7 +302,7 @@ function on_message(self, message_id, message, sender)
 			gui.set_text(gui.get_node("bomb_amount"), tostring(bombs_left))
 			msg.post("main:/main#ctrl", "set dark render")
 
-			if message.stat ~= "" then
+			if message.stat ~= "" and message.stat ~= "force" then
 				if message.stat == "health loss" then
 					gui.animate(gui.get_node("display"), "color", vmath.vector3(1, .4, .1), gui.EASING_LINEAR, .14, 0, function()
 						gui.animate(gui.get_node("display"), "color", vmath.vector3(.78 , .86, .94), gui.EASING_LINEAR, .14)

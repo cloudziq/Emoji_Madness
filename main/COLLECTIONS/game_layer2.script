@@ -21,7 +21,7 @@ change_music_variant = false
 wait_for_summary = false
 
 -- adds for level completion:
-speed_add      = 6.2
+speed_add      = 7.4
 emojis_add     = 4
 health_add     = 1
 health_perfect = 1

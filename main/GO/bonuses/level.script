@@ -11,9 +11,9 @@ function init(self)
 	local x, y, tint
 
 	self.active = true
-	self.fade_in = 2.32
-	self.time = 2.44
-	self.fade_out = 2.32
+	self.fade_in = 2.12
+	self.time = 1.88
+	self.fade_out = 2.12
 
 	x = rnd.range(80 + 50, window_w - 80 - 50)
 	y = rnd.range(80 + 50, window_h - 80 - 50 - 44)

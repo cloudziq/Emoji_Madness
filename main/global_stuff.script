@@ -8,18 +8,18 @@ function get_offscreen_pos(offset, oposite_method, pos, spread)
 
 		if method == 1 then -- to left or right
 			if pos.x <= window_w / 2 then
-				x = window_w + offset
+				x = window_w + offset + 50
 			else
 				x = -offset
 			end
-			y = math.random(0, window_h)
+			y = math.random(60, window_h - 44 - 60)
 		else  -- to up or down
 			if pos.y <= window_h / 2 then
-				y = window_h + offset - 44  --compensate for display_bar
+				y = window_h + offset - 44
 			else
-				y = -offset
+				y = -offset - 50
 			end
-			x = math.random(0, window_w)
+			x = math.random(60, window_w - 60)
 		end
 
 	elseif oposite_method == 2 then

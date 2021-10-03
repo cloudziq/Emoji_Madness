@@ -26,11 +26,10 @@ function init(self)
 	end
 
 
-	timer.delay(1.26, false, function()
+	timer.delay(1.32, false, function()
 		self.active = false
-		timer.delay(2, false, function() go.delete() end)
 
-		pprint(discharge_table[self.parent].instances)
+		--pprint(discharge_table[self.parent].instances)
 
 		if discharge_table[self.parent].instances == 1 then
 			self.charged_combo_count = discharge_table[self.parent].counter.amount
@@ -46,9 +45,10 @@ function init(self)
 			end
 
 			discharge_table[self.parent] = nil
-			pprint("DELETED")
+			timer.delay(2, false, function() go.delete() end)
+			--pprint("DELETED")
 		else
-			pprint("removed entry")
+			--pprint("removed entry")
 			num = discharge_table[self.parent].instances - 1
 			discharge_table[self.parent].instances = num
 		end
@@ -85,7 +85,7 @@ function on_message(self, message_id, message)
 			level_summary_delay = socket.gettime() + 2.4
 		end
 
-		pprint("PARENT")
+		--pprint("PARENT")
 		self.parent = go.get_id()
 		discharge_table[self.parent] = {counter = {charged = 0, amount = 0, score = 0, dark = 0, pos = {x = shot_x, y = shot_y}}, instances = 1}
 	end
@@ -94,7 +94,7 @@ function on_message(self, message_id, message)
 
 
 	if message_id == hash("assign child") then
-		pprint("assign child")
+		--pprint("assign child")
 		local num
 		self.parent = message.id
 		num = discharge_table[self.parent].instances + 1

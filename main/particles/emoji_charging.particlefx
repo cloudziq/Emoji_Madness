@@ -20,14 +20,14 @@ emitters {
   blend_mode: BLEND_MODE_ADD
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   inherit_velocity: -0.6
-  max_particle_count: 20
+  max_particle_count: 25
   type: EMITTER_TYPE_CIRCLE
   start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
     points {
       x: 0.0
-      y: 40.0
+      y: 50.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -37,7 +37,7 @@ emitters {
     key: EMITTER_KEY_SIZE_X
     points {
       x: 0.0
-      y: 20.0
+      y: 160.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -47,7 +47,7 @@ emitters {
     key: EMITTER_KEY_SIZE_Y
     points {
       x: 0.0
-      y: 20.0
+      y: 160.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -67,7 +67,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_LIFE_TIME
     points {
       x: 0.0
-      y: 0.26
+      y: 0.36
       t_x: 1.0
       t_y: 0.0
     }
@@ -77,7 +77,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SPEED
     points {
       x: 0.0
-      y: 200.0
+      y: -20.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -214,26 +214,32 @@ emitters {
     points {
       x: 0.0
       y: 0.0
-      t_x: 0.1431849
-      t_y: 0.98969597
+      t_x: 0.72998285
+      t_y: 0.6834655
     }
     points {
-      x: 0.39928058
-      y: 0.90311563
-      t_x: 0.87181294
-      t_y: -0.489839
+      x: 0.26703683
+      y: 0.74697334
+      t_x: 0.11600529
+      t_y: 0.9932486
     }
     points {
-      x: 0.9
-      y: -0.07595718
-      t_x: 0.23760839
-      t_y: -0.97136104
+      x: 0.4611511
+      y: 1.1974813
+      t_x: 0.56214064
+      t_y: -0.8270416
+    }
+    points {
+      x: 0.72733814
+      y: 0.0017544487
+      t_x: 0.21732344
+      t_y: -0.97609967
     }
     points {
       x: 1.0
       y: 0.0
-      t_x: 0.2716271
-      t_y: 0.9624026
+      t_x: 0.9758883
+      t_y: 0.21827053
     }
   }
   particle_properties {
@@ -290,7 +296,7 @@ emitters {
       key: MODIFIER_KEY_MAGNITUDE
       points {
         x: 0.0
-        y: 1000.0
+        y: 600.0
         t_x: 1.0
         t_y: 0.0
       }
@@ -301,6 +307,41 @@ emitters {
       points {
         x: 0.0
         y: 100.0
+        t_x: 1.0
+        t_y: 0.0
+      }
+      spread: 0.0
+    }
+  }
+  modifiers {
+    type: MODIFIER_TYPE_RADIAL
+    use_direction: 0
+    position {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    }
+    rotation {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+    }
+    properties {
+      key: MODIFIER_KEY_MAGNITUDE
+      points {
+        x: 0.0
+        y: -1600.0
+        t_x: 1.0
+        t_y: 0.0
+      }
+      spread: 0.0
+    }
+    properties {
+      key: MODIFIER_KEY_MAX_DISTANCE
+      points {
+        x: 0.0
+        y: 200.0
         t_x: 1.0
         t_y: 0.0
       }
