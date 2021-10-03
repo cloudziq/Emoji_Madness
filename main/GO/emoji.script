@@ -166,6 +166,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 				if not self.going_away then
 					self.need_pos_check = false
 					emoji_waiting(self)
+					particlefx.stop(self.particle_url)
 				else
 					if health > 0 and bonus_level_active ~= 1 and self.active then
 						self.active = false
@@ -175,9 +176,9 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 						health = health - 1
 						stat_health_loss = stat_health_loss + 1
 						change_darkness(10)
+						particlefx.stop(self.particle_charging)
 						msg.post("game_layer2:/main#game_gui", "display_update", {stat = "health loss"})
 					end
-					particlefx.stop(self.particle_url)
 				end
 			end)
 		end)

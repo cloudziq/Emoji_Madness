@@ -45,6 +45,7 @@ ray_cast_limit_2d = 128
 texture_profiles = /main/render/custom.texture_profiles
 max_draw_calls = 128
 max_characters = 4096
+max_debug_vertices = 30000
 
 [input]
 repeat_interval = 0.1

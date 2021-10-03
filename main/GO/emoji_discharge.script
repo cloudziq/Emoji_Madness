@@ -45,13 +45,13 @@ function init(self)
 			end
 
 			discharge_table[self.parent] = nil
-			timer.delay(2, false, function() go.delete() end)
 			--pprint("DELETED")
 		else
 			--pprint("removed entry")
 			num = discharge_table[self.parent].instances - 1
 			discharge_table[self.parent].instances = num
 		end
+		timer.delay(1, false, function() go.delete() end)
 	end)
 end
 
