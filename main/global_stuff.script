@@ -24,7 +24,21 @@ function get_offscreen_pos(offset, oposite_method, pos, spread)
 
 	elseif oposite_method == 2 then
 		x = window_w - pos.x
+		if x > window_w then
+			x = window_w + offset
+		elseif x < 0 then
+			x = -offset
+		end
+
 		y = window_h - pos.y
+		if y > window_h then
+			y = window_h + offset
+		elseif y < 0 then
+			y = -offset
+		end
+
+-- 		print("pos.x = "..pos.x.."  :  x = "..x)
+-- 		print("pos.y = "..pos.y.."  :  y = "..y)
 
 	else
 		a = rnd.range(1,4)
@@ -270,10 +284,10 @@ local function set_default_records()
 	local table = {}
 
 	--         name:               points:  level:  kills:
-	table[1] = {"dziq",            6048,    20,     688}
-	table[2] = {"natzab",          1443,    16,     467}
+	table[1] = {"dziq",            2048,    16,     588}
+	table[2] = {"frog",            1444,    12,     467}
 	table[3] = {"moron_quin",      64,      4,      22}
-	table[4] = {"suckergoth",      2,       1,      2}
+	table[4] = {"suckergoth",      2,       2,      2}
 	table[5] = {"fuckINQ009",      1,       1,      1}
 
 	return table
@@ -295,18 +309,8 @@ end
 
 
 
--- game        -  total games started
--- kill        -  total kills
--- combo       -  total number of charged kills
--- chain       -  biggest chained combo amount
--- chain_score -  biggest score in single chain
--- health      -  total number of health loss
--- level       -  total levels completed
--- bonus_level -  total bonus level completed
--- bullet      -  total bullets shots
--- hit         -  total succesfull hits
--- bomb        -  total bombs detonated
--- score       -  total score collected
+
+
 
 -- stats_define:
 stats_table = {game = 0, kill = 0, combo = 0, chain = 0, chain_score = 0, health = 0, level = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}

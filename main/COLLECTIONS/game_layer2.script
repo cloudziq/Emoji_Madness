@@ -4,7 +4,7 @@ level  = 1
 score  = 0
 health = 5
 emojis = 16
-speed  = 16   -- percentage modifier which affects emojis speed, wait_timeout
+speed  = 32   -- percentage modifier which affects emojis speed, wait_timeout
 level_bonus_unlocked = 4
 level_bombs_unlocked = 8
 bombs_amount = 1
@@ -21,12 +21,12 @@ change_music_variant = false
 wait_for_summary = false
 
 -- adds for level completion:
-speed_add      = 7.4
+speed_add      = 4.82
 emojis_add     = 4
 health_add     = 1
 health_perfect = 1
 
---summary var:
+--summary var (for hall_of_fame):
 total_kills = 0
 
 
@@ -181,10 +181,10 @@ function update(self, dt)
 			stat_score = stat_score + bonus_score
 			total_kills = total_kills + bonus_level_kills.small + bonus_level_kills.big
 			msg.post("game_layer2:/main#game_gui", "hide_after_level")
-			msg.post("game_layer1:/main#ctrl", "fade_out_add_music", {time = 8})
+			msg.post("game_layer1:/main#ctrl", "fade_out_add_music", {time = 10})
 			msg.post("game_layer1:/main#ctrl", "bonus level emoji at end")
 			timer.delay(4, false, function() msg.post("#bonus_level_complete", "show") end)
-			msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 6, start_new = false, continue = true})
+			msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 8, start_new = false, continue = true})
 			fade_darkness(4, darkness_level_temp)
 		end)
 	end

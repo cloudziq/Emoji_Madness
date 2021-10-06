@@ -47,7 +47,7 @@ function init(self)
 
 	msg.post("#title_menu_proxy", "load")
 	--discord_presence()
-	--debug_profiling()
+	debug_profiling()
 end
 
 
@@ -67,8 +67,8 @@ end
 
 function debug_profiling()
 	profiler.enable_ui(true)
-	--profiler.set_ui_view_mode(profiler.VIEW_MODE_MINIMIZED)
-	profiler.set_ui_view_mode(0)
+	profiler.set_ui_view_mode(profiler.VIEW_MODE_MINIMIZED)
+	--profiler.set_ui_view_mode(0)
 	--profiler.view_recorded_frame()
 end
 

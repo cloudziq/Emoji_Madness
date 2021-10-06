@@ -9,8 +9,8 @@ function init(self)
 	self.active = true
 	self.id = go.get_id()
 	self.ttl = socket.gettime() + 0.04
-	self.x = shot_x
-	self.y = shot_y
+	self.x = cursor_x
+	self.y = cursor_y
 
 	self.to_kill_table = {}
 	self.discharged_amount = 0

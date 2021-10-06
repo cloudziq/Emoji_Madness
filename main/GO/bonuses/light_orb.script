@@ -47,7 +47,7 @@ end
 
 
 function on_message(self, message_id, message)
-	local x, y, pos
+	local x, y, pos, id
 
 	--if message_id == hash("collision_response") and level_play and self.active then
 		if message.group == hash("weapon") and level_play and self.active then
@@ -57,7 +57,7 @@ function on_message(self, message_id, message)
 			-- if score > 0 then
 			-- 	score = score + bullet_miss
 			-- end
-			change_darkness(math.random(-40, -20))
+			change_darkness(math.random(-40, -25))
 
 			for _, id in ipairs(emoji_table) do
 				msg.post(id, "orb charge add")

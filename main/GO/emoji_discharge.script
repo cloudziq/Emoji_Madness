@@ -8,8 +8,9 @@ local sound_delay = 0
 function init(self)
 	local num
 	self.charged_combo_count, self.charged_combo_score, self.charged_emoji_count, self.charged_dark_add = 0, 0, 0, 0
-	self.active = true
-	self.parent = nil
+	self.active        = true
+	self.parent        = nil
+	self.is_parent     = false
 	self.allow_counter = false
 
 	go.set_scale(.34)
@@ -29,7 +30,7 @@ function init(self)
 	timer.delay(1.32, false, function()
 		self.active = false
 
-		--pprint(discharge_table[self.parent].instances)
+		--print(discharge_table[self.parent].instances)
 
 		if discharge_table[self.parent].instances == 1 then
 			self.charged_combo_count = discharge_table[self.parent].counter.amount
@@ -45,13 +46,18 @@ function init(self)
 			end
 
 			discharge_table[self.parent] = nil
+			go.delete(self.parent)
 			--pprint("DELETED")
 		else
 			--pprint("removed entry")
 			num = discharge_table[self.parent].instances - 1
 			discharge_table[self.parent].instances = num
 		end
-		timer.delay(1, false, function() go.delete() end)
+		if not self.is_parent then
+			timer.delay(1, false, function()
+				go.delete()
+			end)
+		end
 	end)
 end
 
@@ -87,6 +93,7 @@ function on_message(self, message_id, message)
 
 		--pprint("PARENT")
 		self.parent = go.get_id()
+		self.is_parent = true
 		discharge_table[self.parent] = {counter = {charged = 0, amount = 0, score = 0, dark = 0, pos = {x = shot_x, y = shot_y}}, instances = 1}
 	end
 
@@ -94,7 +101,7 @@ function on_message(self, message_id, message)
 
 
 	if message_id == hash("assign child") then
-		--pprint("assign child")
+		--pprint("assign child: "..tostring(message.id))
 		local num
 		self.parent = message.id
 		num = discharge_table[self.parent].instances + 1

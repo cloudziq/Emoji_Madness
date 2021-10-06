@@ -208,10 +208,9 @@ function on_message(self, message_id, message, sender)
 				gui.set_enabled(gui.get_node("bonus_level"), false)
 			end)
 		else
-			gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 44)
+			gui.animate(gui.get_node("BG"), "color.w", 0, gui.EASING_LINEAR, 64)
 		end
 
-		--timer.delay(1.44, false, function() weapon_collide = true end)
 		timer.delay(1.6, false, function()
 			weapon_collide = true
 			msg.post("/main#ctrl", "level_start")

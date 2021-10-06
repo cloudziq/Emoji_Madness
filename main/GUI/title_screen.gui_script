@@ -175,11 +175,21 @@ function defold_logo()
 
 	sound.play("/main#logo")
 
+	gui.set_scale(logo, vmath.vector3(0,0,1))
+	gui.animate(logo, "scale.x", 1.4, gui.EASING_INOUTSINE, .2, 0, function()
+		gui.animate(logo, "scale.x", 1.25, gui.EASING_INOUTSINE, .25, .2)
+	end)
+	gui.animate(logo, "scale.y", 1.4, gui.EASING_INOUTSINE, .3, .25, function()
+		gui.animate(logo, "scale.y", 1.25, gui.EASING_INOUTSINE, .28, .1, function()
+			gui.animate(logo, "scale", vmath.vector3(1,1,1), gui.EASING_INOUTSINE, .1)
+		end)
+	end)
+
 	gui.animate(logo, "color", vmath.vector4(1,1,1,1), gui.EASING_LINEAR, 1, 0, function()
 		gui.animate(logo, "color", vmath.vector4(1,1,1,0), gui.EASING_LINEAR, 1.6, 2)
 	end)
 
-	gui.animate(text, "color", vmath.vector4(.2, .2, .2, .8), gui.EASING_LINEAR, 1.2, 1.2)
+	gui.animate(text, "color", vmath.vector4(0,0,0,1), gui.EASING_LINEAR, .6, .8)
 	title_prepare()
 end
 
@@ -274,12 +284,12 @@ function intro()
 	end)
 
 	gui.set_color(gui.get_node("eyes"), vmath.vector4(1,1,1,1))
-	timer.delay(1, false, function() gui.play_flipbook(gui.get_node("eyes"), "eyes_backward") end)
+	timer.delay(1.1, false, function() gui.play_flipbook(gui.get_node("eyes"), "eyes_backward") end)
 	gui.animate(gui.get_node("dziq"), "position.x", dziq_image_pos.x, gui.EASING_OUTSINE, 1, 1, function ()
 		gui.play_flipbook(gui.get_node("eyes"), "eyes")
 		gui.animate(gui.get_node("text_dziq"), "rotation.z", text_dziq_pos.z, gui.EASING_LINEAR, .6, .8)
 		gui.animate(gui.get_node("dziq"), "rotation.z", dziq_image_rot.z + 8, gui.EASING_INSINE, 2, .35)
-		gui.animate(gui.get_node("dziq"), "position.x", 2000, gui.EASING_INQUINT, 1.8, .25, function ()
+		gui.animate(gui.get_node("dziq"), "position.x", 2000, gui.EASING_INQUINT, 1.6, 0, function ()
 			gui.set_enabled(gui.get_node("dziq"), false)
 		end)
 	end)
