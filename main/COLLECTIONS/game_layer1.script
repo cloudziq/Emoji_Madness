@@ -130,7 +130,7 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("get bonuses_delay_time") then
-		timer.delay(10, false, function()
+		timer.delay(12, false, function()
 			bonus_can_spawn = true
 		end)
 		timer.delay(6, false, function()
