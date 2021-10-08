@@ -1,5 +1,5 @@
 emoji_in_atlas    = 100
-blood_in_atlas    = 12
+blood_in_atlas    = 11
 level_bg_in_atlas = 64
 
 
@@ -47,7 +47,7 @@ function init(self)
 
 	msg.post("#title_menu_proxy", "load")
 	--discord_presence()
-	debug_profiling()
+	--debug_profiling()
 end
 
 

@@ -8,15 +8,15 @@ local easing = go.EASING_LINEAR
 
 
 function init(self)
-	local x, y, tint
+	local pos, x, y, tint
 
 	self.active = true
 	self.fade_in = 2.12
 	self.time = 1.88
 	self.fade_out = 2.12
 
-	x = rnd.range(80 + 50, window_w - 80 - 50)
-	y = rnd.range(80 + 50, window_h - 80 - 50 - 44)
+	pos = check_bomb_proximity(self, 1, 100, 85)
+	x = pos.x, y = pos.y
 
 	go.set_scale(0.001)
 	go.set("#sprite", "tint.w", 0)

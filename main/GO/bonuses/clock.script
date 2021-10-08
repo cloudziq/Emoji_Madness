@@ -9,7 +9,7 @@ local proxy_speed_changing, clock_bonus_timeout
 
 
 function init(self)
-	local x1,y1, x2,y2, x3,y3, tint
+	local x1,y1, pos, x2,y2, x3,y3, tint
 	local radius = math.random (100, 260)
 	local time = math.random(18, 32) / 10
 	local stop = math.random(16, 40) / 100
@@ -18,8 +18,8 @@ function init(self)
 	self.active = true
 
 	x1, y1 = get_offscreen_pos(200)
-	x2 = rnd.range(80 + 50, window_w - 80 - 50)
-	y2 = rnd.range(80 + 50, window_h - 120 - 50)
+	pos = check_bomb_proximity(self, 1, 60, 80)
+	x2 = pos.x, y2 = pos.y
 	x3, y3 = get_offscreen_pos(200, true, {x = x2, y = y2})
 
 	tint = vmath.vector4(.16, .34, .18, .6) * darkness_level

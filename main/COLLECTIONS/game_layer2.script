@@ -3,8 +3,8 @@
 level  = 1
 score  = 0
 health = 5
-emojis = 16
-speed  = 36   -- percentage modifier which affects emojis speed, wait_timeout
+emojis = 20
+speed  = 42   -- percentage modifier which affects emojis speed, wait_timeout
 level_bonus_unlocked = 4
 level_bombs_unlocked = 8
 bombs_amount = 1
@@ -21,7 +21,7 @@ change_music_variant = false
 wait_for_summary = false
 
 -- adds for level completion:
-speed_add      = 4.16
+speed_add      = 4.08
 emojis_add     = 4
 health_add     = 1
 health_perfect = 1
@@ -69,7 +69,7 @@ function update(self, dt)
 		wait_for_clean = true
 		post_clean_start = false
 		if bonus_level_active == false then
-			if level == 20 then emojis_add = 2 end
+			if level == 18 then emojis_add = 2 end
 
 			if level == level_bonus_unlocked then
 				bonus_requirement = 20 - 1
@@ -83,7 +83,7 @@ function update(self, dt)
 				end)
 
 			elseif level == bullet_miss_level then
-				if bullet_miss == 1 then bullet_miss = 10 else bullet_miss = bullet_miss * 2 end
+				if bullet_miss == 1 then bullet_miss = 5 else bullet_miss = bullet_miss * 2 end
 				bullet_miss_level = bullet_miss_level + 4
 				timer.delay(1.4, false, function()
 					msg.post("#game_gui", "show bullet_miss info", {amount = bullet_miss})

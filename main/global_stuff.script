@@ -124,6 +124,7 @@ end
 
 
 
+-- type:
 -- 0: generate on_screen position
 -- 1: generate near position using original pos (5th argument must be set)
 function check_bomb_proximity(self, type, offset, distance, pos)
