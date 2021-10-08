@@ -31,7 +31,7 @@ local hash_group_wave      = hash("wavepush")
 
 function init(self)
 	self.move_time         = 3.40
-	self.wait              = 4.60
+	self.wait              = 5.20
 	self.score             = score_default
 	self.dark              = 2
 	self.wait_timeout      = 0
@@ -149,10 +149,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 
 		if bonus_level_active == 1 then
 			self.active = false
-			time = 2.4
+			time = 3.2
 			pos_x, pos_y = get_offscreen_pos(80 + dist_add, 1, go.get_position())
 		else
-			time = self.move_time - (speed * (self.move_time / 100)) + ((level / 6) * (1.42 - darkness_level))
+			time = self.move_time - (speed * (self.move_time / 100)) + ((level / 7) * (1.42 - darkness_level))
 			--print("time1: "..time)
 
 			if not self.going_away then
@@ -163,10 +163,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			else
 				if self.need_pos_check then
 					method = 2
-					time = (time * 5.68) + ((level / 2.75) *  (1.2 * darkness_level))
+					time = (time * 5.82) + ((level / 2.6) *  (1.42 * darkness_level))
 				else
 					method = 1
-					time = (time * 6.82) + ((level / 2.75) *  (1.2 * darkness_level))
+					time = (time * 6.84) + ((level / 2.6) *  (1.42 * darkness_level))
 					print("time2: "..time)
 				end
 				pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
@@ -365,7 +365,7 @@ function on_message(self, message_id, message, sender)
 				if emojis_left > 0 then
 					sound_speed = (math.random(66, 122) / 100)
 				else
-					sound_speed = (math.random(30, 52) / 100)
+					sound_speed = (math.random(28, 44) / 100)
 				end
 
 				if self.going_away then

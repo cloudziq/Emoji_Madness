@@ -15,8 +15,8 @@ function init(self)
 	self.time = 1.88
 	self.fade_out = 2.12
 
-	pos = check_bomb_proximity(self, 1, 100, 85)
-	x = pos.x, y = pos.y
+	pos = check_bomb_proximity(self, 0, 100, 85)
+	x, y = pos.x, pos.y
 
 	go.set_scale(0.001)
 	go.set("#sprite", "tint.w", 0)
