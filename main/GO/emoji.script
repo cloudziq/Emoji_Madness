@@ -11,6 +11,10 @@ go.property("going_away",   false)
 emojis = 10 ; level = 1  -- dummy values, will be overwriten anyway
 
 
+-- local variables:
+local title_emoji_check, secret_menu_activated, check_delay = 0
+
+
 -- local functions:
 local get_new_menu_emoji_pos, get_new_emoji_pos, emoji_escaped, emoji_waiting, sprite_flip
 
@@ -30,8 +34,8 @@ local hash_group_wave      = hash("wavepush")
 
 
 function init(self)
-	self.move_time         = 3.40
-	self.wait              = 5.20
+	self.move_time         = 3.60
+	self.wait              = 5.80
 	self.score             = score_default
 	self.dark              = 2
 	self.wait_timeout      = 0
@@ -49,6 +53,7 @@ function init(self)
 	-- emojis for main menu
 	if bonus_level_active ~= 1 then
 		if main_menu_visible then
+			secret_menu_activated = false
 			msg.post("#collide_emoji", "disable")
 			particlefx.play(self.particle_url)
 			sprite.set_constant("#sprite", "tint", vmath.vector4(.62, .76, .82, 1))
@@ -75,25 +80,49 @@ end
 
 function update(self, dt)
 	local pos, pos_x, pos_y
-	if bonus_level_active ~= 1 then
+	if check_delay == nil then check_delay = socket.gettime() + 10 end
 
-		-- disable emojis at the end of main menu
-		if main_menu_visible == true then
+	if bonus_level_active ~= 1 then
+		if main_menu_visible then
+
+			-- >> check for amount of emojis on screen (trigger secret menu on/off)
+			pos = go.get_position()
+			if pos.x > 20 and pos.x < window_w - 20 and pos.y > 20 and pos.y < window_h -20 - 44 then
+				if not self.need_pos_check then
+					title_emoji_check = title_emoji_check + 1
+					self.need_pos_check = true
+				end
+			else
+				if self.need_pos_check then
+					self.need_pos_check = false
+					title_emoji_check = title_emoji_check - 1
+				end
+			end
+			--
+			if socket.gettime() > check_delay and not secret_menu_activated then
+				check_delay = socket.gettime() + 2
+				if title_emoji_check <= 30 then
+					secret_menu_activated = true
+					msg.post("/main#title_screen", "show palmsy")
+				end
+			end
+			-- <<
+			
+			-- disable emojis at the end of main menu
 			if allow_title_emojis == false and self.active == true then
 				self.active = false
 				msg.post(msg.url(nil, go.get_id(), "collide_emoji"), "disable")
 
-				pos = go.get_position()
-				pos_x, pos_y = get_offscreen_pos(400, true, pos)
+				pos_x, pos_y = get_offscreen_pos(400, true, go.get_position())
 				go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, math.random(36, 360) / 100, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 				go.animate(".", "position", go.PLAYBACK_ONCE_FORWARD, vmath.vector3(pos_x, pos_y, 1), go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10, function ()
 					go.delete()
 				end)
+				check_delay = nil
 			end
 		else
 			pos = go.get_position()
-
-			if pos.x > 50 and pos.x < window_w - 50 and pos.y > 50 and pos.y < window_h -50 - 44 and self.active == true then
+			if pos.x > 50 and pos.x < window_w - 50 and pos.y > 50 and pos.y < window_h -50 - 44 and self.active then
 				self.need_pos_check = false
 				if not self.going_away then
 					msg.post(self.collide_emoji, "enable")
@@ -163,10 +192,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			else
 				if self.need_pos_check then
 					method = 2
-					time = (time * 5.82) + ((level / 2.6) *  (1.42 * darkness_level))
+					time = (time * 6.28) + ((level / 2.6) *  (1.48 * darkness_level))
 				else
 					method = 1
-					time = (time * 6.84) + ((level / 2.6) *  (1.42 * darkness_level))
+					time = (time * 7.46) + ((level / 2.6) *  (1.48 * darkness_level))
 					print("time2: "..time)
 				end
 				pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
@@ -219,7 +248,7 @@ function emoji_waiting(self)
 
 	if self.active == true then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(1, 4 + ((level / 8) * (1.42 - light_level))) + socket.gettime()
+			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(1, 4 + ((level / 6.8) * (1.64 - light_level))) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			pos = go.get_position()
@@ -288,6 +317,10 @@ function on_message(self, message_id, message, sender)
 	-- for main menu
 	if main_menu_visible == true then
 
+		if message_id == hash("set title_emoji_check") then
+			secret_menu_activated = false
+			title_emoji_check = 0
+		end
 
 		if message_id == hash_contact and self.active == true then
 			pos = go.get_position()
@@ -554,10 +587,14 @@ function on_message(self, message_id, message, sender)
 		end
 
 
+
+
 		if message_id == hash("orb charge add") then
 			if self.waiting then
 				self.wait_timeout = self.wait_timeout + math.random(18, 38) / 10
 			end
+
+
 
 
 		elseif message_id == hash("clean_emojis") then

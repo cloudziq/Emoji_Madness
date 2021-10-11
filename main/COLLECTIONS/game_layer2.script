@@ -283,6 +283,9 @@ function level_prepare()
 	if level > level_bombs_unlocked and level % 2 == 0 then
 		bombs_amount = bombs_amount + 1
 	end
+	if level > stat_level_record then
+		stat_level_record = level
+	end
 
 	msg.post("game_layer1:/main#ctrl", "get bonuses_delay_time")
 	msg.post("game_layer1:/main#ctrl", "generate_emojis", {emojis = emojis, scale = 1})

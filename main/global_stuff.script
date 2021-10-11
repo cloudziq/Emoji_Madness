@@ -1,4 +1,10 @@
 
+-- local functions:
+local stats_count_reset, stat_add, save_stats
+
+
+
+
 function get_offscreen_pos(offset, oposite_method, pos, spread)
 	local a, x, y, method
 	if spread == nil then spread = 0 end
@@ -310,11 +316,22 @@ end
 
 
 
-
-
+-- game        -  total games started
+-- kill        -  total kills
+-- combo       -  total number of charged kills
+-- chain       -  biggest chained combo amount
+-- chain_score -  biggest score in single chain
+-- health      -  total number of health loss
+-- level       -  total levels completed
+-- level_max   -  highest level reached
+-- bonus_level -  total bonus level completed
+-- bullet      -  total bullets shots
+-- hit         -  total succesfull hits
+-- bomb        -  total bombs detonated
+-- score       -  total score collected
 
 -- stats_define:
-stats_table = {game = 0, kill = 0, combo = 0, chain = 0, chain_score = 0, health = 0, level = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}
+stats_table = {game = 0, kill = 0, combo = 0, chain = 0, chain_score = 0, health = 0, level = 0, level_max = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}
 
 function load_stats()
 	local file = sys.get_save_file("Emoji_Madness", "stats.dzq")
@@ -328,51 +345,61 @@ function load_stats()
 end
 
 
-function stat_change(key, val)
+function stat_add(key, val)
 	stats_table[key] = stats_table[key] + val
 end
 
 
-function save_stats()
+function save_stats_file()
 	local file = sys.get_save_file("Emoji_Madness", "stats.dzq")
 	sys.save(file, stats_table)
 end
 
 
-stat_games         = 0
-stat_levels        = 0
-stat_bonus_level   = 0
-stat_kills         = 0
-stat_combo         = 0
-stat_chain_record  = 0
-stat_chain_score   = 0
-stat_health_loss   = 0
-stat_bombs         = 0
-stat_bullets_all   = 0
-stat_bullets_hit   = 0
-stat_score         = 0
+function stats_count_reset()
+	stat_games         = 0
+	stat_levels        = 0
+	stat_level_record  = 0
+	stat_bonus_level   = 0
+	stat_kills         = 0
+	stat_combo         = 0
+	stat_chain_record  = 0
+	stat_chain_score   = 0
+	stat_health_loss   = 0
+	stat_bombs         = 0
+	stat_bullets_all   = 0
+	stat_bullets_hit   = 0
+	stat_score         = 0
+end
+stats_count_reset()
+
 
 function stats_write()
-	stat_change("game",         stat_games)
-	stat_change("level",        stat_levels)
-	stat_change("bonus_level",  stat_bonus_level)
-	stat_change("kill",         stat_kills)
-	stat_change("combo",        stat_combo)
+	stat_add("game",         stat_games)
+	stat_add("level",        stat_levels)
+	if stat_level_record > stats_table.level_max then
+		stat_table.level_max = stat_level_record
+	end
+	stat_add("bonus_level",  stat_bonus_level)
+	stat_add("kill",         stat_kills)
+	stat_add("combo",        stat_combo)
 	if stat_chain_record > stats_table.chain and stat_chain_record >= 2 then
-		stat_change("chain",        stat_chain_record)
+		stat_add("chain",        stat_chain_record)
 	end
 	if stat_chain_score > stats_table.chain_score then
-		stat_change("chain_score",  stat_chain_score)
+		stat_add("chain_score",  stat_chain_score)
 	end
-	stat_change("health",       stat_health_loss)
-	stat_change("bomb",         stat_bombs)
-	stat_change("bullet",       stat_bullets_all)
-	stat_change("hit",          stat_bullets_hit)
-	stat_change("score",        stat_score)
-	save_stats()
+	stat_add("health",       stat_health_loss)
+	stat_add("bomb",         stat_bombs)
+	stat_add("bullet",       stat_bullets_all)
+	stat_add("hit",          stat_bullets_hit)
+	stat_add("score",        stat_score)
 
-	pprint(stats_table)
-	pprint(string.format("accurancy: %d%%", (stats_table.hit / stats_table.bullet) * 100))
+	save_stats_file()
+	stats_count_reset()
+
+	-- pprint(stats_table)
+	-- pprint(string.format("accurancy: %d%%", (stats_table.hit / stats_table.bullet) * 100))
 end
 
 
