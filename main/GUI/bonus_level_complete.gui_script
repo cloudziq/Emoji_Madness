@@ -65,8 +65,6 @@ end
 function prepare_gui()
 	local node, col
 
-	stat_bonus_level = stat_bonus_level + 1
-
 	menu_col = gui.get_color(gui.get_node("WIN"))
 	points_col = gui.get_color(gui.get_node("small_="))
 

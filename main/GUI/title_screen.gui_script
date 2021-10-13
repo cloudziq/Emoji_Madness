@@ -262,16 +262,25 @@ function display_stats()
 	gui.set_text(gui.get_node("x1"),  stats_table.game)
 	gui.set_text(gui.get_node("x2"),  stats_table.level)
 	gui.set_text(gui.get_node("x13"), stats_table.level_max)
-	gui.set_text(gui.get_node("x3"),  stats_table.bonus_level)
 	gui.set_text(gui.get_node("x4"),  stats_table.score)
 	gui.set_text(gui.get_node("x5"),  stats_table.kill)
 	gui.set_text(gui.get_node("x6"),  stats_table.combo)
 	gui.set_text(gui.get_node("x7"),  stats_table.chain)
 	gui.set_text(gui.get_node("x8"),  stats_table.chain_score)
 	gui.set_text(gui.get_node("x9"),  stats_table.health)
+	gui.set_text(gui.get_node("x3"),  stats_table.clover)
+	gui.set_text(gui.get_node("x14"), stats_table.clock)
+	gui.set_text(gui.get_node("x15"), stats_table.orb)
 	gui.set_text(gui.get_node("x10"), stats_table.bomb)
 	gui.set_text(gui.get_node("x11"), stats_table.bullet)
-	gui.set_text(gui.get_node("x12"), string.format("%d%%", (stats_table.hit / stats_table.bullet) * 100))
+	if stats_table.hit == 0 and stats_table.bullet > 0 then
+		val = 0
+	elseif (stats_table.hit and stats_table.bullet) == 0 then
+		val = 0
+	else
+		val = string.format("%d%%", (stats_table.hit / stats_table.bullet) * 100)
+	end
+	gui.set_text(gui.get_node("x12"), val)
 end
 
 

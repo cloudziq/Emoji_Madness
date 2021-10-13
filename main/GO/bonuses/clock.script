@@ -78,6 +78,7 @@ function on_message(self, message_id, message, sender)
 			proxy_speed = 1 ; speed_change(-1)
 			bonus_clock_active = true
 			allow_combo_counter = false
+			stat_clocks = stat_clocks + 1
 			-- if score > 0 then
 			-- 	score = score + bullet_miss
 			-- end

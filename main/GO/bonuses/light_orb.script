@@ -54,6 +54,7 @@ function on_message(self, message_id, message)
 			self.active = false
 			bullet_is_hit = true
 			allow_combo_counter = false
+			stat_orbs = stat_orbs + 1
 			-- if score > 0 then
 			-- 	score = score + bullet_miss
 			-- end

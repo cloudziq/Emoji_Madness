@@ -62,7 +62,7 @@ function init(self)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.22, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 		else
-			local delay = rnd.range(1, 4 + (emojis / 6) + ((level / 4) * (1.26 - darkness_level)))
+			local delay = rnd.range(1, 6 + (emojis / 5.4) + ((level / 4.2) * (1.32 - darkness_level)))
 			self.collide_emoji     = msg.url(nil, go.get_id(), "collide_emoji")
 			self.collide_weapon    = msg.url(nil, go.get_id(), "collide_weapon")
 			sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
@@ -191,10 +191,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			else
 				if self.need_pos_check then
 					method = 2
-					time = (time * 7.36) + ((level / 2.6) *  (1.42 * darkness_level))
+					time = (time * 7.36) + ((level / 2.56) *  (1.42 * darkness_level))
 				else
 					method = 1
-					time = (time * 8.22) + ((level / 2.8) *  (1.42 * darkness_level))
+					time = (time * 8.22) + ((level / 2.78) *  (1.42 * darkness_level))
 					print("time2: "..time)
 				end
 				pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())

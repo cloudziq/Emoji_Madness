@@ -324,14 +324,16 @@ end
 -- health      -  total number of health loss
 -- level       -  total levels completed
 -- level_max   -  highest level reached
--- bonus_level -  total bonus level completed
+-- clover      -  total numbers of clovers collected
+-- clock       -  total numbers of clocks collected
+-- orb         -  total numbers of orbs collected
+-- bomb        -  total bombs detonated
 -- bullet      -  total bullets shots
 -- hit         -  total succesfull hits
--- bomb        -  total bombs detonated
 -- score       -  total score collected
 
 -- stats_define:
-stats_table = {game = 0, kill = 0, combo = 0, chain = 0, chain_score = 0, health = 0, level = 0, level_max = 0, bonus_level = 0, bullet = 0, hit = 0, bomb = 0, score = 0}
+stats_table = {game = 0, kill = 0, combo = 0, chain = 0, chain_score = 0, health = 0, level = 0, level_max = 0, bullet = 0, hit = 0, clover = 0, clock = 0, orb = 0, bomb = 0, score = 0}
 
 function load_stats()
 	local file = sys.get_save_file("Emoji_Madness", "stats.dzq")
@@ -360,12 +362,14 @@ function stats_count_reset()
 	stat_games         = 0
 	stat_levels        = 0
 	stat_level_record  = 0
-	stat_bonus_level   = 0
 	stat_kills         = 0
 	stat_combo         = 0
 	stat_chain_record  = 0
 	stat_chain_score   = 0
 	stat_health_loss   = 0
+	stat_clovers       = 0
+	stat_clocks        = 0
+	stat_orbs          = 0
 	stat_bombs         = 0
 	stat_bullets_all   = 0
 	stat_bullets_hit   = 0
@@ -380,7 +384,6 @@ function stats_write()
 	if stat_level_record > stats_table.level_max then
 		stats_table.level_max = stat_level_record
 	end
-	stat_add("bonus_level",  stat_bonus_level)
 	stat_add("kill",         stat_kills)
 	stat_add("combo",        stat_combo)
 	if stat_chain_record > stats_table.chain and stat_chain_record >= 2 then
@@ -390,6 +393,9 @@ function stats_write()
 		stat_add("chain_score",  stat_chain_score)
 	end
 	stat_add("health",       stat_health_loss)
+	stat_add("clover",       stat_clovers)
+	stat_add("clock",        stat_clocks)
+	stat_add("orb",          stat_orbs)
 	stat_add("bomb",         stat_bombs)
 	stat_add("bullet",       stat_bullets_all)
 	stat_add("hit",          stat_bullets_hit)

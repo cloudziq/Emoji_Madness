@@ -30,10 +30,10 @@ end
 
 
 function on_message(self, message_id, message)
-	if message_id == hash("collision_response") and level_play and self.active then
+	--if message_id == hash("collision_response") and level_play and self.active then
 		local pos = go.get_position()
 
-		if message.group == hash("weapon") then
+		if message.group == hash("weapon") and level_play and self.active then
 			charged_combo_count, charged_combo_score, charged_dark_add = 0, 0, 0--, charged_emoji_count = 0, 0, 0
 			msg.post("game_layer2:/main#game_gui", "display_update", {stat = "health loss"})
 			self.active = false
@@ -71,7 +71,7 @@ function on_message(self, message_id, message)
 
 
 
-	elseif message_id == hash("count charged_kill") then
+	if message_id == hash("count charged_kill") then
 		charged_combo_count = charged_combo_count + 1
 		charged_dark_add = charged_dark_add + message.dark
 		--if message.charged then charged_emoji_count = charged_emoji_count + 1 end
