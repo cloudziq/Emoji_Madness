@@ -7,16 +7,13 @@ allow_title_clicks = false
 allow_title_emojis = true
 
 local menu_emoji_amount = 44
-
-local emoji_delay
-local title_music_delay
+local emoji_delay, title_music_delay, palmsy_visible
 local title_lenght = {5, 7}  -- letters amount per word
-local palmsy_visible = false
 
 
 --local variables:
-local text_dziq_pos, text_dziq_rot, dziq_image_pos, dziq_image_rot, presents_pos, start_allow, new_game_pos, hall_of_fame_pos
-local anim_new_game_node, anim_hall_node, anim_info_node
+local text_dziq_pos, text_dziq_rot, dziq_image_pos, dziq_image_rot, presents_pos, start_allow, new_game_pos, hall_of_fame_pos, palmsy_pos
+local anim_new_game_node, anim_hall_node, anim_info_node, anim_back_node
 
 --local functions:
 local title_prepare, title_animate, title_colors, intro, post_intro, defold_logo, letters_init, fade_gui, display_stats
@@ -27,6 +24,7 @@ local title_prepare, title_animate, title_colors, intro, post_intro, defold_logo
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	main_menu_visible = true
+	palmsy_visible = false
 	menu_proxy = true
 
 	if post_game == false then
@@ -67,18 +65,17 @@ function on_message(self, message_id, message, sender)
 
 	elseif message_id == hash("show palmsy") then
 		palmsy_visible = true
-		node = gui.get_node("palmsy") ; pos = gui.get_position(node)
+		node = gui.get_node("palmsy")-- ; pos = gui.get_position(node)
 		gui.set_enabled(node, true)
-		gui.animate(node, "position.y", pos.y + 100, gui.EASING_OUTSINE, 1)
+		gui.animate(node, "position.y", palmsy_pos.y, gui.EASING_OUTSINE, 1)
 		gui.animate(node, "rotation.z", 28, gui.EASING_INOUTSINE, 1.2, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
 		sound.play("/main#palmsy_appear")
 
 
 	elseif message_id == hash("hide palmsy") then
 		palmsy_visible = false
-		node = gui.get_node("palmsy") ; pos = gui.get_position(node)
-		gui.animate(node, "position.y", pos.y - 100, gui.EASING_INOUTSINE, 4, 0, function()
-			gui.set_enabled(node, false)
+		gui.animate(gui.get_node("palmsy"), "position.y", palmsy_pos.y - 100, gui.EASING_INOUTSINE, 4, 0, function()
+			gui.set_enabled(gui.get_node("palmsy"), false)
 		end)
 	end
 end
@@ -129,7 +126,6 @@ function on_input(self, action_id, action)
 					if palmsy_visible then msg.post("#", "hide palmsy") end
 					start_allow = false
 					stat_games = stat_games + 1
-					stat_level_record = 0
 				end
 			else
 				gui.animate(gui.get_node("NEW_GAME"), "scale", vmath.vector3(1, 1, 1), go.EASING_INOUTSINE, 1)
@@ -216,13 +212,22 @@ function on_input(self, action_id, action)
 						display_stats()
 					end)
 				end
+			end
 
 
-				if gui.pick_node(gui.get_node("back_button"), action.x, action.y) and gui.is_enabled(gui.get_node("BACK")) then
+			if gui.pick_node(gui.get_node("back_button"), action.x, action.y) and gui.is_enabled(gui.get_node("BACK")) then
+				if not anim_back_node then
+					anim_back_node = true
+					animate_node(gui.get_node("back_button"), vmath.vector3(1, 1, 1), .06, "x")
+					animate_node(gui.get_node("main_menu_link"), vmath.vector3(.7, .7, 1), .08)
+				end
+
+				if action_id == hash("click1") and action.pressed then
 					sound.play("main:/main#button_press")
+					gui.cancel_animation(gui.get_node("back_button"), "scale")
+					gui.cancel_animation(gui.get_node("main_menu_link"), "scale")
 
 					gui.set_enabled(gui.get_node("BACK"), false)
-
 					node = gui.get_node("palmsy_menu")
 					gui.animate(node, "color.w", 0, gui.EASING_INSINE, .8)
 					gui.set_enabled(node, true)
@@ -238,6 +243,11 @@ function on_input(self, action_id, action)
 						gui.animate(gui.get_node("palmsy"), "position.y", pos.y, gui.EASING_OUTSINE, 1)
 					end)
 				end
+
+			else
+				gui.animate(gui.get_node("back_button"), "scale", vmath.vector3(1, 1, 1), go.EASING_INOUTSINE, 1)
+				gui.animate(gui.get_node("main_menu_link"), "scale", vmath.vector3(.7, .7, 1), go.EASING_INOUTSINE, 1)
+				anim_back_node = false
 			end
 		end
 	end
@@ -321,6 +331,7 @@ function title_prepare()
 	new_game_pos = gui.get_position(gui.get_node("NEW_GAME"))
 	hall_of_fame_pos = gui.get_position(gui.get_node("HALL_OF_FAME"))
 	info_pos = gui.get_position(gui.get_node("INFO"))
+	palmsy_pos = gui.get_position(gui.get_node("palmsy"))
 
 	gui.set_position(gui.get_node("dziq"), vmath.vector3(1600, dziq_image_pos.y, 0))
 	gui.set_position(gui.get_node("text_dziq"), vmath.vector3(-1000, 400, 0))
@@ -329,8 +340,8 @@ function title_prepare()
 	gui.set_position(gui.get_node("NEW_GAME"), vmath.vector3(new_game_pos.x, new_game_pos.y - 600, 1))
 	gui.set_position(gui.get_node("HALL_OF_FAME"), vmath.vector3(hall_of_fame_pos.x, hall_of_fame_pos.y - 500, 1))
 	gui.set_position(gui.get_node("INFO"), vmath.vector3(info_pos.x, info_pos.y - 400, 1))
-	node = gui.get_node("palmsy") ; pos = gui.get_position(node)
-	gui.set_position(node, vmath.vector3(pos.x, pos.y - 100, pos.z))
+	pos = vmath.vector3(palmsy_pos) ; pos.y = pos.y - 100
+	gui.set_position(gui.get_node("palmsy"), pos)
 
 	for a = 1, 2 do
 		for b = 1, title_lenght[a] do

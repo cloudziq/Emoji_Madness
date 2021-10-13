@@ -2,9 +2,9 @@
 -- starting values:
 level  = 1
 score  = 0
-health = 5
+health = 10
 emojis = 20
-speed  = 62   -- percentage modifier which affects emojis speed, wait_timeout
+speed  = 60   -- percentage modifier which affects emojis speed, wait_timeout
 level_bonus_unlocked = 4
 level_bombs_unlocked = 8
 bombs_amount = 1
@@ -184,7 +184,7 @@ function update(self, dt)
 			msg.post("game_layer1:/main#ctrl", "fade_out_add_music", {time = 10})
 			msg.post("game_layer1:/main#ctrl", "bonus level emoji at end")
 			timer.delay(4, false, function() msg.post("#bonus_level_complete", "show") end)
-			msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 2, delay = 8, start_new = false, continue = true})
+			msg.post("game_layer1:/main#ctrl", "fade_in_music", {time = 4, delay = 8, start_new = false, continue = true})
 			fade_darkness(4, darkness_level_temp)
 		end)
 	end

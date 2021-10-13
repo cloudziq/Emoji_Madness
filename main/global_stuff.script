@@ -378,7 +378,7 @@ function stats_write()
 	stat_add("game",         stat_games)
 	stat_add("level",        stat_levels)
 	if stat_level_record > stats_table.level_max then
-		stat_table.level_max = stat_level_record
+		stats_table.level_max = stat_level_record
 	end
 	stat_add("bonus_level",  stat_bonus_level)
 	stat_add("kill",         stat_kills)

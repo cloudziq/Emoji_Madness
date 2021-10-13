@@ -3846,7 +3846,7 @@ nodes {
   adjust_mode: ADJUST_MODE_FIT
   parent: "palmsy_menu"
   layer: ""
-  inherit_alpha: true
+  inherit_alpha: false
   slice9 {
     x: 0.0
     y: 0.0

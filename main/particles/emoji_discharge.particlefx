@@ -411,7 +411,7 @@ emitters {
 emitters {
   id: "emitter_light"
   mode: PLAY_MODE_ONCE
-  duration: 1.0
+  duration: 2.2
   space: EMISSION_SPACE_WORLD
   position {
     x: 0.0
@@ -477,7 +477,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_LIFE_TIME
     points {
       x: 0.0
-      y: 1.9
+      y: 2.86
       t_x: 1.0
       t_y: 0.0
     }
@@ -497,7 +497,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_SIZE
     points {
       x: 0.0
-      y: 140.0
+      y: 200.0
       t_x: 1.0
       t_y: 0.0
     }
@@ -537,7 +537,7 @@ emitters {
     key: EMITTER_KEY_PARTICLE_ALPHA
     points {
       x: 0.0
-      y: 0.64
+      y: 0.74
       t_x: 1.0
       t_y: 0.0
     }
@@ -592,8 +592,14 @@ emitters {
       t_y: 0.0
     }
     points {
-      x: 0.60952926
-      y: 0.944706
+      x: 0.3083151
+      y: 1.1264008
+      t_x: 0.58642244
+      t_y: 0.81000537
+    }
+    points {
+      x: 0.6384133
+      y: 0.80892706
       t_x: 0.18487445
       t_y: -0.98276216
     }
@@ -640,10 +646,10 @@ emitters {
       t_y: 0.99419016
     }
     points {
-      x: 0.64555997
-      y: 0.46540427
-      t_x: 0.18091531
-      t_y: -0.9834987
+      x: 0.7151442
+      y: 0.34196883
+      t_x: 0.25077587
+      t_y: -0.9680452
     }
     points {
       x: 1.0
@@ -698,7 +704,7 @@ emitters {
   start_delay_spread: 0.0
   duration_spread: 0.0
   stretch_with_velocity: false
-  start_offset: 1.2
+  start_offset: 1.4
 }
 emitters {
   id: "longer"
