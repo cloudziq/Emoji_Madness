@@ -34,10 +34,10 @@ local hash_group_wave      = hash("wavepush")
 
 
 function init(self)
-	self.move_time         = 3.24
-	self.wait              = 6.42
+	self.move_time         = 3.28
+	self.wait              = 4.64
 	self.score             = score_default
-	self.dark              = 2
+	self.dark              = 3
 	self.wait_timeout      = 0
 	self.waiting           = false
 	self.reach_border      = false
@@ -111,6 +111,7 @@ function update(self, dt)
 			-- disable emojis at the end of main menu
 			if allow_title_emojis == false and self.active == true then
 				self.active = false
+				secret_menu_activated = true
 				msg.post(msg.url(nil, go.get_id(), "collide_emoji"), "disable")
 
 				pos_x, pos_y = get_offscreen_pos(400, true, go.get_position())
@@ -180,7 +181,7 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			time = 3.2
 			pos_x, pos_y = get_offscreen_pos(80 + dist_add, 1, go.get_position())
 		else
-			time = self.move_time - (speed * (self.move_time / 100)) + ((level / 7) * (1.62 - darkness_level))
+			time = self.move_time - (speed * (self.move_time / 100)) + (1.6 * darkness_level)
 			--print("time1: "..time)
 
 			if not self.going_away then
@@ -191,10 +192,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			else
 				if self.need_pos_check then
 					method = 2
-					time = (time * 7.36) + ((level / 2.56) *  (1.42 * darkness_level))
+					time = (time * 10.48) + ((emojis / 6) - darkness_level) + (level / 12)
 				else
 					method = 1
-					time = (time * 8.22) + ((level / 2.78) *  (1.42 * darkness_level))
+					time = (time * 8.62) + ((emojis / 6) - darkness_level) + (level / 12)
 					print("time2: "..time)
 				end
 				pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
@@ -245,9 +246,9 @@ function emoji_waiting(self)
 	local light_level = bonus_level_active and darkness_level_temp or darkness_level
 	local tint
 
-	if self.active == true then
+	if self.active then
 		if self.wait_timeout == 0 then
-			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(2, 6) + ((level / 6.2) * (1.74 - light_level)) + socket.gettime()
+			self.wait_timeout = self.wait - (speed * (self.wait / 100)) + math.random(2, 6) + ((level / 5.6) * (1.76 - light_level)) + socket.gettime()
 			self.waiting = true
 			self.score = score_default / 2
 			pos = go.get_position()
@@ -398,7 +399,7 @@ function on_message(self, message_id, message, sender)
 				if emojis_left > 0 then
 					sound_speed = (math.random(66, 122) / 100)
 				else
-					sound_speed = (math.random(28, 44) / 100)
+					sound_speed = (math.random(18, 30) / 100)
 				end
 
 				if self.going_away then
@@ -487,7 +488,6 @@ function on_message(self, message_id, message, sender)
 						go.set_scale(1)
 						self.waiting = false
 						self.wait_timeout = 0
-						--particlefx.stop(self.particle_charging)
 					end
 					get_new_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE, 0)
 

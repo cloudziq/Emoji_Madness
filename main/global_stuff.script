@@ -300,7 +300,7 @@ local function set_default_records()
 	return table
 end
 
-hall_format = 1
+hall_format = 2
 
 function load_records()
 	local file = sys.get_save_file("Emoji_Madness", "hall_of_fame.dzq")

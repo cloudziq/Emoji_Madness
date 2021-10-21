@@ -1,5 +1,6 @@
 
 -- local variables:
+--local allow_continue
 local anim_back_node, anim_resume_node, anim_options_node
 
 
@@ -18,6 +19,7 @@ function on_message(self, message_id, message, sender)
 
 		gui.set_render_order(1)
 		gui.reset_nodes()
+		--allow_continue = true
 		if pause_id == "main:/main#title_menu_proxy" then gui.set_enabled(gui.get_node("BACK"), false) end
 		gui.set_color(gui.get_node("BG1"), vmath.vector4(0,0,0,0))
 		gui.set_color(gui.get_node("BG2"), vmath.vector4(0,0,0,0))
@@ -45,8 +47,8 @@ function on_input(self, action_id, action)
 	if action_id == hash("pause") and action.pressed then
 		sound.play("/main#button_press")
 		pause(pause_id)
-	
-	elseif gui.pick_node(gui.get_node("resume"), action.x, action.y) then
+
+	elseif gui.pick_node(gui.get_node("resume"), action.x, action.y) then-- and allow_continue then
 		if not anim_resume_node then
 			anim_resume_node = true
 			animate_node(gui.get_node("box1"), vmath.vector3(1,1,1), .06, "x")
@@ -55,8 +57,10 @@ function on_input(self, action_id, action)
 		
 		if action_id == hash("click1") and action.pressed then
 			sound.play("/main#button_press")
+			--allow_continue = false
 			pause(pause_id)
 		end
+
 	else
 		gui.animate(gui.get_node("box1"), "scale", vmath.vector3(1,1,1), go.EASING_INOUTSINE, 1)
 		gui.animate(gui.get_node("resume"), "scale", vmath.vector3(.5, .5, 1), go.EASING_INOUTSINE, 1)
@@ -87,6 +91,7 @@ function on_input(self, action_id, action)
 			anim_options_node = true
 			animate_node(gui.get_node("options_button"), vmath.vector3(.72, .72, 1), .06, "x")
 			animate_node(gui.get_node("options_text"), vmath.vector3(.7, .7, 1), .08)
+			rotate_icon()
 		end
 
 		if action.pressed and action_id == hash("click1") then
@@ -100,8 +105,27 @@ function on_input(self, action_id, action)
 	else
 		gui.animate(gui.get_node("options_button"), "scale", vmath.vector3(.72, .72, 1), go.EASING_INOUTSINE, 1)
 		gui.animate(gui.get_node("options_text"), "scale", vmath.vector3(.7, .7, 1), go.EASING_INOUTSINE, 1)
+		gui.animate(gui.get_node("icon2"), "rotation.z", 24, go.EASING_OUTSINE, .6)
 		anim_options_node = false
 	end
 
 	return true
+end
+
+
+
+
+function rotate_icon(iter)
+	local easing
+
+	if iter == nil then
+		easing = gui.EASING_INSINE
+	else
+		easing = gui.EASING_LINEAR
+	end
+
+	gui.animate(gui.get_node("icon2"), "rotation.z", 360 - 24, easing, 1.6, 0, function()
+		gui.set_rotation(gui.get_node("icon2"), vmath.quat_rotation_z(24))
+		rotate_icon(1)
+	end)
 end

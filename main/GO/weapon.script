@@ -17,8 +17,8 @@ function init(self)
 	allow_combo_counter = level_play and true or false
 	bullet_is_hit = false
 
-	if socket.gettime() + 1.1 > level_summary_delay then
-		level_summary_delay = socket.gettime() + 1.1
+	if socket.gettime() + 1.2 > level_summary_delay then
+		level_summary_delay = socket.gettime() + 1.2
 	end
 
 	if level_play == true then

@@ -651,7 +651,7 @@ nodes {
   rotation {
     x: 0.0
     y: 0.0
-    z: -23.476
+    z: 24.0
     w: 1.0
   }
   scale {

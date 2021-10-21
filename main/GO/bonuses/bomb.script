@@ -30,43 +30,40 @@ end
 
 
 function on_message(self, message_id, message)
-	--if message_id == hash("collision_response") and level_play and self.active then
-		local pos = go.get_position()
+	local pos = go.get_position()
 
-		if message.group == hash("weapon") and level_play and self.active then
-			charged_combo_count, charged_combo_score, charged_dark_add = 0, 0, 0--, charged_emoji_count = 0, 0, 0
-			msg.post("game_layer2:/main#game_gui", "display_update", {stat = "health loss"})
-			self.active = false
-			bullet_is_hit = true
-			allow_combo_counter = false
-			health = health - 1
-			-- if score > 0 then
-			-- 	score = score + bullet_miss
-			-- end
-			bombs_left = bombs_left - 1
-			stat_bombs = stat_bombs + 1
-			msg.post(self.collision, "disable")
-			go.set(self.sprite, "tint.w", 0)
-			go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)), self.sprite)
-			go.set_scale(2)
+	if message.group == hash("weapon") and level_play and self.active then
+		charged_combo_count, charged_combo_score, charged_dark_add = 0, 0, 0
+		msg.post("game_layer2:/main#game_gui", "display_update", {stat = "health loss"})
+		self.active = false
+		bullet_is_hit = true
+		allow_combo_counter = false
+		health = health - 1
+		bombs_left = bombs_left - 1
+		stat_bombs = stat_bombs + 1
+		stat_health_loss = stat_health_loss + 1
+		msg.post(self.collision, "disable")
+		go.set(self.sprite, "tint.w", 0)
+		go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)), self.sprite)
+		go.set_scale(2)
 
-			msg.post(self.blast, "enable")
-			timer.delay(.1, false, function()
-				msg.post(self.blast, "disable")
-				factory.create("/bomb#wavepush_factory", vmath.vector3(pos.x, pos.y, 0.9))
-			end)
-			timer.delay(.2, false, function()
-				change_darkness(charged_combo_count)
-				if charged_combo_count > 0 then
-					msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, dark = charged_dark_add, score = charged_combo_score, charged = 0, pos = {x = shot_x, y = shot_y}, longer = true})
-				end
-			end)
+		msg.post(self.blast, "enable")
+		timer.delay(.1, false, function()
+			msg.post(self.blast, "disable")
+			factory.create("/bomb#wavepush_factory", vmath.vector3(pos.x, pos.y, 0.9))
+		end)
+		timer.delay(.2, false, function()
+			change_darkness(charged_combo_count)
+			if charged_combo_count > 0 then
+				msg.post("game_layer2:/main#ctrl", "show charged_combo display", {amount = charged_combo_count, dark = charged_dark_add, score = charged_combo_score, charged = 0, pos = {x = shot_x, y = shot_y}, longer = true})
+			end
+		end)
 
-			go.set_position(vmath.vector3(pos.x, pos.y, 0.9), self.particle)
-			sound.play("/bomb#explode"..math.random(1, 2), {speed = proxy_speed})
-			sound.play("/bomb#explode_echo"..math.random(1, 2), {speed = proxy_speed, delay = .4})
-			particlefx.play(self.particle)
-		end
+		go.set_position(vmath.vector3(pos.x, pos.y, 0.9), self.particle)
+		sound.play("/bomb#explode"..math.random(1, 2), {speed = proxy_speed})
+		sound.play("/bomb#explode_echo"..math.random(1, 2), {speed = proxy_speed, delay = .4})
+		particlefx.play(self.particle)
+	end
 
 
 
@@ -81,8 +78,10 @@ function on_message(self, message_id, message)
 
 
 	elseif message_id == hash("clean_bombs") then
-		for _,a in ipairs(bomb_table) do
-			go.delete(a)
+		for _, a in ipairs(bomb_table) do
+			go.animate(a, "scale", go.PLAYBACK_ONCE_FORWARD, 0.001, go.EASING_INSINE, 1, 0, function()
+				go.delete(a)
+			end)
 		end
 	end
 end

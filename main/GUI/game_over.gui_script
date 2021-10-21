@@ -78,7 +78,7 @@ function on_message(self, message_id, message, sender)
 		msg.post(emoji_url, "clean_emojis", {continue = false})
 		if #bomb_table > 0 then msg.post(bomb_url, "clean_bombs") end
 		if #orb_table > 0 then msg.post(orb_url, "clean_orbs") end
-		if #blood_table > 0 then msg.post(blood_go_id, "clean_blood") end
+		if #blood_table > 0 then msg.post(blood_go_id, "clean_blood", {instant = true}) end
 
 		--post_clean_start = false
 		msg.post(".", "release_input_focus")
