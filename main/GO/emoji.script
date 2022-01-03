@@ -1,4 +1,8 @@
 
+local data = sys.load_resource("/custom_resources/common/emoji_colors.json")
+local emoji_color_data = json.decode(data)
+
+
 -- local variables:
 local score_default = 4
 
@@ -34,8 +38,8 @@ local hash_group_wave      = hash("wavepush")
 
 
 function init(self)
-	self.move_time         = 3.28
-	self.wait              = 4.64
+	self.move_time         = 3.24
+	self.wait              = 4.60
 	self.score             = score_default
 	self.dark              = 3
 	self.wait_timeout      = 0
@@ -47,8 +51,9 @@ function init(self)
 	self.collide_count     = 0
 	self.particle_url      = msg.url(nil, go.get_id(), "particle")
 	self.particle_charging = msg.url(nil, go.get_id(), "particle_charging")
+	self.emoji_id          = rnd.range(1, emoji_in_atlas)
 
-	msg.post("#sprite", "play_animation", {id = hash("e"..rnd.range(1, emoji_in_atlas))})
+	msg.post("#sprite", "play_animation", {id = hash("e"..self.emoji_id)})
 
 	-- emojis for main menu
 	if bonus_level_active ~= 1 then
@@ -62,7 +67,7 @@ function init(self)
 			go.animate(".", "scale", go.PLAYBACK_ONCE_FORWARD, 1.22, go.EASING_INOUTSINE, 1.5, rnd.range(6, 14) / 10)
 			get_new_menu_emoji_pos(self, go.EASING_INOUTSINE, go.EASING_OUTSINE)
 		else
-			local delay = rnd.range(1, 6 + (emojis / 5.4) + ((level / 4.2) * (1.32 - darkness_level)))
+			local delay = rnd.range(1, 6 + (emojis / 4.6) + ((level / 4.2) * (1.28 - darkness_level)))
 			self.collide_emoji     = msg.url(nil, go.get_id(), "collide_emoji")
 			self.collide_weapon    = msg.url(nil, go.get_id(), "collide_weapon")
 			sprite.set_constant("#sprite", "tint", vmath.vector4(1,1,1,1))
@@ -192,10 +197,10 @@ function get_new_emoji_pos(self, easing1, easing2, delay)
 			else
 				if self.need_pos_check then
 					method = 2
-					time = (time * 10.48) + ((emojis / 6) - darkness_level) + (level / 12)
+					time = (time * 10.48) - (level / 8)
 				else
 					method = 1
-					time = (time * 8.62) + ((emojis / 6) - darkness_level) + (level / 12)
+					time = (time * 8.62)  - (level / 8)
 					print("time2: "..time)
 				end
 				pos_x, pos_y = get_offscreen_pos(80 + dist_add, method, go.get_position())
@@ -323,21 +328,21 @@ function on_message(self, message_id, message, sender)
 			title_emoji_check = 0
 		end
 
+		if self.collide_type == 0 then
+			if math.random(1, 400) <= 360 then
+				self.collide_type = 1
+				particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.52, .56, .78, .84))
+				particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.52, .56, .78, .84 * darkness_level))
+			else
+				self.collide_type = 2
+				particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .68) * 1.24)
+				particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .96 * darkness_level) * 1.6)
+			end
+		end
+
 		if message_id == hash_contact and self.active == true then
 			pos = go.get_position()
 			sprite_flip(pos.x, true)
-
-			if self.collide_type == 0 then
-				if math.random(1, 400) <= 360 then
-					self.collide_type = 1
-					particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(.52, .56, .78, .84))
-					particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(.52, .56, .78, .84 * darkness_level))
-				else
-					self.collide_type = 2
-					particlefx.set_constant(self.particle_url, "emitter", "tint", vmath.vector4(1, .6, .2, .68))
-					particlefx.set_constant(self.particle_url, "emitter_light", "tint", vmath.vector4(1, .74, .44, .96 * darkness_level))
-				end
-			end
 
 			if self.collide_type == 1 then
 				force = rnd.range(44, 88) / 10
@@ -423,7 +428,7 @@ function on_message(self, message_id, message, sender)
 				pos = go.get_position()
 				go.set_position(vmath.vector3(pos.x, pos.y, .8))
 				go.set_rotation(vmath.quat_rotation_z(math.random(0, 360)))
-				make_blood(pos, blood_scale)
+				make_blood(self, pos, blood_scale)
 
 
 
@@ -503,13 +508,15 @@ function on_message(self, message_id, message, sender)
 					pos = go.get_position() + message.normal * (message.distance * math.random(1, 2))
 					go.set_position(vmath.vector3(pos.x, pos.y, .8))
 					go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)))
-					make_blood(pos, blood_scale, 1.4)
+					make_blood(self, pos, blood_scale, 1.4)
 
-					if self.waiting then
-						particlefx.stop(self.particle_charging)
-					elseif self.going_away then
-						particlefx.stop(self.particle_url)
-					end
+					timer.delay(.1, false, function()
+						if self.waiting then
+							particlefx.stop(self.particle_charging)
+						elseif self.going_away then
+							particlefx.stop(self.particle_url)
+						end
+					end)
 
 					msg.post(bomb_url, "count charged_kill", {score = self.score, dark = self.dark, charged = false})
 
@@ -560,14 +567,14 @@ function on_message(self, message_id, message, sender)
 					bonus_score = bonus_score + 10
 					stat_score = stat_score + 10
 					bonus_level_kills.small = bonus_level_kills.small + 1
-					make_blood(pos, blood_scale)
+					make_blood(self, pos, blood_scale)
 					sound_type = "game_layer1:/main#squeak_small"
 					sound_speed = (math.random(60, 120) / 100)
 				else
 					bonus_score = bonus_score + 50
 					stat_score = stat_score + 50
 					bonus_level_kills.big = bonus_level_kills.big + 1
-					make_blood(pos, blood_scale, 1.6)
+					make_blood(self, pos, blood_scale, 1.6)
 					sound_type = "game_layer1:/main#squeak_big"
 					sound_speed = (math.random(20, 35) / 100)
 				end
@@ -631,10 +638,9 @@ end
 
 
 
-function make_blood(pos, blood_scale, multiplier, cursor_check)
+function make_blood(self, pos, blood_scale, multiplier, cursor_check)
 	if multiplier == nil then multiplier = 1 end
 
-	
 	for a = 1, 4 do
 		-- blood 1 and 2 is under sprite
 		-- blood 4 is between cursor and emoji
@@ -660,6 +666,6 @@ function make_blood(pos, blood_scale, multiplier, cursor_check)
 			pos_y = pos.y + math.random(-8, 8)
 		end
 
-		msg.post("game_layer2:/main#ctrl", "spawn_blood", {a = a, x = pos_x, y = pos_y, z = z, scale = blood_scale[a] * multiplier, multiplier = multiplier})
+		msg.post("game_layer2:/main#ctrl", "spawn_blood", {a = a, x = pos_x, y = pos_y, z = z, scale = blood_scale[a] * multiplier, multiplier = multiplier, color = emoji_color_data["e"..self.emoji_id]})
 	end
 end

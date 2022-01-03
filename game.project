@@ -20,6 +20,7 @@ developer = Dziq
 write_log = 0
 version = 0.98  (pre-release)
 publisher = JOPS INTERACTIVE CO LTD
+custom_resources = custom_resources
 dependencies#0 = https://github.com/subsoap/defos/archive/v2.5.0.zip
 dependencies#1 = https://github.com/selimanac/defold-random/archive/master.zip
 dependencies#2 = https://github.com/subsoap/chip-sounds/archive/master.zip

@@ -21,7 +21,7 @@ change_music_variant = false
 wait_for_summary = false
 
 -- adds for level completion:
-speed_add      = 4.12
+speed_add      = 4.36
 emojis_add     = 4
 health_add     = 1
 health_perfect = 1
@@ -227,6 +227,7 @@ function on_message(self, message_id, message, sender)
 	elseif message_id == hash("spawn_blood") then
 		id = factory.create("game_layer2:/main#blood_factory", vmath.vector3(message.x, message.y, message.z), nil, nil,
 		rnd.range(message.scale - message.scale / 3 , message.scale + message.scale / 3) / 100)
+		sprite.set_constant(id, "tint", vmath.vector4(message.color[1] / 255, message.color[2] / 255, message.color[3] / 255, 1))
 		if message.a <= 2 then msg.post(id, "animate_blood_scale", {multiplier = message.multiplier}) end
 		table.insert(blood_table, id) ; blood_go_id = id
 

@@ -24,6 +24,8 @@ function init(self)
 		pos = check_bomb_proximity(self, 0, 80, 120)
 	end
 	go.set_position(vmath.vector3(pos.x, pos.y, .98))
+	go.set_scale(.42)
+	go.animate(".", "scale", go.PLAYBACK_LOOP_PINGPONG, vmath.vector3(.54, .54, 1), go.EASING_LINEAR, .8)
 end
 
 
@@ -45,6 +47,7 @@ function on_message(self, message_id, message)
 		msg.post(self.collision, "disable")
 		go.set(self.sprite, "tint.w", 0)
 		go.set_rotation(vmath.quat_rotation_z(math.random(1, 360)), self.sprite)
+		go.cancel_animations(".", "scale")
 		go.set_scale(2)
 
 		msg.post(self.blast, "enable")

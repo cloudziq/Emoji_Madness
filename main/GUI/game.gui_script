@@ -58,6 +58,10 @@ function on_message(self, message_id, message, sender)
 			gui.set_color(node, vmath.vector4(a.x, a.y, a.z, 0))
 			gui.animate(node, "color.w", 1, gui.EASING_LINEAR, 1.4, delay)
 			delay = delay + .74
+			-- animate bombs
+			if i == 1 or i == 5 then
+				gui.animate(node, "scale", vmath.vector3(1.4, 1.4, 1), go.EASING_LINEAR, .8, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
+			end
 		end
 		timer.delay(4.24, false, function()
 			delay = 1
@@ -250,14 +254,13 @@ function on_message(self, message_id, message, sender)
 		gui.set_text(gui.get_node("emojis_left"), tostring(emojis))
 		gui.set_text(gui.get_node("bonus_item_requirement"), tostring(bonus_requirement + 1))
 		gui.set_text(gui.get_node("score"), "SCORE: "..score)
-		gui.set_fill_angle(gui.get_node("darkness_indicator"), (360 * darkness_level))
-		gui.set_text(gui.get_node("darkness_amount"), tostring(darkness_level * 1000))
 
 		if level >= level_bombs_unlocked then
-			gui.set_enabled(gui.get_node("bomb_display"), true)
+			gui.set_enabled(gui.get_node("bomb_amount"), true)
+			gui.animate(gui.get_node("bomb_display"), "scale", vmath.vector3(2.25, 2.25, 1), go.EASING_LINEAR, .8, 0, nil, gui.PLAYBACK_LOOP_PINGPONG)
 		else
-			gui.set_enabled(gui.get_node("bomb_display"), false)
-			gui.set_text(gui.get_node("bomb_display"), tostring(bombs_left))
+			gui.set_enabled(gui.get_node("bomb_amount"), false)
+			gui.set_text(gui.get_node("bomb_amount"), tostring(bombs_left))
 		end
 		msg.post("main:/main#ctrl", "set dark render")
 
@@ -296,8 +299,6 @@ function on_message(self, message_id, message, sender)
 
 			gui.set_text(gui.get_node("health"), tostring(health))
 			gui.set_text(gui.get_node("emojis_left"), tostring(emojis_left))
-			gui.set_fill_angle(gui.get_node("darkness_indicator"), (360 * darkness_level))
-			gui.set_text(gui.get_node("darkness_amount"), tostring(darkness_level * 1000))
 			gui.set_text(gui.get_node("bomb_amount"), tostring(bombs_left))
 			msg.post("main:/main#ctrl", "set dark render")
 
